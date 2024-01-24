@@ -1,9 +1,6 @@
-use std::collections::HashSet;
-
 use dioxus::prelude::*;
-use dioxus_signals::use_signal;
 
-use crate::TexoSize;
+use crate::{TexoSize, merge_classes};
 
 #[derive(Props)]
 pub struct ButtonProps<'a> {
@@ -22,22 +19,8 @@ pub struct ButtonProps<'a> {
     children: Element<'a>,
 }
 
-fn merge_classes(input: &[&str]) -> String {
-    let mut class_set = HashSet::new();
-    for thing in input {
-        for class in thing.split_whitespace() {
-            class_set.insert(class);
-        }
-    }
 
-    let mut merged = String::new();
-    for class in class_set.iter() {
-        merged.push_str(&class);
-        merged.push(' ');
-    }
-    merged.truncate(merged.len() - 1);
-    merged
-}
+
 
 #[component]
 pub fn Button<'a>(cx: &'a Scoped<'a, ButtonProps<'a>>) -> Element<'a> {
@@ -81,13 +64,15 @@ pub fn Button<'a>(cx: &'a Scoped<'a, ButtonProps<'a>>) -> Element<'a> {
     let class = merge_classes(classes);
 
     cx.render(rsx!(
-      button {
-        class: "{class}",
-        "href": if let Some(href) = href { href } else { "" },
-        onclick: move |evt| if let Some(onclick) = onclick {
-          onclick.call(evt)
-        },
-        children
-      }
+        button {
+            class: "{class}",
+            "href": if let Some(href) = href { href } else { "" },
+            onclick: move |evt| {
+                if let Some(onclick) = onclick {
+                    onclick.call(evt)
+                }
+            },
+            children
+        }
     ))
 }
