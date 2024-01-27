@@ -1,34 +1,26 @@
 use dioxus::prelude::*;
-use dioxus_signals::use_signal;
+use manganis::classes;
 
-use crate::{merge_classes, util::Frame};
+use crate::{hooks::use_tween, merge_classes, util::Frame};
 
-#[derive(Props)]
-pub struct AccordionItemProps<'a> {
-    button_class: Option<&'a str>,
-    content_class: Option<&'a str>,
-    header: Option<Element<'a>>,
-    arrow_up: Option<Element<'a>>,
-    arrow_down: Option<Element<'a>>,
-    children: Element<'a>,
-}
 
 #[component]
-pub fn AccordionItem<'a>(cx: Scope<'a, AccordionItemProps<'a>>) -> Element {
-    let AccordionItemProps {
-        button_class,
-        content_class,
-        header,
-        children,
-        arrow_down,
-        arrow_up,
-    } = &cx.props;
+pub fn AccordionItem(
+  button_class: Option<String>,
+  content_class: Option<String>,
+  header: Option<Element>,
+  arrow_up: Option<Element>,
+  arrow_down: Option<Element>,
+  children: Element,
+) -> Element {
+    let mut open = use_signal(|| false);
 
-    let open = use_signal(cx, || false);
+    let mut animation = use_tween(0);
+    let anim_value = animation.value();
 
     let curr_open = *open.read();
 
-    let arrow_up_svg = render! {
+    let arrow_up_svg = rsx! {
         svg {
             xmlns: "http://www.w3.org/2000/svg",
             view_box: "0 0 10 6",
@@ -45,7 +37,7 @@ pub fn AccordionItem<'a>(cx: Scope<'a, AccordionItemProps<'a>>) -> Element {
         }
     };
 
-    let arrow_down_svg = render! {
+    let arrow_down_svg = rsx! {
         svg {
             xmlns: "http://www.w3.org/2000/svg",
             view_box: "0 0 10 6",
@@ -62,85 +54,81 @@ pub fn AccordionItem<'a>(cx: Scope<'a, AccordionItemProps<'a>>) -> Element {
         }
     };
 
+    let classes = &[
+      if curr_open {
+        classes!("max-h-full opacity-100")
+      } else {
+        classes!("max-h-0 opacity-0 overflow-hidden duration-250")
+      },
+      &content_class.unwrap_or_default()
+    ];
 
-    render! {
+    let content = merge_classes(classes);
+
+    let btn_class = format!("{}{}", classes!("flex items-center justify-between w-full font-medium text-left group-first:rounded-t-xl border-gray-200 dark:border-gray-700"), button_class.unwrap_or_default());
+
+    rsx! {
         h2 { class: "group",
             button {
-                onclick: move |_| open.toggle(),
-                class: "flex items-center justify-between w-full font-medium text-left group-first:rounded-t-xl border-gray-200 dark:border-gray-700 transition-all {button_class.unwrap_or(\"\")}",
+                onclick: move |_| {
+                    match curr_open {
+                        true => animation.start(100, 0, 500, tween::ExpoIn),
+                        false => animation.start(0, 100, 500, tween::ExpoIn),
+                    }
+                    open.toggle();
+                },
+                class: "{btn_class}",
                 aria_expanded: "{open}",
                 if let Some(header) = header {
-                  header
+                {header}
                 }
-                if curr_open {
-                  if let Some(arrow_up) = arrow_up {
-                    arrow_up
-                  } else {
-                    &arrow_up_svg
-                  }
+                if curr_open 
+                && let Some(arrow_up) = arrow_up {
+                {arrow_up}
+                } else if curr_open {
+                {&arrow_up_svg}
+                } else if let Some(arrow_down) = arrow_down {
+                {arrow_down}
                 } else {
-                  if let Some(arrow_down) = arrow_down {
-                    arrow_down
-                  } else {
-                    &arrow_down_svg
-                  }
-
+                {&arrow_down_svg}
                 }
             }
 
-            if curr_open {
-              rsx! {
-                div {
-                  div {
-                    class: "{content_class.unwrap_or_default()}",
-                    children
-                  }
-                }
-              }
-            } else {
-              rsx! {
-                div {
-                  class: "hidden",
-                  div {
-                    class: "{content_class.unwrap_or_default()}",
-                    children,
-                  }
-                }
-              }
+            div { class: classes!("w-full"),
+                div { class: "{content} h-[{anim_value}] transition-all ", {children} }
             }
         }
     }
-}
+  }
 
-#[derive(Props)]
-pub struct AccordionProps<'a> {
-    frame_class: Option<&'a str>,
-    class: Option<&'a str>,
+#[derive(Props, PartialEq, Clone)]
+pub struct AccordionProps {
+    frame_class: Option<String>,
+    class: Option<String>,
     #[props(default = false)]
     multiple: bool,
     #[props(default = false)]
     flush: bool,
-    children: Element<'a>,
+    children: Element,
 }
 
-#[component]
-pub fn Accordion<'a>(cx: Scope<'a, AccordionProps<'a>>) -> Element {
+pub fn Accordion(props: AccordionProps) -> Element {
     let AccordionProps {
         frame_class,
         class,
         children,
         ..
-    } = &cx.props;
+    } = props;
 
     let classes = &[
-        frame_class.unwrap_or_default(),
-        class.unwrap_or_default(),
-        "text-gray-500 dark:text-gray-400 transition-all",
+        &frame_class.unwrap_or_default(),
+        &class.unwrap_or_default(),
+        &"text-gray-500 dark:text-gray-400 transition-all".into(),
     ];
 
     let class = merge_classes(classes);
 
-    render! {
-        Frame { class: "{class}", children }
+    rsx! {
+        Frame { class: "{class}", {children} }
     }
 }
