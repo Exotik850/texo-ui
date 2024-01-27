@@ -749,16 +749,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "console_error_panic_hook"
-version = "0.1.7"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a06aeb73f470f66dcdbf7223caeebb85984942f22f1adb2a088cf9668146bbbc"
-dependencies = [
- "cfg-if",
- "wasm-bindgen",
-]
-
-[[package]]
 name = "const-str"
 version = "0.3.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1234,7 +1224,6 @@ dependencies = [
  "serde_json",
  "serde_repr",
  "tokio",
- "wasm-bindgen",
  "web-sys",
 ]
 
@@ -1254,11 +1243,8 @@ version = "0.4.3"
 dependencies = [
  "dioxus-core",
  "dioxus-html",
- "js-sys",
  "sledgehammer_bindgen",
  "sledgehammer_utils",
- "wasm-bindgen",
- "web-sys",
 ]
 
 [[package]]
@@ -1305,28 +1291,6 @@ dependencies = [
  "parking_lot",
  "rustc-hash",
  "tracing",
-]
-
-[[package]]
-name = "dioxus-web"
-version = "0.4.3"
-dependencies = [
- "async-trait",
- "console_error_panic_hook",
- "dioxus-core",
- "dioxus-html",
- "dioxus-interpreter-js",
- "futures-channel",
- "futures-util",
- "js-sys",
- "rustc-hash",
- "serde",
- "serde-wasm-bindgen",
- "serde_json",
- "tracing",
- "wasm-bindgen",
- "wasm-bindgen-futures",
- "web-sys",
 ]
 
 [[package]]
@@ -4266,17 +4230,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "serde-wasm-bindgen"
-version = "0.5.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f3b143e2833c57ab9ad3ea280d21fd34e285a42837aeb0ee301f4f41890fa00e"
-dependencies = [
- "js-sys",
- "serde",
- "wasm-bindgen",
-]
-
-[[package]]
 name = "serde_derive"
 version = "1.0.195"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4767,7 +4720,6 @@ dependencies = [
  "async-std",
  "dioxus",
  "dioxus-logger",
- "dioxus-web",
  "log",
  "manganis",
  "tween",

@@ -1,4 +1,5 @@
 use dioxus::prelude::*;
+use std::path::Path;
 
 #[derive(Copy, Clone, Debug)]
 pub struct TreeContext {
@@ -19,8 +20,17 @@ pub fn TreeView(
     #[props(default="".into())] aria_label: String,
     children: Element,
 ) -> Element {
-    let expand = use_signal(|| false);
-    let collapse = use_signal(|| false);
+    let mut expand = use_signal(|| false);
+    let mut collapse = use_signal(|| false);
+
+    use_effect(move || {
+        if expand() {
+            expand.set(false);
+        }
+        if collapse() {
+            collapse.set(false);
+        }
+    });
 
     use_context_provider(|| TreeContext {
         expand,
@@ -77,8 +87,6 @@ pub fn TreeViewItem(
         if expand() {
             open.set(true)
         }
-    });
-    use_effect(move || {
         if collapse() {
             open.set(false)
         }
@@ -90,23 +98,19 @@ pub fn TreeViewItem(
         ""
     };
 
-    let c_caret = if open() {
-      "rotate-180"
-    } else {
-      ""
-    };
+    let c_caret = if open() { "rotate-180" } else { "" };
 
     let onchange = move |evt: FormEvent| {
-      if let Some(mut value) = value {
-        value.set(evt.data.value())
-      }
+        if let Some(mut value) = value {
+            value.set(evt.data.value())
+        }
     };
 
     let has_child = children.as_ref().is_some_and(|f| f.is_some());
-    let pointer = if has_child {
-      "cursor-pointer"
+    let pointer = if has_child || onclick.is_some() {
+        "cursor-pointer"
     } else {
-      ""
+        ""
     };
 
     rsx!(
@@ -129,13 +133,13 @@ pub fn TreeViewItem(
                     }
               },
           div {
-            class: "fill-current w-3 text-center transform duration-[200ms] {c_caret}",
+            class: "fill-current w-3 text-center transition duration-[200ms] {c_caret}",
             if has_child {
               svg { view_box: "0 0 448 512", xmlns: "http://www.w3.org/2000/svg",
                   path { d: "M201.4 374.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 306.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z" }
               }
             } else {
-              svg { 
+              svg {
                 xmlns: "http://www.w3.org/2000/svg", view_box: "0 0 448 512", class: "w-3",
                   path { d: "M432 256c0 17.7-14.3 32-32 32L48 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l352 0c17.7 0 32 14.3 32 32z" }
               }
@@ -162,7 +166,7 @@ pub fn TreeViewItem(
                 onchange,
               }
             }
-          } 
+          }
 
           if let Some(lead) = lead {
             {lead}
@@ -176,6 +180,77 @@ pub fn TreeViewItem(
             {children}
           }
         }
+      }
+    )
+}
+
+#[derive(Clone, Debug, PartialEq)]
+pub enum TreeOutput {
+    Item(Element, Vec<TreeOutput>),
+    ItemNoChildren(Element),
+    None,
+}
+
+fn build_tree<P: AsRef<Path>>(path: P) -> Vec<TreeOutput> {
+    let mut items = vec![];
+
+    let Ok(entries) = std::fs::read_dir(&path) else {
+        log::warn!("Could not open: {}", path.as_ref().display());
+        return items;
+    };
+
+    for entry in entries {
+        let Ok(entry) = entry else {
+            continue;
+        };
+
+        let fullpath = entry.path();
+        let Some(name) = fullpath.file_name() else {
+          continue;
+        };
+        let name = name.to_str().unwrap_or("Invalid Name!");
+        if fullpath.is_dir() {
+            let sub_items = build_tree(&fullpath);
+            items.push(TreeOutput::Item(rsx! {"{name}"}, sub_items))
+        } else {
+            items.push(TreeOutput::ItemNoChildren(rsx! {"{name}"}))
+        }
+    }
+
+    items
+}
+
+#[component]
+pub fn FileTreeView(path: String) -> Element {
+    rsx! {
+      RecursiveTreeView {
+        components: build_tree(&path)
+      }
+    }
+}
+
+fn expand(item: TreeOutput, child_class: Option<String>) -> Element {
+    rsx!(match item {
+        TreeOutput::Item(lead, child) => rsx!(
+          TreeViewItem {
+            lead,
+            class: child_class.as_deref().unwrap_or_default(),
+            {child.into_iter().map(|f| expand(f, child_class.clone()))}
+          }
+        ),
+        TreeOutput::ItemNoChildren(lead) => rsx!(TreeViewItem {
+           lead,
+           class: child_class.unwrap_or_default(),
+          }),
+        TreeOutput::None => None,
+    })
+}
+
+#[component]
+pub fn RecursiveTreeView(components: Vec<TreeOutput>, child_class: Option<String>) -> Element {
+    rsx! (
+      TreeView {
+        {components.into_iter().map(|f| expand(f, child_class.clone()))}
       }
     )
 }

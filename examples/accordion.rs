@@ -39,36 +39,8 @@ fn App() -> Element {
         //     }
         // }
 
-        TreeView {
-          TreeViewItem {
-            lead: rsx! {
-              "Item 1"
-            },
-            TreeViewItem {
-              lead: rsx! {
-                "Child 1" 
-              },
-              TreeViewItem {
-                "Child of Child 1"
-              }
-              TreeViewItem {
-                "Child of Child 2"
-              }
-            }
-            TreeViewItem {
-              lead: rsx! {
-                "Child 2 (No Children)"
-              }
-            }
-        } 
-        TreeViewItem {
-          lead: rsx! {
-            "Item 2"
-          },
-          Card {
-            "Help!"
-          }
+        FileTreeView {
+          path: "./"
         }
-      }
     )
 }
