@@ -12,6 +12,10 @@ async-std = {version="1.12.0", features = ["unstable"]}
 manganis = { git = "https://github.com/DioxusLabs/collect-assets", rev = "e0093a4" }
 log = "0.4.20"
 
+[features]
+desktop = ["dioxus/desktop"]
+web = ["dioxus/web"]
+
 
 [dev-dependencies]
 dioxus = { path = "../dioxus/packages/dioxus", features = ["desktop"]}
