@@ -8,53 +8,47 @@ struct ToolbarSeperation(bool);
 
 #[component]
 pub fn Toolbar(
-  #[props(default = false)]
-  embedded: bool,
-  div_class: Option<String>,
-  seperator_class: Option<String>,
-  color: TexoColor,
-  children: Element,
-  end: Option<Element>,
+    #[props(default = false)] embedded: bool,
+    div_class: Option<String>,
+    seperator_class: Option<String>,
+    color: TexoColor,
+    children: Element,
+    end: Option<Element>,
 ) -> Element {
+    let seperator = use_context_provider(|| ToolbarSeperation(false));
 
-  let seperator = use_context_provider(|| ToolbarSeperation(false));
+    let final_div_class = merge_classes(&[
+        div_class.unwrap_or_default(),
+        "flex justify-between items-center".into(),
+        if embedded { "" } else { "py-2 px-3" }.into(),
+    ]);
 
-  let final_div_class = merge_classes(&[
-    div_class.unwrap_or_default(),
-    "flex justify-between items-center".into(),
-    if embedded {
-      ""
-    } else {
-      "py-2 px-3"
-    }.into()
-  ]);
+    let sep_classes = merge_classes(&[
+        if seperator.0 {
+            "sm:divide-x rtl:divide-x-reverse"
+        } else {
+            ""
+        }
+        .into(),
+        seperator_class.unwrap_or_default(),
+    ]);
 
-  let sep_classes = merge_classes(&[
-    if seperator.0 {
-      "sm:divide-x rtl:divide-x-reverse"
-    } else {
-      ""
-    }.into(),
-    seperator_class.unwrap_or_default()
-  ]);
-
-  rsx! (
-    Frame {
-      class: "{final_div_class}",
-      color,
-      rounded: !embedded,
-      Frame { 
-        class: "{sep_classes} flex flex-wrap items-center"
-        {children}
+    rsx! (
+      Frame {
+        class: "{final_div_class}",
+        color,
+        rounded: !embedded,
+        Frame {
+          class: "{sep_classes} flex flex-wrap items-center"
+          {children}
+        }
+        {end}
       }
-      {end}
-    }
-  )
-
+    )
 }
 
 fn toolbar_color(color: TexoColor) -> &'static str {
-  match color {
+    match color {
     TexoColor::Dark => classes!("text-gray-500 hover:text-gray-900 hover:bg-gray-200 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600"),
     TexoColor::Default => classes!("text-gray-500 focus:ring-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800 dark:hover:text-gray-300"),
     TexoColor::Gray => classes!("text-gray-500 focus:ring-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800 dark:hover:text-gray-300"),
@@ -72,56 +66,51 @@ fn toolbar_color(color: TexoColor) -> &'static str {
 
 #[component]
 pub fn ToolBarButton(
-  head: Option<String>,
-  href: Option<String>,
-  #[props(default = false)]
-  background: bool,
-  #[props(default = Default::default())]
-  class: String,
-  aria_label: Option<String>,
-  #[props(default = TexoColor::Gray)]
-  color: TexoColor,
-  #[props(default = TexoSize::Medium)]
-  size: TexoSize,
-  #[props(extends=GlobalAttributes)]
-  rest_attributes: Vec<Attribute>,
-  onclick: Option<EventHandler<MouseEvent>>,
-  children: Element,
+    head: Option<String>,
+    href: Option<String>,
+    #[props(default = false)] background: bool,
+    #[props(default = Default::default())] class: String,
+    aria_label: Option<String>,
+    #[props(default = TexoColor::Gray)] color: TexoColor,
+    #[props(default = TexoSize::Medium)] size: TexoSize,
+    #[props(extends=GlobalAttributes)] rest_attributes: Vec<Attribute>,
+    onclick: Option<EventHandler<MouseEvent>>,
+    children: Element,
 ) -> Element {
-  let button_class = merge_classes(&[
-    classes!("focus:outline-none whitespace-normal m-0.5 rounded focus:ring-1 p-0.5"),
-    &class,
-    toolbar_color(color),
-    if background {
-      classes!("hover:bg-gray-100 dark:hover:bg-gray-600")
-    } else {
-      classes!("hover:bg-gray-100 dark:hover:bg-gray-700")
-    }
-  ]);
+    let button_class = merge_classes(&[
+        classes!("focus:outline-none whitespace-normal m-0.5 rounded focus:ring-1 p-0.5"),
+        &class,
+        toolbar_color(color),
+        if background {
+            classes!("hover:bg-gray-100 dark:hover:bg-gray-600")
+        } else {
+            classes!("hover:bg-gray-100 dark:hover:bg-gray-700")
+        },
+    ]);
 
-  if let Some(href) = href {
-    rsx!{
-      a { 
-        ..rest_attributes,
-        class: button_class,
-        href,
-        onclick: move |evt| if let Some(onclick) = &onclick {onclick.call(evt)},
-        if let Some(name) = head {
-          "{name}" 
+    if let Some(href) = href {
+        rsx! {
+          a {
+            ..rest_attributes,
+            class: button_class,
+            href,
+            onclick: move |evt| if let Some(onclick) = &onclick {onclick.call(evt)},
+            if let Some(name) = head {
+              "{name}"
+            }
+            {children}
+          }
         }
-        {children}
-      }
-    }
-  } else {
-    rsx!{
-      button {
-        ..rest_attributes,
-        class: button_class,
-        if let Some(name) = head {
-          "{name}"
+    } else {
+        rsx! {
+          button {
+            ..rest_attributes,
+            class: button_class,
+            if let Some(name) = head {
+              "{name}"
+            }
+            {children}
+          }
         }
-        {children}
-      }
     }
-  }
 }

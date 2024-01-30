@@ -54,10 +54,10 @@ pub fn Menu(
 
 #[component]
 pub fn NavBrand(
-  class: Option<String>, 
-  href: Option<String>, 
-  onclick: Option<EventHandler<MouseEvent>>,
-  children: Element
+    class: Option<String>,
+    href: Option<String>,
+    onclick: Option<EventHandler<MouseEvent>>,
+    children: Element,
 ) -> Element {
     let nv_cl = classes!("flex items-center");
 
@@ -165,7 +165,11 @@ pub fn NavContainer(fluid: Option<bool>, class: String, children: Element) -> El
 
     let class = merge_classes(&[
         classes!("mx-auto flex flex-wrap justify-between items-center"),
-        if fluid { classes!("w-full") } else { classes!("container") },
+        if fluid {
+            classes!("w-full")
+        } else {
+            classes!("container")
+        },
         &class,
     ]);
 
@@ -182,7 +186,10 @@ pub fn NavBar(
     children: Element,
 ) -> Element {
     let fluid = fluid.unwrap_or(false);
-    let class = merge_classes(&[classes!("px-2 sm:px-4 py-2.5 w-full"), &class.unwrap_or("".into())]);
+    let class = merge_classes(&[
+        classes!("px-2 sm:px-4 py-2.5 w-full"),
+        &class.unwrap_or("".into()),
+    ]);
     rsx! {
         Frame { class: "{class}",
             NavContainer { fluid: fluid, class: "{class}", {children} }

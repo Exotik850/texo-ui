@@ -206,7 +206,7 @@ fn build_tree<P: AsRef<Path>>(path: P) -> Vec<TreeOutput> {
 
         let fullpath = entry.path();
         let Some(name) = fullpath.file_name() else {
-          continue;
+            continue;
         };
         let name = name.to_str().unwrap_or("Invalid Name!");
         if fullpath.is_dir() {
@@ -239,9 +239,9 @@ fn expand(item: TreeOutput, child_class: Option<String>) -> Element {
           }
         ),
         TreeOutput::ItemNoChildren(lead) => rsx!(TreeViewItem {
-           lead,
-           class: child_class.unwrap_or_default(),
-          }),
+            lead,
+            class: child_class.unwrap_or_default(),
+        }),
         TreeOutput::None => None,
     })
 }

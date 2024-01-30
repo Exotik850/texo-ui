@@ -10,7 +10,6 @@ pub fn main() {
 
 #[component]
 fn App() -> Element {
-
     let mut open = use_signal(|| true);
     let value = use_signal(String::new);
 

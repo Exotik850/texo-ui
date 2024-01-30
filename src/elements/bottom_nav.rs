@@ -19,15 +19,15 @@ pub enum BottomNavType {
 }
 
 impl BottomNavType {
-  fn inner_class(self) -> &'static str {
-    match self {
-      BottomNavType::Meeting => classes!("flex items-center justify-center mx-auto"),
-      BottomNavType::Video => classes!("flex items-center w-full"),
-      _ => ""
+    fn inner_class(self) -> &'static str {
+        match self {
+            BottomNavType::Meeting => classes!("flex items-center justify-center mx-auto"),
+            BottomNavType::Video => classes!("flex items-center w-full"),
+            _ => "",
+        }
     }
-  }
-  fn button_class(self) -> &'static str {
-    match self {
+    fn button_class(self) -> &'static str {
+        match self {
       BottomNavType::Default => classes!("inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group"),
       BottomNavType::Border => classes!("inline-flex flex-col items-center justify-center px-5 border-gray-200 border-x hover:bg-gray-50 dark:hover:bg-gray-800 group dark:border-gray-600"),
       BottomNavType::Pagination => classes!("inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group"),
@@ -35,15 +35,15 @@ impl BottomNavType {
       BottomNavType::Card => classes!("inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group"),
       _ => "",
     }
-  }
-  fn span_class(self) -> &'static str {
-    match self {
+    }
+    fn span_class(self) -> &'static str {
+        match self {
         BottomNavType::Default | BottomNavType::Border => classes!("text-sm text-gray-500 dark:text-gray-400 group-hover:text-primary-600 dark:group-hover:text-primary-500'"),
         BottomNavType::Application | BottomNavType::Pagination | BottomNavType::Group => classes!("sr-only"),
         BottomNavType::Card => classes!("text-sm text-gray-500 dark:text-gray-400 group-hover:text-primary-600 dark:group-hover:text-primary-500"),
         _ => ""
     }
-  }
+    }
 }
 
 impl Display for BottomNavType {
@@ -71,7 +71,9 @@ pub fn BottomNav(
     #[props(extends=div)] rest_attributes: Vec<Attribute>,
     children: Element,
 ) -> Element {
-    let otw = outer_class.unwrap_or_else(|| classes!("w-full z-50 border-gray-200 dark:bg-gray-700 dark:border-gray-600").to_string());
+    let otw = outer_class.unwrap_or_else(|| {
+        classes!("w-full z-50 border-gray-200 dark:bg-gray-700 dark:border-gray-600").to_string()
+    });
     let itw = inner_class.unwrap_or_else(|| classes!("flex h-full max-w-lg mx-auto").to_string());
 
     rsx! {
@@ -88,100 +90,94 @@ pub fn BottomNav(
 
 #[component]
 pub fn BottomNavItem(
-  button_name: Option<String>,
-  // button_position
-  button_class: Option<String>,
-  span_class: Option<String>,
-  href: Option<String>,
-  #[props(default = true)]
-  exact: bool,
-  #[props(default = Default::default())]
-  nav_type: BottomNavType,
-  onclick: Option<EventHandler<MouseEvent>>,
-  children: Element,
+    button_name: Option<String>,
+    // button_position
+    button_class: Option<String>,
+    span_class: Option<String>,
+    href: Option<String>,
+    #[props(default = true)] exact: bool,
+    #[props(default = Default::default())] nav_type: BottomNavType,
+    onclick: Option<EventHandler<MouseEvent>>,
+    children: Element,
 ) -> Element {
-  let button_class = button_class.unwrap_or_else(|| nav_type.button_class().to_string());
-  let span_class = span_class.unwrap_or_else(|| nav_type.span_class().to_string());
+    let button_class = button_class.unwrap_or_else(|| nav_type.button_class().to_string());
+    let span_class = span_class.unwrap_or_else(|| nav_type.span_class().to_string());
 
-  rsx!(
-    if let Some(href) = href {
-      a {
-        href,
-        role: "link",
-        class: "{button_class}",
-        onclick: move |evt| if let Some(oc) = &onclick {
-          oc.call(evt)
-        },
-        {children}
-        span {
-          class: "{span_class}",
-          aria_label: "{button_name.clone().unwrap_or_default()}",
-          "{button_name.clone().unwrap_or_default()}"
+    rsx!(
+      if let Some(href) = href {
+        a {
+          href,
+          role: "link",
+          class: "{button_class}",
+          onclick: move |evt| if let Some(oc) = &onclick {
+            oc.call(evt)
+          },
+          {children}
+          span {
+            class: "{span_class}",
+            aria_label: "{button_name.clone().unwrap_or_default()}",
+            "{button_name.clone().unwrap_or_default()}"
+          }
+        }
+      } else {
+        button {
+          role: "button",
+          class: "{nav_type.button_class()} {button_class} ",
+          onclick: move |evt| if let Some(oc) = &onclick {
+            oc.call(evt)
+          },
+          {children}
+          span {
+            class: "{nav_type.span_class()} {span_class}",
+            aria_label: "{button_name.clone().unwrap_or_default()}",
+            "{button_name.clone().unwrap_or_default()}"
+          }
         }
       }
-    } else {
-      button {
-        role: "button",
-        class: "{nav_type.button_class()} {button_class} ",
-        onclick: move |evt| if let Some(oc) = &onclick {
-          oc.call(evt)
-        },
-        {children}
-        span {
-          class: "{nav_type.span_class()} {span_class}",
-          aria_label: "{button_name.clone().unwrap_or_default()}",
-          "{button_name.clone().unwrap_or_default()}"
-        }
-      }
-    }
-  )
+    )
 }
 
 #[component]
 pub fn BottomNavHeader(
-  #[props(default = classes!("w-full").into())]
-  outer_class: String,
-  #[props(default = classes!("grid max-w-xs grid-cols-3 gap-1 p-1 mx-auto my-2 bg-gray-100 rounded-lg dark:bg-gray-600").into())]
-  inner_class: String,
-  children: Element,
-  #[props(extends=div)]
-  rest_attributes: Vec<Attribute>,
+    #[props(default = classes!("w-full").into())] outer_class: String,
+    #[props(default = classes!("grid max-w-xs grid-cols-3 gap-1 p-1 mx-auto my-2 bg-gray-100 rounded-lg dark:bg-gray-600").into())]
+    inner_class: String,
+    children: Element,
+    #[props(extends=div)] rest_attributes: Vec<Attribute>,
 ) -> Element {
-  rsx! {
-    div {
-      ..rest_attributes,
-      class: outer_class,
+    rsx! {
       div {
-        class: inner_class,
-        role: "group",
-        {children}
+        ..rest_attributes,
+        class: outer_class,
+        div {
+          class: inner_class,
+          role: "group",
+          {children}
+        }
       }
     }
-  }
 }
 
 #[component]
 pub fn BottomNavHeaderItem(
-  #[props(default = "".into())]
-  item_name: String,
-  active: bool,
-  #[props(default = classes!("px-5 py-1.5 text-xs font-medium text-gray-900 hover:bg-gray-200 dark:text-white dark:hover:bg-gray-700 rounded-lg").into())]
-  class: String,
-  #[props(default = classes!("px-5 py-1.5 text-xs font-medium text-white bg-gray-900 dark:bg-gray-300 dark:text-gray-900 rounded-lg").into())]
-  active_class: String,
-  onclick: Option<EventHandler<MouseEvent>>,
-  #[props(extends=button)]
-  rest_attributes: Vec<Attribute>,
+    #[props(default = "".into())] item_name: String,
+    active: bool,
+    #[props(default = classes!("px-5 py-1.5 text-xs font-medium text-gray-900 hover:bg-gray-200 dark:text-white dark:hover:bg-gray-700 rounded-lg").into())]
+    class: String,
+    #[props(default = classes!("px-5 py-1.5 text-xs font-medium text-white bg-gray-900 dark:bg-gray-300 dark:text-gray-900 rounded-lg").into())]
+    active_class: String,
+    onclick: Option<EventHandler<MouseEvent>>,
+    #[props(extends=button)] rest_attributes: Vec<Attribute>,
 ) -> Element {
-  rsx!(
-    button {
-      ..rest_attributes,
-      onclick: move |evt| if let Some(oc) = &onclick {
-        oc.call(evt)
-      },
-      class: if active { "{active_class}" },
-      class: if !active { "{class}" },
-      "{item_name}"
-    }
-  )
+    rsx!(
+      button {
+        ..rest_attributes,
+        onclick: move |evt| if let Some(oc) = &onclick {
+          oc.call(evt)
+        },
+        class: if active { "{active_class}" },
+        class: if !active { "{class}" },
+        "{item_name}"
+      }
+    )
 }

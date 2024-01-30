@@ -31,13 +31,15 @@ pub fn Modal(
         classes!("fixed top-0 start-0 end-0 h-modal md:inset-0 md:h-full z-50 w-full p-4 flex")
             .into()
     });
-    let handle_key = move |evt: Event<KeyboardData>| if let Key::Escape = evt.data.key() {
-      evt.stop_propagation();
-      open.set(false)
+    let handle_key = move |evt: Event<KeyboardData>| {
+        if let Key::Escape = evt.data.key() {
+            evt.stop_propagation();
+            open.set(false)
+        }
     };
 
     if !open() {
-      return None;
+        return None;
     }
 
     rsx!(
@@ -57,7 +59,7 @@ pub fn Modal(
                   class: classes!("w-full divide-y relative flex flex-col mx-auto")
 
                   if !title.is_empty() || (&header).is_some() {
-                      Frame { 
+                      Frame {
                         color,
                         class: classes!("flex justify-between items-center p-4 rounded-t-lg"),
                           if let Some(header) = &header {

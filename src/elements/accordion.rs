@@ -3,15 +3,14 @@ use manganis::classes;
 
 use crate::{hooks::use_tween, merge_classes, util::Frame};
 
-
 #[component]
 pub fn AccordionItem(
-  button_class: Option<String>,
-  content_class: Option<String>,
-  header: Option<Element>,
-  arrow_up: Option<Element>,
-  arrow_down: Option<Element>,
-  children: Element,
+    button_class: Option<String>,
+    content_class: Option<String>,
+    header: Option<Element>,
+    arrow_up: Option<Element>,
+    arrow_down: Option<Element>,
+    children: Element,
 ) -> Element {
     let mut open = use_signal(|| false);
 
@@ -55,12 +54,12 @@ pub fn AccordionItem(
     };
 
     let classes = &[
-      if curr_open {
-        classes!("max-h-full opacity-100")
-      } else {
-        classes!("max-h-0 opacity-0 overflow-hidden duration-250")
-      },
-      &content_class.unwrap_or_default()
+        if curr_open {
+            classes!("max-h-full opacity-100")
+        } else {
+            classes!("max-h-0 opacity-0 overflow-hidden duration-250")
+        },
+        &content_class.unwrap_or_default(),
     ];
 
     let content = merge_classes(classes);
@@ -82,7 +81,7 @@ pub fn AccordionItem(
                 if let Some(header) = header {
                 {header}
                 }
-                if curr_open 
+                if curr_open
                 && let Some(arrow_up) = arrow_up {
                 {arrow_up}
                 } else if curr_open {
@@ -99,7 +98,7 @@ pub fn AccordionItem(
             }
         }
     }
-  }
+}
 
 #[derive(Props, PartialEq, Clone)]
 pub struct AccordionProps {

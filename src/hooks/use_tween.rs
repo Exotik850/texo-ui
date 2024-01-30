@@ -60,12 +60,14 @@ impl<Value: TweenValue, T: Tween<Value>> TweenManager<Value, u64, T> {
     }
 }
 
-pub fn use_tween<Value, Time, T>(
-    init_val: Value,
-) -> TweenManager<Value, Time, T> {
+pub fn use_tween<Value, Time, T>(init_val: Value) -> TweenManager<Value, Time, T> {
     let value = use_signal(|| init_val);
     let animating = use_signal(|| false);
     let tween = use_signal(|| None);
 
-    TweenManager { value, animating, tween }
+    TweenManager {
+        value,
+        animating,
+        tween,
+    }
 }

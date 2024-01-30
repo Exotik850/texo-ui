@@ -5,14 +5,14 @@ pub fn CodeEditor(
     value: Signal<String>,
     onchange: Option<EventHandler<FormEvent>>,
     highlight: Option<EventHandler<String>>,
-    #[props(default=false)] insert_spaces: bool,
-    #[props(default=false)] ignore_tab: bool,
+    #[props(default = false)] insert_spaces: bool,
+    #[props(default = false)] ignore_tab: bool,
     class: Option<String>,
     text_area_class: Option<String>,
     pre_class: Option<String>,
     placeholder: Option<String>,
-    #[props(default=false)] read_only: bool,
-    #[props(default=false)] required: bool,
+    #[props(default = false)] read_only: bool,
+    #[props(default = false)] required: bool,
     onclick: Option<EventHandler<MouseEvent>>,
     onfocus: Option<EventHandler<FocusEvent>>,
     onkeyup: Option<EventHandler<KeyboardEvent>>,
@@ -21,10 +21,9 @@ pub fn CodeEditor(
     let capture = use_signal(|| false);
     let selection_start = use_signal(|| 0);
     let selection_end = use_signal(|| 0);
-    
+
     let selection = use_signal(|| (0, 0));
     // let mut js = eval(include_str!("./code_editor.js")).unwrap();
-
 
     // use_future(move || async move {
     //   while let Ok(msg) = js.recv().await {
@@ -32,9 +31,7 @@ pub fn CodeEditor(
     //   }
     // });
 
-    let oninput = move |evt: FormEvent| {
-        value.set(evt.value())
-    };
+    let oninput = move |evt: FormEvent| value.set(evt.value());
 
     let onclick = move |evt: MouseEvent| {
         if let Some(onclick) = &onclick {
