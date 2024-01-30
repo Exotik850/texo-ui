@@ -56,6 +56,7 @@ pub fn Toolbar(
 fn toolbar_color(color: TexoColor) -> &'static str {
   match color {
     TexoColor::Dark => classes!("text-gray-500 hover:text-gray-900 hover:bg-gray-200 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600"),
+    TexoColor::Default => classes!("text-gray-500 focus:ring-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800 dark:hover:text-gray-300"),
     TexoColor::Gray => classes!("text-gray-500 focus:ring-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800 dark:hover:text-gray-300"),
     TexoColor::Red => classes!("text-red-500 focus:ring-red-400 hover:bg-red-200 dark:hover:bg-red-800 dark:hover:text-red-300"),
     TexoColor::Yellow => classes!("text-yellow-500 focus:ring-yellow-400 hover:bg-yellow-200 dark:hover:bg-yellow-800 dark:hover:text-yellow-300"),

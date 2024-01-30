@@ -34,6 +34,7 @@ pub fn border_color(color: TexoColor) -> &'static str {
         TexoColor::Blue => {
             classes!("border-blue-300 dark:border-blue-800 divide-blue-300 dark:divide-blue-800")
         }
+        TexoColor::Default => classes!("border-gray-700 divide-gray-500"),
         TexoColor::Gray => classes!("border-gray-500 divide-gray-500"),
         TexoColor::Dark => classes!("border-gray-500 divide-gray-500"),
         TexoColor::Green => {
@@ -67,6 +68,7 @@ pub fn text_color(color: TexoColor) -> &'static str {
         TexoColor::Alternative => todo!(),
         TexoColor::Blue => classes!("text-blue-800 dark:text-blue-400"),
         TexoColor::Dark => classes!("text-gray-700 dark:text-gray-300"),
+        TexoColor::Default => classes!("text-gray-700 dark:text-gray-400"),
         TexoColor::Gray => classes!("text-gray-800 dark:text-gray-400"),
         TexoColor::Green => classes!("text-green-800 dark:text-green-400"),
         TexoColor::Light => classes!("text-gray-700 dark:text-gray-300"),
@@ -83,6 +85,7 @@ pub fn bg_color(color: TexoColor) -> &'static str {
         TexoColor::Alternative => todo!(),
         TexoColor::Blue => classes!("bg-blue-50 dark:bg-gray-800"),
         TexoColor::Dark => classes!("bg-gray-50 dark:bg-gray-800"),
+        TexoColor::Default => classes!("bg-gray-50 dark:bg-gray-700"),
         TexoColor::Gray => classes!("bg-gray-50 dark:bg-gray-800"),
         TexoColor::Green => classes!("bg-green-50 dark:bg-gray-800"),
         TexoColor::Light => classes!("bg-gray-50 dark:bg-gray-700"),
@@ -99,11 +102,13 @@ pub trait TexoComponent {
     fn get_class(&self, color: TexoColor) -> &str;
 }
 
-#[derive(PartialEq, Copy, Clone)]
+#[derive(PartialEq, Copy, Clone, Default, Debug)]
 pub enum TexoColor {
     Alternative,
     Blue,
     Dark,
+    #[default]
+    Default,
     Gray,
     Green,
     Light,
@@ -121,6 +126,7 @@ impl Display for TexoColor {
             TexoColor::Blue => "blue",
             TexoColor::Dark => "dark",
             TexoColor::Green => "green",
+            TexoColor::Default => "default",
             TexoColor::Gray => "gray",
             TexoColor::Light => "light",
             TexoColor::Primary => "primary",

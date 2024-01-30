@@ -1,4 +1,5 @@
 use dioxus::prelude::*;
+use manganis::classes;
 use texo_ui::elements::*;
 use texo_ui::util::Card;
 
@@ -11,6 +12,7 @@ pub fn main() {
 fn App() -> Element {
 
     let mut open = use_signal(|| true);
+    let value = use_signal(String::new);
 
     rsx!(
         link {
@@ -18,29 +20,47 @@ fn App() -> Element {
             rel: "stylesheet"
         }
 
-        // NavBar { 
-        //     NavBrand { 
-        //         span { class: classes!("self-center whitespace-nowrap text-xl font-semibold dark:text-white"),
-        //             "Dioxus"
-        //         }
-        //     }
+        Table {
+          striped: true,
+          TableHead {
+            TableHeadCell {
+              "Product Name"
+            }
+            TableHeadCell {
+              "Color"
+            }
+            TableHeadCell {
+              "Category"
+            }
+          }
+          TableBody {
+            TableBodyRow {
+              TableBodyCell {
+              "Apple Something"
+              }
+              TableBodyCell {
+                "Shit brown"
+              }
+              TableBodyCell {
+                "Way too fucking expensive"
+              }
+            }
+            TableBodyRow {
+              TableBodyCell {
+                "Apple Something 2"
+              }
+              TableBodyCell {
+                "Shittier brown"
+              }
+              TableBodyCell {
+                "Way too fucking expensive"
+              }
+            }
+          }
 
-        //     NavHamburger {}
-
-        //     NavUl { 
-        //         NavLi { onclick: move |_| open.toggle(), "Home (Click me!)" }
-        //         NavLi { "Products" }
-        //         NavLi { "Contact" }
-        //         if open() {
-        //           NavLi {
-        //             "SECRET SAUCE"
-        //           }
-        //         }
-        //     }
-        // }
-
-        FileTreeView {
-          path: "./"
         }
+        // FileTreeView {
+        //   path: "./"
+        // }
     )
 }

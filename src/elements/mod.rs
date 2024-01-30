@@ -9,7 +9,9 @@ mod speed_dial;
 mod bottom_nav;
 mod toast;
 mod tree_view;
+mod code_editor;
 
+pub use code_editor::*;
 pub use tree_view::*;
 pub use table::*;
 pub use toolbar::*;
