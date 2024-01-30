@@ -19,36 +19,25 @@ pub fn AccordionItem(
 
     let curr_open = *open.read();
 
+    let upside_down = if open() {
+      "rotate-180"
+    } else {
+      ""
+    };
+
     let arrow_up_svg = rsx! {
         svg {
             xmlns: "http://www.w3.org/2000/svg",
             view_box: "0 0 10 6",
             "aria-hidden": "true",
             fill: "none",
-            class: "w-3 h-3 text-gray-800 dark:text-white",
+            class: "w-3 h-3 text-gray-800 dark:text-white {upside_down}",
             path {
                 stroke: "currentColor",
                 stroke_linejoin: "round",
                 stroke_width: "2",
                 stroke_linecap: "round",
                 d: "M9 5 5 1 1 5"
-            }
-        }
-    };
-
-    let arrow_down_svg = rsx! {
-        svg {
-            xmlns: "http://www.w3.org/2000/svg",
-            view_box: "0 0 10 6",
-            "aria-hidden": "true",
-            fill: "none",
-            class: "w-3 h-3 text-gray-800 dark:text-white",
-            path {
-                stroke_linecap: "round",
-                stroke_width: "2",
-                d: "m1 1 4 4 4-4",
-                stroke: "currentColor",
-                stroke_linejoin: "round"
             }
         }
     };
@@ -64,7 +53,7 @@ pub fn AccordionItem(
 
     let content = merge_classes(classes);
 
-    let btn_class = format!("{}{}", classes!("flex items-center justify-between w-full font-medium text-left group-first:rounded-t-xl border-gray-200 dark:border-gray-700"), button_class.unwrap_or_default());
+    let btn_class = format!("{} {}", classes!("flex items-center justify-between w-full font-medium text-left group-first:rounded-t-xl border-gray-200 dark:border-gray-700"), button_class.unwrap_or_default());
 
     rsx! {
         h2 { class: "group",
@@ -81,15 +70,19 @@ pub fn AccordionItem(
                 if let Some(header) = header {
                 {header}
                 }
-                if curr_open
-                && let Some(arrow_up) = arrow_up {
-                {arrow_up}
-                } else if curr_open {
-                {&arrow_up_svg}
-                } else if let Some(arrow_down) = arrow_down {
-                {arrow_down}
+
+                if curr_open {
+                  if let Some(arrow_up) = arrow_up {
+                    {arrow_up}
+                  } else {
+                    {&arrow_up_svg}
+                  }
                 } else {
-                {&arrow_down_svg}
+                  if let Some(arrow_down) = arrow_down {
+                    {arrow_down}
+                  } else {
+                    {&arrow_up_svg}
+                  }
                 }
             }
 

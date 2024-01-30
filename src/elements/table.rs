@@ -13,11 +13,11 @@ pub struct TableContext {
 
 #[component]
 pub fn Table(
-    #[props(default = false)] shadow: bool,
-    #[props(default = false)] striped: bool,
-    #[props(default = false)] noborder: bool,
-    #[props(default = false)] hoverable: bool,
-    #[props(default = TexoColor::Gray)] color: TexoColor,
+    #[props(default)] shadow: bool,
+    #[props(default)] striped: bool,
+    #[props(default)] noborder: bool,
+    #[props(default)] hoverable: bool,
+    #[props(default)] color: TexoColor,
     class: Option<String>,
     div_class: Option<String>,
     children: Element,
@@ -85,7 +85,7 @@ fn table_head_bg<'a>(color: TexoColor, default: &'a str) -> &'a str {
 pub fn TableHead(
     class: Option<String>,
     #[props(default = true)] default_row: bool,
-    #[props(default = TexoColor::Gray)] color: TexoColor,
+    #[props(default)] color: TexoColor,
     #[props(extends=thead)] rest_attributes: Vec<Attribute>,
     children: Element,
 ) -> Element {

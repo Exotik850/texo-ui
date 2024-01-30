@@ -186,11 +186,12 @@ pub fn TreeViewItem(
 
 #[derive(Clone, Debug, PartialEq)]
 pub enum TreeOutput {
-    Item(Element, Vec<TreeOutput>),
-    ItemNoChildren(Element),
-    None,
+  Item(Element, Vec<TreeOutput>),
+  ItemNoChildren(Element),
+  None,
 }
 
+#[cfg(feature="desktop")]
 fn build_tree<P: AsRef<Path>>(path: P) -> Vec<TreeOutput> {
     let mut items = vec![];
 
@@ -220,6 +221,7 @@ fn build_tree<P: AsRef<Path>>(path: P) -> Vec<TreeOutput> {
     items
 }
 
+#[cfg(feature="desktop")]
 #[component]
 pub fn FileTreeView(path: String) -> Element {
     rsx! {

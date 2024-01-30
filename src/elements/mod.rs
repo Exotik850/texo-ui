@@ -10,7 +10,11 @@ mod table;
 mod toast;
 mod toolbar;
 mod tree_view;
+mod dropdown;
+mod drawer;
 
+pub use drawer::*;
+pub use dropdown::*;
 pub use accordion::*;
 pub use bottom_nav::*;
 pub use button::*;

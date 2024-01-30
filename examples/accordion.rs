@@ -1,6 +1,7 @@
 use dioxus::prelude::*;
 use manganis::classes;
 use texo_ui::elements::*;
+use texo_ui::hooks::use_fullscreen;
 use texo_ui::util::Card;
 
 pub fn main() {
@@ -10,8 +11,8 @@ pub fn main() {
 
 #[component]
 fn App() -> Element {
-    let mut open = use_signal(|| true);
-    let value = use_signal(String::new);
+    let mut fullscreen = use_fullscreen();
+    let fs = if fullscreen.value() { "" } else { " Not" };
 
     rsx!(
         link {
@@ -19,44 +20,25 @@ fn App() -> Element {
             rel: "stylesheet"
         }
 
-        Table {
-          striped: true,
-          TableHead {
-            TableHeadCell {
-              "Product Name"
+        Accordion {
+          {(0..10).map(|i| rsx! {
+            AccordionItem {
+              header: rsx!("Hold on! {i}"),
+              "I'm down here! {i}"
             }
-            TableHeadCell {
-              "Color"
-            }
-            TableHeadCell {
-              "Category"
-            }
-          }
-          TableBody {
-            TableBodyRow {
-              TableBodyCell {
-              "Apple Something"
-              }
-              TableBodyCell {
-                "Shit brown"
-              }
-              TableBodyCell {
-                "Way too fucking expensive"
-              }
-            }
-            TableBodyRow {
-              TableBodyCell {
-                "Apple Something 2"
-              }
-              TableBodyCell {
-                "Shittier brown"
-              }
-              TableBodyCell {
-                "Way too fucking expensive"
-              }
+          })}
+          AccordionItem {
+            header: rsx!("One more!"),
+            Button {
+              onclick: move |_| fullscreen.toggle(),
+              "Click me!"
             }
           }
+        }
 
+
+        span {
+          "You are{fs} Fullscreen!"
         }
         // FileTreeView {
         //   path: "./"
