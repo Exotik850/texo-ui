@@ -1,5 +1,8 @@
 use std::cell::Ref;
 
+#[cfg(all(not(web_sys_unstable_apis), feature="web"))]
+compile_error!("Use the environment variable RUSTFLAGS=\"--cfg=web_sys_unstable_apis\" to use clipboard functionality");
+
 #[cfg(not(feature="web"))]
 use arboard::Clipboard;
 use dioxus::prelude::*;

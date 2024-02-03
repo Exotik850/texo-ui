@@ -794,6 +794,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "console_error_panic_hook"
+version = "0.1.7"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a06aeb73f470f66dcdbf7223caeebb85984942f22f1adb2a088cf9668146bbbc"
+dependencies = [
+ "cfg-if",
+ "wasm-bindgen",
+]
+
+[[package]]
 name = "const-str"
 version = "0.3.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1203,7 +1213,6 @@ dependencies = [
  "dunce",
  "futures-channel",
  "futures-util",
- "generational-box",
  "global-hotkey",
  "infer",
  "muda",
@@ -1281,7 +1290,6 @@ dependencies = [
  "enumset",
  "euclid",
  "futures-channel",
- "generational-box",
  "keyboard-types",
  "serde",
  "serde-value",
@@ -1379,7 +1387,6 @@ name = "dioxus-signals"
 version = "0.4.3"
 dependencies = [
  "dioxus-core",
- "flume 0.11.0",
  "futures-channel",
  "futures-util",
  "generational-box",
@@ -1393,15 +1400,17 @@ dependencies = [
 name = "dioxus-web"
 version = "0.4.3"
 dependencies = [
+ "async-trait",
+ "console_error_panic_hook",
  "dioxus-core",
  "dioxus-html",
  "dioxus-interpreter-js",
  "futures-channel",
  "futures-util",
- "generational-box",
  "js-sys",
  "rustc-hash",
  "serde",
+ "serde-wasm-bindgen",
  "serde_json",
  "tracing",
  "wasm-bindgen",
@@ -1585,7 +1594,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "279d3efcc55e19917fff7ab3ddd6c14afb6a90881a0078465196fe2f99d08c56"
 dependencies = [
  "bit_field",
- "flume 0.10.14",
+ "flume",
  "half",
  "lebe",
  "miniz_oxide",
@@ -1654,17 +1663,6 @@ dependencies = [
  "futures-sink",
  "nanorand",
  "pin-project",
- "spin",
-]
-
-[[package]]
-name = "flume"
-version = "0.11.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "55ac459de2512911e4b674ce33cf20befaba382d05b62b008afc1c8b57cbf181"
-dependencies = [
- "futures-core",
- "futures-sink",
  "spin",
 ]
 

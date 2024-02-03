@@ -31,14 +31,13 @@ impl<Value: TweenValue, T: Tween<Value>> TweenManager<Value, u64, T> {
         spawn(async move {
             let mut ticker = async_std::stream::interval(Duration::from_millis(DELTA));
             loop {
-                if let Some(mut tweener) = tween.as_mut() {
-                    if tweener.is_finished() {
-                        break;
-                    }
-                    value.set(tweener.move_by(DELTA));
-                } else {
+                let Some(mut tweener) = tween.as_mut() else {
                     break;
                 };
+                if tweener.is_finished() {
+                    break;
+                }
+                value.set(tweener.move_by(DELTA));
                 ticker.next().await;
             }
 
