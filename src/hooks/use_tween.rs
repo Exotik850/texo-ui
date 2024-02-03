@@ -24,7 +24,7 @@ impl<Value: TweenValue, T: Tween<Value>> TweenManager<Value, u64, T> {
 
         *self.tween.write() = Some(tweener);
 
-        let tween = self.tween;
+        let mut tween = self.tween;
         let mut value = self.value;
         let mut animating = self.animating;
 

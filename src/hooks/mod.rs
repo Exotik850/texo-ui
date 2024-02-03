@@ -1,5 +1,7 @@
 mod use_slider;
+#[cfg(feature="tween")]
 mod use_tween;
+#[cfg(feature="clipboard")]
 mod use_clipboard;
 #[cfg(feature="desktop")]
 mod use_fullscreen;

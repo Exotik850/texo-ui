@@ -2,6 +2,9 @@
 #![allow(dead_code, non_snake_case)]
 use std::{collections::HashSet, fmt::Display};
 
+#[cfg(all(feature="web", feature="desktiop"))]
+compile_error!("Cannot target both web and desktop at the same time!");
+
 use manganis::classes;
 
 pub mod elements;

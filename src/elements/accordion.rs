@@ -1,7 +1,7 @@
 use dioxus::prelude::*;
 use manganis::classes;
 
-use crate::{hooks::use_tween, merge_classes, util::Frame};
+use crate::{merge_classes, util::Frame};
 
 #[component]
 pub fn AccordionItem(
@@ -13,9 +13,6 @@ pub fn AccordionItem(
     children: Element,
 ) -> Element {
     let mut open = use_signal(|| false);
-
-    let mut animation = use_tween(0);
-    let anim_value = animation.value();
 
     let curr_open = *open.read();
 
@@ -58,13 +55,7 @@ pub fn AccordionItem(
     rsx! {
         h2 { class: "group",
             button {
-                onclick: move |_| {
-                    match curr_open {
-                        true => animation.start(100, 0, 500, tween::ExpoIn),
-                        false => animation.start(0, 100, 500, tween::ExpoIn),
-                    }
-                    open.toggle();
-                },
+                onclick: move |_| open.toggle(),
                 class: "{btn_class}",
                 aria_expanded: "{open}",
                 if let Some(header) = header {
@@ -87,7 +78,7 @@ pub fn AccordionItem(
             }
 
             div { class: classes!("w-full"),
-                div { class: "{content} h-[{anim_value}] transition-all ", {children} }
+                div { class: "{content}", {children} }
             }
         }
     }
