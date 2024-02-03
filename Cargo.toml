@@ -7,17 +7,22 @@ edition = "2021"
 
 [dependencies]
 dioxus = { path = "../dioxus/packages/dioxus" }
-tween ={ version = "2.0.2", default-features = false, features = ["libm"]}
-async-std = {version="1.12.0", features = ["unstable"]}
+tween ={ version = "2.0.2", default-features = false, features = ["libm"], optional = true}
+async-std = {version="1.12.0", features = ["unstable"], optional = true}
 manganis = { git = "https://github.com/DioxusLabs/collect-assets", rev = "e0093a4" }
 log = "0.4.20"
 
+[target.'cfg(target_arch="wasm")'.dependencies]
+web-sys = { version = "0.3.67", optional = true, features = ["Clipboard"]}
+[target.'cfg(not(target_arch="wasm"))'.dependencies]
+arboard = { version = "3.3.0", optional = true }
+
 [features]
+tween = ["dep:tween", "dep:async-std"]
 desktop = ["dioxus/desktop"]
 web = ["dioxus/web"]
-
+clipboard = ["dep:arboard", "dep:web-sys"]
 
 [dev-dependencies]
-dioxus = { path = "../dioxus/packages/dioxus", features = ["desktop"]}
 log = "0.4.20"
 dioxus-logger = "0.4.1"
