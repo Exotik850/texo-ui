@@ -2,23 +2,27 @@
 ### Modern Reactive Component library for Dioxus 0.5
 #### Components you know and love enhanced by Rust and Signals
 
+Components inspired by / made from Flowbite, Skeleton UI, Shadcn
+
 ## Installation
-Requires the Tailwind DX Cli Plugin for proper Tailwind styling, otherwise add a link to a minimized tailwind file
+Requires Tailwind for styling, there are a few options,
 
 ## Components
+- *WIP* Toast
+- *WIP* Code Editor
+- *WIP* Speed Dial
 - Accordion
 - Bottom Navbar
 - Button
-- *WIP* Code Editor
 - Modal
 - Top Navbar
-- *WIP* Speed Dial
 - Spinner
 - Table
-- *WIP* Toast
 - Toolbar
-- TreeView
+- TreeView + more!
 
 ## Hooks
-- use_slider
+- *WIP* use_clipboard
+- *WIP* use_slider
 - use_tween
+- use_fullscreen
