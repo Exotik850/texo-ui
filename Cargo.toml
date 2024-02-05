@@ -21,7 +21,7 @@ arboard = { version = "3.3.0", optional = true}
 tween = ["dep:tween", "dep:async-std"]
 desktop = ["dioxus/desktop", "dep:arboard"]
 web = ["dioxus/web", "dep:web-sys"]
-clipboard = ["dep:web-sys", "dep:generational-box", "dep:wasm-bindgen-futures"]
+clipboard = ["dep:web-sys", "dep:generational-box", "dep:wasm-bindgen-futures", "dep:async-std"]
 
 [dev-dependencies]
 log = "0.4.20"

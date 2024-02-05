@@ -19,10 +19,6 @@ fn App() -> Element {
     let mut clip = use_clipboard().unwrap();
     let val = clip.value();
 
-    let get = use_callback(|| move |_| async move {
-      clip.get().await;
-    });
-
     rsx!(
         link {
             href: "https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css",
@@ -39,7 +35,7 @@ fn App() -> Element {
           AccordionItem {
             header: rsx!("One more!"),
             Button {
-              onclick: get,
+              onclick: move |_| clip.get(),
               "Click me!"
             }
           }
