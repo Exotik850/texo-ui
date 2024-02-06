@@ -36,7 +36,6 @@ impl ClipboardManager {
     /// https://developer.mozilla.org/en-US/docs/Web/API/Clipboard/readText
     #[cfg(feature = "web")]
     pub fn get(mut self) {
-        // -> Result<(), ClipboardError> {
         spawn(async move {
             let action = self.clipboard.read().read_text();
             let result = JsFuture::from(action).await;
@@ -50,15 +49,12 @@ impl ClipboardManager {
             };
             self.value.set(clip);
         });
-
-        // Ok(())
     }
 
     #[cfg(feature = "desktop")]
     pub fn get(&mut self) -> Result<(), ClipboardError> {
         let clip = self.clipboard.write().get_text()?;
         self.value.set(clip);
-
         Ok(())
     }
 
@@ -84,6 +80,8 @@ impl ClipboardManager {
         Ok(())
     }
 
+    /// Returns a reference to the current value of the internal signal 
+    /// and subscribes it to the current scope
     pub fn value(&self) -> GenerationalRef<Ref<String>> {
         self.value.read()
     }
@@ -91,17 +89,26 @@ impl ClipboardManager {
 
 /// Returns a struct that allows for the retrieval and setting of the clipboard
 /// value. This detects what platform you are using (WASM32 / Windows / Mac / Linux)
-/// and uses the correct implementation accordingly. Note: due to security restrictions
-/// there is no way to automatically update the value with the user's clipboard,
+/// and uses the correct implementation accordingly. 
+/// 
+/// Note: due to security restrictions there is no way to automatically update the value with the user's clipboard,
 /// the `get` function must be manually called to check the value of the clipboard
-/// and update the signal
 #[cfg(feature = "desktop")]
 pub fn use_clipboard() -> Result<ClipboardManager, ClipboardError> {
     let value = use_signal(String::new);
-    let other = use_signal(maybe);
     let clipboard = use_signal(|| arboard::Clipboard::new().expect("Platform is not supported"));
     Ok(ClipboardManager { value, clipboard })
 }
+
+/// Returns a struct that allows for the retrieval and setting of the clipboard
+/// value. This detects what platform you are using (WASM32 / Windows / Mac / Linux)
+/// and uses the correct implementation accordingly.
+/// 
+/// Note: due to security restrictions there is no way to automatically update the value with the user's clipboard,
+/// the `get` function must be manually called to check the value of the clipboard
+/// 
+/// This uses the `web_sys` clipboard implementation, and requires the `web_sys_unstable_apis` enabled via the `RUSTFLAGS` environment variable
+/// e.g: `RUSTFLAGS="--cfg=web_sys_unstable_apis" cargo run`
 #[cfg(feature = "web")]
 pub fn use_clipboard() -> Result<ClipboardManager, ClipboardError> {
     let value = use_signal(String::new);
