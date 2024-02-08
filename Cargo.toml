@@ -12,22 +12,23 @@ manganis = { git = "https://github.com/DioxusLabs/collect-assets", rev = "e0093a
 log = "0.4.20"
 thiserror = "1.0.56"
 generational-box = { git = "https://github.com/dioxuslabs/dioxus", optional = true}
+async-std = {version="1.12.0", features = ["unstable"], optional = true}
 
 [target.'cfg(target_arch="wasm32")'.dependencies]
 wasm-bindgen-futures = { version = "0.4.40", optional = true }
-async-std = {version="1.12.0", features = ["unstable"], optional = true}
 web-sys = { version = "0.3.67", optional = true, features = ["Clipboard", "Window", "Navigator", "Permissions"]}
 [target.'cfg(not(target_arch="wasm32"))'.dependencies]
 arboard = { version = "3.3.0", optional = true} 
 tokio = {version = "*", optional = true}
-gilrs = { version = "0.10.4", optional = true }
+# gilrs = { version = "0.10.4", optional = true }
 
 [features]
+default = ["controller"]
 tween = ["dep:tween", "dep:async-std", "dep:tokio", "tokio?/time"]
 desktop = ["dioxus/desktop", "dep:arboard"]
 web = ["dioxus/web", "dep:web-sys"]
 clipboard = ["dep:web-sys", "dep:generational-box", "dep:wasm-bindgen-futures", "dep:async-std"]
-controller = ["dep:gilrs"]
+# controller = ["dep:gilrs", "dep:async-std"]
 
 [dev-dependencies]
 log = "0.4.20"
