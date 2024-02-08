@@ -23,7 +23,6 @@ tokio = {version = "*", optional = true}
 # gilrs = { version = "0.10.4", optional = true }
 
 [features]
-default = ["controller"]
 tween = ["dep:tween", "dep:async-std", "dep:tokio", "tokio?/time"]
 desktop = ["dioxus/desktop", "dep:arboard"]
 web = ["dioxus/web", "dep:web-sys"]
