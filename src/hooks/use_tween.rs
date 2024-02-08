@@ -18,7 +18,7 @@ impl<Value: TweenValue, T: Tween<Value>> TweenManager<Value, u64, T> {
             return;
         }
 
-        self.animating.set(false);
+        self.animating.set(true);
 
         let tweener = Tweener::new(start, end, time, tween);
 
@@ -29,7 +29,7 @@ impl<Value: TweenValue, T: Tween<Value>> TweenManager<Value, u64, T> {
         let mut animating = self.animating;
 
         spawn(async move {
-            let mut ticker = async_std::stream::interval(Duration::from_millis(DELTA));
+            let mut ticker = tokio::time::interval(Duration::from_millis(DELTA));
             loop {
                 let Some(mut tweener) = tween.as_mut() else {
                     break;
@@ -38,7 +38,7 @@ impl<Value: TweenValue, T: Tween<Value>> TweenManager<Value, u64, T> {
                     break;
                 }
                 value.set(tweener.move_by(DELTA));
-                ticker.next().await;
+                ticker.tick().await;
             }
 
             *tween.write() = None;
@@ -59,8 +59,8 @@ impl<Value: TweenValue, T: Tween<Value>> TweenManager<Value, u64, T> {
     }
 }
 
-pub fn use_tween<Value, Time, T>(init_val: Value) -> TweenManager<Value, Time, T> {
-    let value = use_signal(|| init_val);
+pub fn use_tween<Value, Time, T>(f: impl FnOnce() -> Value) -> TweenManager<Value, Time, T> {
+    let value = use_signal(f);
     let animating = use_signal(|| false);
     let tween = use_signal(|| None);
 
