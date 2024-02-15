@@ -19,11 +19,10 @@ wasm-bindgen-futures = { version = "0.4.40", optional = true }
 web-sys = { version = "0.3.67", optional = true, features = ["Clipboard", "Window", "Navigator", "Permissions"]}
 [target.'cfg(not(target_arch="wasm32"))'.dependencies]
 arboard = { version = "3.3.0", optional = true} 
-tokio = {version = "*", optional = true}
 # gilrs = { version = "0.10.4", optional = true }
 
 [features]
-tween = ["dep:tween", "dep:async-std", "dep:tokio", "tokio?/time"]
+tween = ["dep:tween", "dep:async-std"]
 desktop = ["dioxus/desktop", "dep:arboard"]
 web = ["dioxus/web", "dep:web-sys"]
 clipboard = ["dep:web-sys", "dep:generational-box", "dep:wasm-bindgen-futures", "dep:async-std"]
