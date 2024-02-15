@@ -12,7 +12,11 @@ mod toolbar;
 mod tree_view;
 mod dropdown;
 mod drawer;
+mod pagination;
+mod breadcrumb;
 
+pub use breadcrumb::*;
+pub use pagination::*;
 pub use drawer::*;
 pub use dropdown::*;
 pub use accordion::*;
