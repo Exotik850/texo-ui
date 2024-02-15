@@ -31,3 +31,8 @@ pub use table::*;
 pub use toast::*;
 pub use toolbar::*;
 pub use tree_view::*;
+
+#[cfg(feature="qrcode")]
+mod qrcode;
+#[cfg(feature="qrcode")]
+pub use qrcode::*;
