@@ -3,7 +3,7 @@ use manganis::classes;
 
 use crate::{
     bg_color, border_color, elements::ToolBarButton, merge_classes, text_color, TexoColor,
-    TexoSize, TexoTrigger,
+    TexoSize,
 };
 
 #[component]
@@ -208,67 +208,67 @@ pub fn CloseButton(
     )
 }
 
-#[derive(Copy, Clone, Debug)]
-pub struct TransitionClose(Signal<bool>);
+// #[derive(Copy, Clone, Debug)]
+// pub struct TransitionClose(Signal<bool>);
 
-#[component]
-pub fn TransitionFrame(
-    open: Signal<bool>,
-    #[props(default = false)] dismissable: bool,
-    children: Element,
-) -> Element {
-    use_context_provider(|| TransitionClose(open));
+// #[component]
+// pub fn TransitionFrame(
+//     open: Signal<bool>,
+//     #[props(default = false)] dismissable: bool,
+//     children: Element,
+// ) -> Element {
+//     use_context_provider(|| TransitionClose(open));
 
-    let close_frame = |evt: MouseEvent| {
-        evt.stop_propagation();
-        open.toggle()
-    };
+//     let close_frame = |evt: MouseEvent| {
+//         evt.stop_propagation();
+//         open.toggle()
+//     };
 
-    rsx!(
-      if dismissable {
-        if open() {
-          div {
-            Frame {
-              {children}
-            }
-          }
-        }
-      } else {
-        Frame {
-          {children}
-        }
-      }
-    )
-}
+//     rsx!(
+//       if dismissable {
+//         if open() {
+//           div {
+//             Frame {
+//               {children}
+//             }
+//           }
+//         }
+//       } else {
+//         Frame {
+//           {children}
+//         }
+//       }
+//     )
+// }
 
-#[component]
-pub fn Popper(
-    #[props(default = false)] active: bool,
-    #[props(default = true)] arrow: bool,
-    #[props(default = 8)] offset: u8,
-    #[props(default = TexoTrigger::Hover)] trigger: TexoTrigger,
-    #[props(default = "absolute".into())] strategy: String,
-    #[props(default = false)] open: bool,
-    #[props(default = false)] y_only: bool,
-    children: Element,
-) -> Element {
-    let blocked = use_signal(|| false);
+// #[component]
+// pub fn Popper(
+//     #[props(default = false)] active: bool,
+//     #[props(default = true)] arrow: bool,
+//     #[props(default = 8)] offset: u8,
+//     #[props(default = TexoTrigger::Hover)] trigger: TexoTrigger,
+//     #[props(default = "absolute".into())] strategy: String,
+//     #[props(default = false)] open: bool,
+//     #[props(default = false)] y_only: bool,
+//     children: Element,
+// ) -> Element {
+//     let blocked = use_signal(|| false);
 
-    let clickable = trigger == TexoTrigger::Click;
-    let mut arrow_el = use_signal(|| (0.0, 0.0));
+//     let clickable = trigger == TexoTrigger::Click;
+//     let mut arrow_el = use_signal(|| (0.0, 0.0));
 
-    todo!();
+//     todo!();
 
-    rsx!(
-      if open {
-        Frame {
-          {children}
-          if arrow {
-            div {
-              // Arrow stuff
-            }
-          }
-        }
-      }
-    )
-}
+//     rsx!(
+//       if open {
+//         Frame {
+//           {children}
+//           if arrow {
+//             div {
+//               // Arrow stuff
+//             }
+//           }
+//         }
+//       }
+//     )
+// }

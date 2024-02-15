@@ -232,7 +232,7 @@ pub fn FileTreeView(path: String) -> Element {
 }
 
 fn expand(item: TreeOutput, child_class: Option<String>) -> Element {
-    rsx!(match item {
+    match item {
         TreeOutput::Item(lead, child) => rsx!(
           TreeViewItem {
             lead,
@@ -245,7 +245,7 @@ fn expand(item: TreeOutput, child_class: Option<String>) -> Element {
             class: child_class.unwrap_or_default(),
         }),
         TreeOutput::None => None,
-    })
+    }
 }
 
 #[component]
