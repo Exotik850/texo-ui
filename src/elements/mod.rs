@@ -12,13 +12,17 @@ mod table;
 mod toast;
 mod toolbar;
 mod tree_view;
+mod pagination;
+mod breadcrumb;
 
+pub use breadcrumb::*;
+pub use pagination::*;
+pub use drawer::*;
+pub use dropdown::*;
 pub use accordion::*;
 pub use bottom_nav::*;
 pub use button::*;
 pub use code_editor::*;
-pub use drawer::*;
-pub use dropdown::*;
 pub use modal::*;
 pub use navbar::*;
 pub use speed_dial::*;
@@ -27,3 +31,8 @@ pub use table::*;
 pub use toast::*;
 pub use toolbar::*;
 pub use tree_view::*;
+
+#[cfg(feature="qrcode")]
+mod qrcode;
+#[cfg(feature="qrcode")]
+pub use qrcode::*;
