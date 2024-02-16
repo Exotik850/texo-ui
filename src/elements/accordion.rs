@@ -16,11 +16,7 @@ pub fn AccordionItem(
 
     let curr_open = *open.read();
 
-    let upside_down = if open() {
-      "rotate-180"
-    } else {
-      ""
-    };
+    let upside_down = if curr_open { "rotate-180" } else { "" };
 
     let arrow_up_svg = rsx! {
         svg {
@@ -28,7 +24,7 @@ pub fn AccordionItem(
             view_box: "0 0 10 6",
             "aria-hidden": "true",
             fill: "none",
-            class: "w-3 h-3 text-gray-800 dark:text-white {upside_down}",
+            class: "w-3 h-3 text-gray-800 dark:text-white transition-transform transform {upside_down}",
             path {
                 stroke: "currentColor",
                 stroke_linejoin: "round",
@@ -77,8 +73,10 @@ pub fn AccordionItem(
                 }
             }
 
-            div { class: classes!("w-full"),
-                div { class: "{content}", {children} }
+            if curr_open {
+              div { class: classes!("w-full"),
+                  div { class: "{content}", {children} }
+              }
             }
         }
     }
