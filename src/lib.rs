@@ -241,17 +241,3 @@ impl Display for TexoPosition {
         write!(f, "{bit}")
     }
 }
-#[derive(PartialEq, Copy, Clone, Default)]
-pub enum ModalPlacementType {
-    TopLeft,
-    TopCenter,
-    TopRight,
-    CenterLeft,
-    #[default]
-    Center,
-    CenterRight,
-    BottomLeft,
-    BottomCenter,
-    BottomRight,
-    None,
-}

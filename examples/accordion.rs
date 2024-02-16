@@ -1,6 +1,7 @@
 use dioxus::prelude::*;
 use manganis::classes;
 use texo_ui::elements::*;
+use texo_ui::TexoSize;
 use texo_ui::util::Card;
 
 pub fn main() {
@@ -17,16 +18,28 @@ fn App() -> Element {
       PaginationInfo { active: false, name: "3".into(), href: None, onclick: None },
     ];
 
-    rsx!(
-        // link {
-        //     href: "https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css",
-        //     rel: "stylesheet"
-        // }
+    let mut open = use_signal(|| false);
 
-        QrCode {
-          data: "https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css",
-          width: "100px",
-          height: "100px",
+    rsx!(
+        link {
+            href: "https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css",
+            rel: "stylesheet"
+        }
+
+        Button {
+          onclick: move |_| open.toggle(),
+          "Click me!"
+        }
+
+        Modal {
+          open,
+          size: TexoSize::ExtraSmall,
+          title: "Something dumb",
+          QrCode {
+            data: "https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css",
+            width: "100px",
+            height: "100px",
+          }
         }
 
         // Pagination {
