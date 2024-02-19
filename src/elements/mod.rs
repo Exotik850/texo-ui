@@ -1,7 +1,6 @@
 mod accordion;
 mod bottom_nav;
 mod button;
-mod code_editor;
 mod drawer;
 mod dropdown;
 mod modal;
@@ -22,7 +21,6 @@ pub use dropdown::*;
 pub use accordion::*;
 pub use bottom_nav::*;
 pub use button::*;
-pub use code_editor::*;
 pub use modal::*;
 pub use navbar::*;
 pub use speed_dial::*;
@@ -32,6 +30,10 @@ pub use toast::*;
 pub use toolbar::*;
 pub use tree_view::*;
 
+#[cfg(feature="code-editor")]
+mod code_editor;
+#[cfg(feature="code-editor")]
+pub use code_editor::*;
 #[cfg(feature="qrcode")]
 mod qrcode;
 #[cfg(feature="qrcode")]
