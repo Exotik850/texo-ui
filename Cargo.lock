@@ -5181,7 +5181,10 @@ dependencies = [
  "log",
  "manganis",
  "qrcode",
+<<<<<<< HEAD
  "syntect",
+=======
+>>>>>>> 75cff5c5852522dd60adf071fae80469b613b708
  "thiserror",
  "tween",
  "wasm-bindgen-futures",

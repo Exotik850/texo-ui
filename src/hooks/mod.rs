@@ -7,6 +7,7 @@ mod use_clipboard;
 mod use_fullscreen;
 // #[cfg(feature="controller")]
 // mod use_controller;
+mod use_toast;
 
 #[cfg(feature="desktop")] 
 pub use use_fullscreen::*;

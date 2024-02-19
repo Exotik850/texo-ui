@@ -42,41 +42,41 @@ fn App() -> Element {
           }
         }
 
-        // Pagination {
-        //   pages,
-        //   table: true,
-        //   onprevious: move |_| println!("UGH"),
-        // }
+        Pagination {
+          pages,
+          table: true,
+          onprevious: move |_| println!("UGH"),
+        }
 
-        // Breadcrumb {
-        //   solid: true,
-        //   BreadcrumbItem {
-        //     home: true,
-        //     "Home"
-        //   }
-        //   BreadcrumbItem {
-        //     "Projects"
-        //   }
-        //   BreadcrumbItem {
-        //     "TexoUI"
-        //   }
-        // }
+        Breadcrumb {
+          solid: true,
+          BreadcrumbItem {
+            home: true,
+            "Home"
+          }
+          BreadcrumbItem {
+            "Projects"
+          }
+          BreadcrumbItem {
+            "TexoUI"
+          }
+        }
 
-        // Accordion {
-        //   {(0..10).map(|i| rsx! {
-        //     AccordionItem {
-        //       header: rsx!("Hold on! {i}"),
-        //       "I'm down here! {i}"
-        //     }
-        //   })}
-        //   AccordionItem {
-        //     header: rsx!("One more!"),
-        //     Button {
-        //       onclick: move |_| clip.get(),
-        //       "Click me!"
-        //     }
-        //   }
-        // }
+        Accordion {
+          {(0..10).map(|i| rsx! {
+            AccordionItem {
+              header: rsx!("Hold on! {i}"),
+              "I'm down here! {i}"
+            }
+          })}
+          AccordionItem {
+            header: rsx!("One more!"),
+            Button {
+              // onclick: move |_| clip.get(),
+              "Click me!"
+            }
+          }
+        }
 
 
         // span {

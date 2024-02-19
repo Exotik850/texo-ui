@@ -40,14 +40,14 @@ fn placement_class(placement: ModalPlacementType) -> &'static str {
     ModalPlacementType::BottomLeft => "justify-start items-end",
     ModalPlacementType::BottomCenter => "justify-center items-end",
     ModalPlacementType::BottomRight => "justify-end items-end",
-    ModalPlacementType::None => "justift-center items-center",
+    ModalPlacementType::None => "justify-center items-center",
   }
 }
 
 #[component]
 pub fn Modal(
     open: Signal<bool>,
-    #[props(default=Default::default())] title: String,
+    #[props(default)] title: String,
     #[props(default=TexoSize::Medium)] size: TexoSize,
     #[props(default=TexoColor::Gray)] color: TexoColor,
     #[props(default)] placement: ModalPlacementType,
