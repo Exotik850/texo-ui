@@ -66,18 +66,18 @@ pub fn Table(
 
 fn table_head_bg<'a>(color: TexoColor, default: &'a str) -> &'a str {
     match color {
-        TexoColor::Alternative => classes!(""),
-        TexoColor::Blue => classes!("bg-blue-600"),
-        TexoColor::Dark => classes!("bg-gray-400"),
+        TexoColor::Alternative => "",
+        TexoColor::Blue => "bg-blue-600",
+        TexoColor::Dark => "bg-gray-400",
         TexoColor::Default => default,
-        TexoColor::Gray => classes!("bg-gray-200"),
-        TexoColor::Green => classes!("bg-green-600"),
-        TexoColor::Light => classes!("bg-gray-100"),
-        TexoColor::Primary => classes!(""),
-        TexoColor::Purple => classes!("bg-purple-600"),
-        TexoColor::Red => classes!("bg-red-600"),
-        TexoColor::Yellow => classes!("bg-yellow-700"),
-        TexoColor::None => classes!(""),
+        TexoColor::Gray => "bg-gray-200",
+        TexoColor::Green => "bg-green-600",
+        TexoColor::Light => "bg-gray-100",
+        TexoColor::Primary => "",
+        TexoColor::Purple => "bg-purple-600",
+        TexoColor::Red => "bg-red-600",
+        TexoColor::Yellow => "bg-yellow-700",
+        TexoColor::None => "",
     }
 }
 

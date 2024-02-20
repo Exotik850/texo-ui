@@ -6,22 +6,20 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-dioxus = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus = { path = "../dioxus/packages/dioxus" }
 tween ={ version = "2.0.2", default-features = false, features = ["libm"], optional = true}
 manganis = { git = "https://github.com/DioxusLabs/collect-assets", rev = "e0093a4" }
 log = "0.4.20"
 thiserror = "1.0.56"
-generational-box = { git = "https://github.com/dioxuslabs/dioxus", optional = true}
+generational-box = { path = "../dioxus/packages/generational-box", optional = true}
 async-std = {version="1.12.0", features = ["unstable"], optional = true}
 qrcode = { version = "0.13.0", optional = true, default-features = false, features = ["image"]}
 image = { version = "0.24.8", optional = true }
 base64 = { version = "0.21.7", optional = true }
 syntect = { version = "5.2.0", optional = true, default-features = false, features = ["html", "parsing", "regex-fancy", "plist-load"]}
 
-[target.'cfg(target_arch="wasm32")'.dependencies]
 wasm-bindgen-futures = { version = "0.4.40", optional = true }
-web-sys = { version = "0.3.67", optional = true, features = ["Clipboard", "Window", "Navigator", "Permissions"]}
-[target.'cfg(not(target_arch="wasm32"))'.dependencies]
+web-sys = { version = "0.3.67", optional = true, features = ["Window", "Document", "HtmlElement"]}
 arboard = { version = "3.3.0", optional = true} 
 
 # gilrs = { version = "0.10.4", optional = true }
@@ -30,7 +28,7 @@ arboard = { version = "3.3.0", optional = true}
 tween = ["dep:tween", "dep:async-std"]
 desktop = ["dioxus/desktop", "dep:arboard"]
 web = ["dioxus/web", "dep:web-sys"]
-clipboard = ["dep:web-sys", "dep:generational-box", "dep:wasm-bindgen-futures", "dep:async-std"]
+clipboard = ["dep:web-sys", "dep:generational-box", "dep:wasm-bindgen-futures", "dep:async-std", "web-sys?/Clipboard", "web-sys?/Navigator", "web-sys?/Permissions"]
 code-editor = ["dep:syntect"]
 qrcode = ["dep:qrcode", "dep:image", "dep:base64"]
 # controller = ["dep:gilrs", "dep:async-std"]

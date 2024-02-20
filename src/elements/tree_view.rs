@@ -1,5 +1,4 @@
 use dioxus::prelude::*;
-use std::path::Path;
 
 #[derive(Copy, Clone, Debug)]
 pub struct TreeContext {

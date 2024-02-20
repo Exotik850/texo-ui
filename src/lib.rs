@@ -1,9 +1,11 @@
 #![allow(dead_code, non_snake_case)]
 use std::{collections::HashSet, fmt::Display};
 
-// removed for RA atm
-// #[cfg(all(feature = "web", feature = "desktop"))]
-// compile_error!("Cannot target both web and desktop at the same time!");
+#[cfg(all(feature = "web", feature = "desktop"))]
+compile_error!("Cannot target both web and desktop at the same time!");
+
+#[cfg(all(target_arch = "wasm32", feature = "desktop"))]
+compile_error!("Cannot target both web and desktop at the same time!");
 
 use manganis::classes;
 

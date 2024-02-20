@@ -21,26 +21,26 @@ pub enum BottomNavType {
 impl BottomNavType {
     fn inner_class(self) -> &'static str {
         match self {
-            BottomNavType::Meeting => classes!("flex items-center justify-center mx-auto"),
-            BottomNavType::Video => classes!("flex items-center w-full"),
+            BottomNavType::Meeting => "flex items-center justify-center mx-auto",
+            BottomNavType::Video => "flex items-center w-full",
             _ => "",
         }
     }
     fn button_class(self) -> &'static str {
         match self {
-      BottomNavType::Default => classes!("inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group"),
-      BottomNavType::Border => classes!("inline-flex flex-col items-center justify-center px-5 border-gray-200 border-x hover:bg-gray-50 dark:hover:bg-gray-800 group dark:border-gray-600"),
-      BottomNavType::Pagination => classes!("inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group"),
-      BottomNavType::Group => classes!("inline-flex flex-col items-center justify-center p-4 hover:bg-gray-50 dark:hover:bg-gray-800 group"),
-      BottomNavType::Card => classes!("inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group"),
+      BottomNavType::Default => "inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group",
+      BottomNavType::Border => "inline-flex flex-col items-center justify-center px-5 border-gray-200 border-x hover:bg-gray-50 dark:hover:bg-gray-800 group dark:border-gray-600",
+      BottomNavType::Pagination => "inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group",
+      BottomNavType::Group => "inline-flex flex-col items-center justify-center p-4 hover:bg-gray-50 dark:hover:bg-gray-800 group",
+      BottomNavType::Card => "inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group",
       _ => "",
     }
     }
     fn span_class(self) -> &'static str {
         match self {
-        BottomNavType::Default | BottomNavType::Border => classes!("text-sm text-gray-500 dark:text-gray-400 group-hover:text-primary-600 dark:group-hover:text-primary-500'"),
-        BottomNavType::Application | BottomNavType::Pagination | BottomNavType::Group => classes!("sr-only"),
-        BottomNavType::Card => classes!("text-sm text-gray-500 dark:text-gray-400 group-hover:text-primary-600 dark:group-hover:text-primary-500"),
+        BottomNavType::Default | BottomNavType::Border => "text-sm text-gray-500 dark:text-gray-400 group-hover:text-primary-600 dark:group-hover:text-primary-500'",
+        BottomNavType::Application | BottomNavType::Pagination | BottomNavType::Group => "sr-only",
+        BottomNavType::Card => "text-sm text-gray-500 dark:text-gray-400 group-hover:text-primary-600 dark:group-hover:text-primary-500",
         _ => ""
     }
     }
@@ -49,14 +49,14 @@ impl BottomNavType {
 impl Display for BottomNavType {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", match self {
-            BottomNavType::Default => classes!("bottom-0 start-0 h-16 bg-white border-t"),
-            BottomNavType::Border => classes!("bottom-0 start-0 h-16 bg-white border-t"),
-            BottomNavType::Application => classes!("h-16 max-w-lg -translate-x-1/2 rtl:translate-x-1/2 bg-white border rounded-full bottom-4 start-1/2"),
-            BottomNavType::Pagination => classes!("bottom-0 h-16 -translate-x-1/2 rtl:translate-x-1/2 bg-white border-t start-1/2"),
-            BottomNavType::Group => classes!("bottom-0 -translate-x-1/2 rtl:translate-x-1/2 bg-white border-t start-1/2"),
-            BottomNavType::Card => classes!("bottom-0 start-0 h-16 bg-white border-t"),
-            BottomNavType::Meeting => classes!("bottom-0 start-0 grid h-16 grid-cols-1 px-8 bg-white border-t md:grid-cols-3"),
-            BottomNavType::Video => classes!("bottom-0 start-0 grid h-24 grid-cols-1 px-8 bg-white border-t md:grid-cols-3"),
+            BottomNavType::Default => "bottom-0 start-0 h-16 bg-white border-t",
+            BottomNavType::Border => "bottom-0 start-0 h-16 bg-white border-t",
+            BottomNavType::Application => "h-16 max-w-lg -translate-x-1/2 rtl:translate-x-1/2 bg-white border rounded-full bottom-4 start-1/2",
+            BottomNavType::Pagination => "bottom-0 h-16 -translate-x-1/2 rtl:translate-x-1/2 bg-white border-t start-1/2",
+            BottomNavType::Group => "bottom-0 -translate-x-1/2 rtl:translate-x-1/2 bg-white border-t start-1/2",
+            BottomNavType::Card => "bottom-0 start-0 h-16 bg-white border-t",
+            BottomNavType::Meeting => "bottom-0 start-0 grid h-16 grid-cols-1 px-8 bg-white border-t md:grid-cols-3",
+            BottomNavType::Video => "bottom-0 start-0 grid h-24 grid-cols-1 px-8 bg-white border-t md:grid-cols-3",
         })
     }
 }
@@ -72,9 +72,9 @@ pub fn BottomNav(
     children: Element,
 ) -> Element {
     let otw = outer_class.unwrap_or_else(|| {
-        classes!("w-full z-50 border-gray-200 dark:bg-gray-700 dark:border-gray-600").to_string()
+        "w-full z-50 border-gray-200 dark:bg-gray-700 dark:border-gray-600".to_string()
     });
-    let itw = inner_class.unwrap_or_else(|| classes!("flex h-full max-w-lg mx-auto").to_string());
+    let itw = inner_class.unwrap_or_else(|| "flex h-full max-w-lg mx-auto".to_string());
 
     rsx! {
         div {
@@ -139,8 +139,8 @@ pub fn BottomNavItem(
 
 #[component]
 pub fn BottomNavHeader(
-    #[props(default = classes!("w-full").into())] outer_class: String,
-    #[props(default = classes!("grid max-w-xs grid-cols-3 gap-1 p-1 mx-auto my-2 bg-gray-100 rounded-lg dark:bg-gray-600").into())]
+    #[props(default = "w-full".into())] outer_class: String,
+    #[props(default = "grid max-w-xs grid-cols-3 gap-1 p-1 mx-auto my-2 bg-gray-100 rounded-lg dark:bg-gray-600".into())]
     inner_class: String,
     children: Element,
     #[props(extends=div)] rest_attributes: Vec<Attribute>,
@@ -162,9 +162,9 @@ pub fn BottomNavHeader(
 pub fn BottomNavHeaderItem(
     #[props(default = "".into())] item_name: String,
     active: bool,
-    #[props(default = classes!("px-5 py-1.5 text-xs font-medium text-gray-900 hover:bg-gray-200 dark:text-white dark:hover:bg-gray-700 rounded-lg").into())]
+    #[props(default = "px-5 py-1.5 text-xs font-medium text-gray-900 hover:bg-gray-200 dark:text-white dark:hover:bg-gray-700 rounded-lg".into())]
     class: String,
-    #[props(default = classes!("px-5 py-1.5 text-xs font-medium text-white bg-gray-900 dark:bg-gray-300 dark:text-gray-900 rounded-lg").into())]
+    #[props(default = "px-5 py-1.5 text-xs font-medium text-white bg-gray-900 dark:bg-gray-300 dark:text-gray-900 rounded-lg".into())]
     active_class: String,
     onclick: Option<EventHandler<MouseEvent>>,
     #[props(extends=button)] rest_attributes: Vec<Attribute>,

@@ -37,16 +37,16 @@ pub fn AccordionItem(
 
     let classes = &[
         if curr_open {
-            classes!("max-h-full opacity-100")
+            "max-h-full opacity-100"
         } else {
-            classes!("max-h-0 opacity-0 overflow-hidden duration-250")
+            "max-h-0 opacity-0 overflow-hidden duration-250"
         },
         &content_class.unwrap_or_default(),
     ];
 
     let content = merge_classes(classes);
 
-    let btn_class = format!("{} {}", classes!("flex items-center justify-between w-full font-medium text-left group-first:rounded-t-xl border-gray-200 dark:border-gray-700"), button_class.unwrap_or_default());
+    let btn_class = format!("{} {}", "flex items-center justify-between w-full font-medium text-left group-first:rounded-t-xl border-gray-200 dark:border-gray-700", button_class.unwrap_or_default());
 
     rsx! {
         h2 { class: "group",
@@ -74,7 +74,7 @@ pub fn AccordionItem(
             }
 
             if curr_open {
-              div { class: classes!("w-full"),
+              div { class: "w-full",
                   div { class: "{content}", {children} }
               }
             }
