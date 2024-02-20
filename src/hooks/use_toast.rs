@@ -1,125 +1,101 @@
 use dioxus::prelude::*;
 
-#[component]
-pub fn Toaster() -> Element {
-  let ToastManager { toasts, .. } = use_context();
-
-  let toasts = toasts.iter().map(|f| rsx!(
-    
-  ));
-
-  rsx!(
-    {toasts}
-  )
-
-}
-
-
 #[derive(Copy, Clone, PartialEq, Default, Debug)]
-enum ToastType {
-  Action,
-  Success,
-  Info,
-  Warning,
-  Error,
-  Loading,
-  #[default]
-  Default,
+pub enum ToastType {
+    Action,
+    Success,
+    Info,
+    Warning,
+    Error,
+    Loading,
+    #[default]
+    Default,
 }
 
 #[derive(Copy, Clone, PartialEq, Default, Debug)]
-enum ToastPosition {
-  TopLeft,
-  TopCenter,
-  TopRight,
-  BottomLeft,
-  BottomCenter,
-  #[default]
-  BottomRight,
+pub enum ToastPosition {
+    TopLeft,
+    TopCenter,
+    TopRight,
+    BottomLeft,
+    BottomCenter,
+    #[default]
+    BottomRight,
 }
 
-struct ToastInfo {
-  index: usize,
-  title: String,
-  toast_type: ToastType,
-  icon: Option<Element>,
-  invert: bool,
-  description: Option<Element>,
-  duration: u32,
-  action: Option<EventHandler<MouseEvent>>,
-  cancel: Option<EventHandler<()>>,
-  ondismiss: Option<EventHandler<ToastInfo>>,
-  onautoclose: Option<EventHandler<ToastInfo>>,
-  dismissible: bool,
-  class: String,
-  unstyled: bool,
-  position: ToastPosition,
-  height: u32,
+#[derive(Debug, Clone, PartialEq)]
+pub(crate) struct ToastInfo {
+    pub id: u32,
+    pub title: String,
+    pub description: Option<Element>,
+    pub options: ToastOptions,
 }
 
-#[derive(Clone)]
-struct ToastManager {
-  count: Signal<usize>,
-  toasts: Signal<Vec<ToastInfo>>,
+#[derive(Debug, Clone, PartialEq)]
+pub struct ToastOptions {
+    pub kind: ToastType,
+    pub icon: Option<Element>,
+    pub invert: bool,
+    pub duration: u32,
+    pub action: Option<EventHandler<MouseEvent>>,
+    pub cancel: Option<EventHandler>,
+    pub ondismiss: Option<EventHandler>,
+    pub onautoclose: Option<EventHandler>,
+    pub dismissible: bool,
+    pub class: String,
+    pub unstyled: bool,
+    pub position: ToastPosition,
 }
 
-fn use_toast_manager() {
-
-  let toasts = use_signal(Vec::new);
-  let mut count = use_signal(|| 0);
-
-  use_effect(|| {
-    let len = toasts.read().len();
-    count.set(len);
-    println!("There are {count} toasts!");
-  });
-
-  let manager = ToastManager {
-    toasts,
-    count,
-  };
-  use_root_context(|| manager);
+impl Default for ToastOptions {
+    fn default() -> Self {
+        Self {
+            dismissible: true,
+            duration: 250,
+            kind: ToastType::Default,
+            icon: None,
+            invert: false,
+            action: None,
+            cancel: None,
+            ondismiss: None,
+            onautoclose: None,
+            class: "".into(),
+            unstyled: false,
+            position: ToastPosition::BottomRight,
+        }
+    }
 }
 
-pub fn toast(
-  title: String,
-  description: String,
-  class: String,
-  style: String,
-  kind: ToastType,
-  position: ToastPosition,
-  duration: u32,
-  unstyled: bool,
-  invert: bool,
-  dismissible: bool,
-  icon: Option<Element>,
-  action: Option<EventHandler<MouseEvent>>,
-  cancel: Option<EventHandler<()>>,
-  ondismiss: Option<EventHandler<ToastInfo>>,
-  onautoclose: Option<EventHandler<ToastInfo>>,
-
-) {
-  let ToastManager {
-    count, toasts
-  } = use_context();
-  let new_toast = ToastInfo {
-    index: count(),
-    title,
-    toast_type,
-    class,
-    icon,
-    invert,
-    description,
-    dismissible,
-    duration,
-    position,
-    ondismiss,
-    onautoclose,
-    cancel,
-    action,
-    unstyled,
-    height: 0
-  };
-  toasts.push(new_toast);
+#[derive(Clone, Copy)]
+pub(crate) struct ToastManager {
+    pub toasts: Signal<Vec<ToastInfo>>,
+    pub heights: Signal<Vec<u32>>,
 }
 
+/// Displays a toast notification with the specified title, description, and options.
+///
+/// # Arguments
+///
+/// * `title` - The title of the toast notification.
+/// * `description` - The description of the toast notification.
+/// * `options` - The options for the toast notification.
+pub fn toast(title: impl std::fmt::Display, description: Option<Element>, options: ToastOptions) {
+    let ToastManager {
+        mut toasts,
+        heights,
+    } = use_context();
+    let new_toast = ToastInfo {
+        id: toast_id(toasts.read().len()),
+        description,
+        title: title.to_string(),
+        options,
+    };
+    toasts.push(new_toast);
+}
+
+fn toast_id(id: usize) -> u32 {
+    let mut id = id as u32;
+    id = id.wrapping_mul(0x9E3779B1);
+    id = id ^ (id >> 16);
+    id
+}
