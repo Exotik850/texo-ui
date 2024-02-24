@@ -1,8 +1,5 @@
 use std::fmt::Display;
-
 use dioxus::prelude::*;
-use manganis::classes;
-
 use crate::TexoPosition;
 
 #[derive(PartialEq, Clone, Copy, Default)]

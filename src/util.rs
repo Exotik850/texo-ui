@@ -1,6 +1,4 @@
 use dioxus::prelude::*;
-use manganis::classes;
-
 use crate::{
     bg_color, border_color, elements::ToolBarButton, merge_classes, text_color, TexoColor,
     TexoSize,
@@ -68,21 +66,21 @@ pub fn Frame(
 
 fn card_size(size: Option<TexoSize>) -> &'static str {
     match size {
-        Some(TexoSize::ExtraSmall) => classes!("p-2"),
-        Some(TexoSize::Small) => classes!("p-4"),
-        Some(TexoSize::Medium) => classes!("p-4 sm:p-5"),
-        Some(TexoSize::Large) => classes!("p-4 sm:p-6"),
-        Some(TexoSize::ExtraLarge) => classes!("p-4 sm:p-8"),
+        Some(TexoSize::ExtraSmall) => "p-2",
+        Some(TexoSize::Small) => "p-4",
+        Some(TexoSize::Medium) => "p-4 sm:p-5",
+        Some(TexoSize::Large) => "p-4 sm:p-6",
+        Some(TexoSize::ExtraLarge) => "p-4 sm:p-8",
         None => "",
     }
 }
 fn card_padding(padding: Option<TexoSize>) -> &'static str {
     match padding {
-        Some(TexoSize::ExtraSmall) => classes!("max-w-xs"),
-        Some(TexoSize::Small) => classes!("max-w-sm"),
-        Some(TexoSize::Medium) => classes!("max-w-xl"),
-        Some(TexoSize::Large) => classes!("max-w-2xl"),
-        Some(TexoSize::ExtraLarge) => classes!("max-w-screen-xl"),
+        Some(TexoSize::ExtraSmall) => "max-w-xs",
+        Some(TexoSize::Small) => "max-w-sm",
+        Some(TexoSize::Medium) => "max-w-xl",
+        Some(TexoSize::Large) => "max-w-2xl",
+        Some(TexoSize::ExtraLarge) => "max-w-screen-xl",
         None => "",
     }
 }
@@ -90,14 +88,14 @@ fn card_padding(padding: Option<TexoSize>) -> &'static str {
 #[component]
 pub fn Card(
     #[props(default = TexoColor::Gray)] color: TexoColor,
-    #[props(default = false)] horizontal: bool,
-    #[props(default = false)] reverse: bool,
-    #[props(default = false)] rounded: bool,
-    #[props(default = false)] shadow: bool,
-    #[props(default = false)] border: bool,
+    #[props(default)] horizontal: bool,
+    #[props(default)] reverse: bool,
+    #[props(default)] rounded: bool,
+    #[props(default)] shadow: bool,
+    #[props(default)] border: bool,
     img: Option<String>,
     href: Option<String>,
-    #[props(default = Default::default())] class: String,
+    #[props(default)] class: String,
     onclick: Option<EventHandler<MouseEvent>>,
     #[props(!optional, default = Some(TexoSize::Large))] padding: Option<TexoSize>,
     #[props(!optional, default = Some(TexoSize::Small))] size: Option<TexoSize>,
@@ -105,13 +103,13 @@ pub fn Card(
 ) -> Element {
     let padding = card_padding(padding);
     let card_class = merge_classes(&[
-        classes!("flex w-full"),
+        "flex w-full",
         card_size(size),
         &class,
         if reverse {
-            classes!("flex-col-reverse")
+            "flex-col-reverse"
         } else {
-            classes!("flex-col")
+            "flex-col"
         },
         if horizontal {
             if reverse {
@@ -182,11 +180,11 @@ pub fn Card(
 
 #[component]
 pub fn CloseButton(
-    #[props(default=Default::default())] class: String,
+    #[props(default)] class: String,
     #[props(default=TexoColor::Red)] color: TexoColor,
     onclick: Option<EventHandler<MouseEvent>>,
 ) -> Element {
-    let cbtw = classes!("ms-auto");
+    let cbtw = "ms-auto";
 
     rsx!(
       ToolBarButton {
@@ -194,7 +192,7 @@ pub fn CloseButton(
         class: "{cbtw} {class}",
         color,
         svg {
-          class: classes!("w-5 h-5"),
+          class: "w-5 h-5",
           fill: "currentColor",
           view_box: "0 0 20 20",
           xmlns: "http://www.w3.org/2000/svg",

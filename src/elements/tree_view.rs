@@ -1,4 +1,6 @@
 use dioxus::prelude::*;
+#[cfg(feature = "desktop")]
+use std::path::Path;
 
 #[derive(Copy, Clone, Debug)]
 pub struct TreeContext {
@@ -185,17 +187,18 @@ pub fn TreeViewItem(
 
 #[derive(Clone, Debug, PartialEq)]
 pub enum TreeOutput {
-  Item(Element, Vec<TreeOutput>),
-  ItemNoChildren(Element),
-  None,
+    Item(Element, Vec<TreeOutput>),
+    ItemNoChildren(Element),
+    None,
 }
 
-#[cfg(feature="desktop")]
+#[cfg(feature = "desktop")]
 fn build_tree<P: AsRef<Path>>(path: P) -> Vec<TreeOutput> {
     let mut items = vec![];
+    let path = path.as_ref();
 
-    let Ok(entries) = std::fs::read_dir(&path) else {
-        log::warn!("Could not open: {}", path.as_ref().display());
+    let Ok(entries) = std::fs::read_dir(path) else {
+        log::warn!("Could not open: {}", path.display());
         return items;
     };
 
@@ -209,23 +212,23 @@ fn build_tree<P: AsRef<Path>>(path: P) -> Vec<TreeOutput> {
             continue;
         };
         let name = name.to_str().unwrap_or("Invalid Name!");
-        if fullpath.is_dir() {
-            let sub_items = build_tree(&fullpath);
-            items.push(TreeOutput::Item(rsx! {"{name}"}, sub_items))
+        let name = rsx! {"{name}"};
+        items.push(if fullpath.is_dir() {
+            TreeOutput::Item(name, build_tree(&fullpath))
         } else {
-            items.push(TreeOutput::ItemNoChildren(rsx! {"{name}"}))
-        }
+            TreeOutput::ItemNoChildren(name)
+        });
     }
 
     items
 }
 
-#[cfg(feature="desktop")]
+#[cfg(feature = "desktop")]
 #[component]
-pub fn FileTreeView(path: String) -> Element {
+pub fn FileTreeView<P: AsRef<Path> + Clone + PartialEq + 'static>(path: P) -> Element {
     rsx! {
       RecursiveTreeView {
-        components: build_tree(&path)
+        components: build_tree(path)
       }
     }
 }

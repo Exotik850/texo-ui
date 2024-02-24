@@ -7,8 +7,6 @@ compile_error!("Cannot target both web and desktop at the same time!");
 #[cfg(all(target_arch = "wasm32", feature = "desktop"))]
 compile_error!("Cannot target both web and desktop at the same time!");
 
-use manganis::classes;
-
 pub mod elements;
 pub mod forms;
 pub mod hooks;
@@ -37,32 +35,32 @@ pub fn border_color(color: TexoColor) -> &'static str {
     match color {
         TexoColor::Alternative => todo!(),
         TexoColor::Blue => {
-            classes!("border-blue-300 dark:border-blue-800 divide-blue-300 dark:divide-blue-800")
+            "border-blue-300 dark:border-blue-800 divide-blue-300 dark:divide-blue-800"
         }
-        TexoColor::Default => classes!("border-gray-700 divide-gray-500"),
-        TexoColor::Gray => classes!("border-gray-500 divide-gray-500"),
-        TexoColor::Dark => classes!("border-gray-500 divide-gray-500"),
+        TexoColor::Default => "border-gray-700 divide-gray-500",
+        TexoColor::Gray => "border-gray-500 divide-gray-500",
+        TexoColor::Dark => "border-gray-500 divide-gray-500",
         TexoColor::Green => {
-            classes!(
+            
                 "border-green-300 dark:border-green-800 divide-green-300 dark:divide-green-800"
-            )
+            
         }
-        TexoColor::Light => classes!("border-gray-500 divide-gray-500"),
+        TexoColor::Light => "border-gray-500 divide-gray-500",
         TexoColor::Primary => {
-            classes!("border-primary-500 dark:border-primary-200  divide-primary-500 dark:divide-primary-20")
+            "border-primary-500 dark:border-primary-200  divide-primary-500 dark:divide-primary-20"
         }
         TexoColor::Purple => {
-            classes!(
+            
                 "border-purple-300 dark:border-purple-800 divide-purple-300 dark:divide-purple-800"
-            )
+            
         }
         TexoColor::Red => {
-            classes!("border-red-300 dark:border-red-800 divide-red-300 dark:divide-red-800")
+            "border-red-300 dark:border-red-800 divide-red-300 dark:divide-red-800"
         }
         TexoColor::Yellow => {
-            classes!(
+            
                 "border-yellow-300 dark:border-yellow-800 divide-yellow-300 dark:divide-yellow-800"
-            )
+            
         }
         TexoColor::None => "",
     }
@@ -71,16 +69,16 @@ pub fn border_color(color: TexoColor) -> &'static str {
 pub fn text_color(color: TexoColor) -> &'static str {
     match color {
         TexoColor::Alternative => todo!(),
-        TexoColor::Blue => classes!("text-blue-800 dark:text-blue-400"),
-        TexoColor::Dark => classes!("text-gray-700 dark:text-gray-300"),
-        TexoColor::Default => classes!("text-gray-700 dark:text-gray-400"),
-        TexoColor::Gray => classes!("text-gray-800 dark:text-gray-400"),
-        TexoColor::Green => classes!("text-green-800 dark:text-green-400"),
-        TexoColor::Light => classes!("text-gray-700 dark:text-gray-300"),
-        TexoColor::Primary => classes!("text-primary-800 dark:text-primary-400"),
-        TexoColor::Purple => classes!("text-purple-800 dark:text-purple-400"),
-        TexoColor::Red => classes!("text-red-800 dark:text-red-400"),
-        TexoColor::Yellow => classes!("text-yellow-800 dark:text-yellow-300"),
+        TexoColor::Blue => "text-blue-800 dark:text-blue-400",
+        TexoColor::Dark => "text-gray-700 dark:text-gray-300",
+        TexoColor::Default => "text-gray-700 dark:text-gray-400",
+        TexoColor::Gray => "text-gray-800 dark:text-gray-400",
+        TexoColor::Green => "text-green-800 dark:text-green-400",
+        TexoColor::Light => "text-gray-700 dark:text-gray-300",
+        TexoColor::Primary => "text-primary-800 dark:text-primary-400",
+        TexoColor::Purple => "text-purple-800 dark:text-purple-400",
+        TexoColor::Red => "text-red-800 dark:text-red-400",
+        TexoColor::Yellow => "text-yellow-800 dark:text-yellow-300",
         TexoColor::None => "",
     }
 }
@@ -88,16 +86,16 @@ pub fn text_color(color: TexoColor) -> &'static str {
 pub fn bg_color(color: TexoColor) -> &'static str {
     match color {
         TexoColor::Alternative => todo!(),
-        TexoColor::Blue => classes!("bg-blue-50 dark:bg-gray-800"),
-        TexoColor::Dark => classes!("bg-gray-50 dark:bg-gray-800"),
-        TexoColor::Default => classes!("bg-gray-50 dark:bg-gray-700"),
-        TexoColor::Gray => classes!("bg-gray-50 dark:bg-gray-800"),
-        TexoColor::Green => classes!("bg-green-50 dark:bg-gray-800"),
-        TexoColor::Light => classes!("bg-gray-50 dark:bg-gray-700"),
-        TexoColor::Primary => classes!("bg-primary-50 dark:bg-gray-800"),
-        TexoColor::Purple => classes!("bg-purple-50 dark:bg-gray-800"),
-        TexoColor::Red => classes!("bg-red-50 dark:bg-gray-800"),
-        TexoColor::Yellow => classes!("bg-yellow-50 dark:bg-gray-800"),
+        TexoColor::Blue => "bg-blue-50 dark:bg-gray-800",
+        TexoColor::Dark => "bg-gray-50 dark:bg-gray-800",
+        TexoColor::Default => "bg-gray-50 dark:bg-gray-700",
+        TexoColor::Gray => "bg-gray-50 dark:bg-gray-800",
+        TexoColor::Green => "bg-green-50 dark:bg-gray-800",
+        TexoColor::Light => "bg-gray-50 dark:bg-gray-700",
+        TexoColor::Primary => "bg-primary-50 dark:bg-gray-800",
+        TexoColor::Purple => "bg-purple-50 dark:bg-gray-800",
+        TexoColor::Red => "bg-red-50 dark:bg-gray-800",
+        TexoColor::Yellow => "bg-yellow-50 dark:bg-gray-800",
         TexoColor::None => "",
     }
 }

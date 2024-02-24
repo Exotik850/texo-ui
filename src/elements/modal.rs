@@ -88,7 +88,7 @@ pub fn Modal(
           div { class: backdrop_class }
           div {
               onkeydown: handle_key,
-              onclick: move |evt| open.toggle(),
+              onclick: move |_| open.toggle(),
               role: "dialog",
               aria_modal: true,
               tabindex: -1,

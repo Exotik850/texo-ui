@@ -1,7 +1,6 @@
 use dioxus::prelude::*;
-use manganis::classes;
 
-use crate::{bg_color, border_color, merge_classes, text_color, TexoColor};
+use crate::{merge_classes, text_color, TexoColor};
 
 #[derive(Clone, PartialEq, Debug, Default)]
 pub struct TableContext {
@@ -105,7 +104,7 @@ pub fn TableHead(
     let bg_col = if noborder || striped {
         ""
     } else {
-        classes!("bg-gray-50 dark:bg-gray-700")
+        "bg-gray-50 dark:bg-gray-700"
     };
 
     let classes = &[
@@ -161,62 +160,60 @@ pub fn TableBody(class: Option<String>, children: Element) -> Element {
 
 fn table_body_color(color: TexoColor) -> &'static str {
     match color {
-        TexoColor::Alternative => classes!(""),
-        TexoColor::Blue => classes!("bg-blue-500 border-blue-400"),
-        TexoColor::Dark => classes!(""),
-        TexoColor::Default => classes!("bg-white dark:bg-gray-800 dark:border-gray-700"),
-        TexoColor::Gray => classes!("bg-gray-300 dark:bg-gray-800 dark:border-gray-700"),
-        TexoColor::Green => classes!("bg-green-500 border-green-400"),
-        TexoColor::Light => classes!(""),
-        TexoColor::Primary => classes!("bg-purple-500 border-purple-400"),
-        TexoColor::Purple => classes!(""),
-        TexoColor::Red => classes!("bg-red-500 border-red-400"),
-        TexoColor::Yellow => classes!("bg-yellow-500 border-yellow-400"),
-        TexoColor::None => classes!(""),
+        TexoColor::Alternative => "",
+        TexoColor::Blue => "bg-blue-500 border-blue-400",
+        TexoColor::Dark => "",
+        TexoColor::Default => "bg-white dark:bg-gray-800 dark:border-gray-700",
+        TexoColor::Gray => "bg-gray-300 dark:bg-gray-800 dark:border-gray-700",
+        TexoColor::Green => "bg-green-500 border-green-400",
+        TexoColor::Light => "",
+        TexoColor::Primary => "bg-purple-500 border-purple-400",
+        TexoColor::Purple => "",
+        TexoColor::Red => "bg-red-500 border-red-400",
+        TexoColor::Yellow => "bg-yellow-500 border-yellow-400",
+        TexoColor::None => "",
     }
 }
 fn table_body_hover(color: TexoColor) -> &'static str {
     match color {
-        TexoColor::Alternative => classes!(""),
-        TexoColor::Blue => classes!("hover:bg-blue-400"),
-        TexoColor::Dark => classes!(""),
-        TexoColor::Default => classes!("hover:bg-gray-50 dark:hover:bg-gray-600"),
-        TexoColor::Gray => classes!(""),
-        TexoColor::Green => classes!("hover:bg-green-400"),
-        TexoColor::Light => classes!(""),
-        TexoColor::Primary => classes!(""),
-        TexoColor::Purple => classes!("hover:bg-purple-400"),
-        TexoColor::Red => classes!("hover:bg-red-400"),
-        TexoColor::Yellow => classes!("hover:bg-yellow-400"),
-        TexoColor::None => classes!(""),
+        TexoColor::Alternative => "",
+        TexoColor::Blue => "hover:bg-blue-400",
+        TexoColor::Dark => "",
+        TexoColor::Default => "hover:bg-gray-50 dark:hover:bg-gray-600",
+        TexoColor::Gray => "",
+        TexoColor::Green => "hover:bg-green-400",
+        TexoColor::Light => "",
+        TexoColor::Primary => "",
+        TexoColor::Purple => "hover:bg-purple-400",
+        TexoColor::Red => "hover:bg-red-400",
+        TexoColor::Yellow => "hover:bg-yellow-400",
+        TexoColor::None => "",
     }
 }
 fn table_strip_color(color: TexoColor) -> &'static str {
     match color {
-        TexoColor::Alternative => classes!(""),
+        TexoColor::Alternative => "",
         TexoColor::Blue => {
-            classes!("odd:bg-blue-800 even:bg-blue-700 odd:dark:bg-blue-800 even:dark:bg-blue-700")
+            "odd:bg-blue-800 even:bg-blue-700 odd:dark:bg-blue-800 even:dark:bg-blue-700"
         }
-        TexoColor::Dark => classes!(""),
+        TexoColor::Dark => "",
         TexoColor::Default => {
-            classes!("odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700")
+            "odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700"
         }
-        TexoColor::Gray => classes!(""),
-        TexoColor::Green => classes!(
+        TexoColor::Gray => "",
+        TexoColor::Green => {
             "odd:bg-green-800 even:bg-green-700 odd:dark:bg-green-800 even:dark:bg-green-700"
-        ),
-        TexoColor::Light => classes!(""),
-        TexoColor::Primary => classes!(""),
-        TexoColor::Purple => classes!(
-            "odd:bg-purple-800 even:bg-purple-700 odd:dark:bg-purple-800 even:dark:bg-purple-700"
-        ),
-        TexoColor::Red => {
-            classes!("odd:bg-red-800 even:bg-red-700 odd:dark:bg-red-800 even:dark:bg-red-700")
         }
-        TexoColor::Yellow => classes!(
+        TexoColor::Light => "",
+        TexoColor::Primary => "",
+        TexoColor::Purple => {
+            "odd:bg-purple-800 even:bg-purple-700 odd:dark:bg-purple-800 even:dark:bg-purple-700"
+        }
+        TexoColor::Red => "odd:bg-red-800 even:bg-red-700 odd:dark:bg-red-800 even:dark:bg-red-700",
+        TexoColor::Yellow => {
             "odd:bg-yellow-800 even:bg-yellow-700 odd:dark:bg-yellow-800 even:dark:bg-yellow-700"
-        ),
-        TexoColor::None => classes!(""),
+        }
+        TexoColor::None => "",
     }
 }
 

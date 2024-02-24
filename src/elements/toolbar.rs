@@ -1,6 +1,4 @@
 use dioxus::prelude::*;
-use manganis::classes;
-
 use crate::{merge_classes, util::Frame, TexoColor, TexoSize};
 
 #[derive(Clone)]
@@ -78,13 +76,13 @@ pub fn ToolBarButton(
     children: Element,
 ) -> Element {
     let button_class = merge_classes(&[
-        classes!("focus:outline-none whitespace-normal m-0.5 rounded focus:ring-1 p-0.5"),
+        "focus:outline-none whitespace-normal m-0.5 rounded focus:ring-1 p-0.5",
         &class,
         toolbar_color(color),
         if background {
-            classes!("hover:bg-gray-100 dark:hover:bg-gray-600")
+            "hover:bg-gray-100 dark:hover:bg-gray-600"
         } else {
-            classes!("hover:bg-gray-100 dark:hover:bg-gray-700")
+            "hover:bg-gray-100 dark:hover:bg-gray-700"
         },
     ]);
 

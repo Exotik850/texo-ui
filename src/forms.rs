@@ -1,5 +1,4 @@
 use dioxus::prelude::*;
-use manganis::classes;
 
 use crate::{border_color, merge_classes, text_color, TexoColor, TexoInputType, TexoSize};
 
@@ -15,9 +14,9 @@ pub fn Checkbox(
 ) -> Element {
     let class = merge_classes(&[
         if inline {
-            classes!("inline-flex")
+            "inline-flex"
         } else {
-            classes!("flex")
+            "flex"
         }
         .to_string(),
         class,
@@ -94,9 +93,9 @@ pub fn Input(
         border_color(color),
         &class,
         if group {
-            classes!("first:rounded-s-lg last:rounded-e-lg border-s-0 first:border-s last:border-e")
+            "first:rounded-s-lg last:rounded-e-lg border-s-0 first:border-s last:border-e"
         } else {
-            classes!("rounded-lg")
+            "rounded-lg"
         },
     ]);
 

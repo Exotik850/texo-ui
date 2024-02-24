@@ -1,6 +1,4 @@
 use dioxus::prelude::*;
-use manganis::classes;
-
 use crate::{merge_classes, util::Frame};
 
 #[component]

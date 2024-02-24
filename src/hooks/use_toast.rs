@@ -84,6 +84,9 @@ pub fn toast(title: impl std::fmt::Display, description: Option<Element>, option
         mut toasts,
         heights,
     } = use_context();
+
+    
+
     let new_toast = ToastInfo {
         id: toast_id(toasts.read().len()),
         description,
@@ -93,6 +96,7 @@ pub fn toast(title: impl std::fmt::Display, description: Option<Element>, option
     toasts.push(new_toast);
 }
 
+#[inline]
 fn toast_id(id: usize) -> u32 {
     let mut id = id as u32;
     id = id.wrapping_mul(0x9E3779B1);

@@ -59,7 +59,7 @@ pub fn NavBrand(
     onclick: Option<EventHandler<MouseEvent>>,
     children: Element,
 ) -> Element {
-    let nv_cl = classes!("flex items-center");
+    let nv_cl = "flex items-center";
 
     rsx!(
         a {
@@ -83,7 +83,7 @@ pub fn NavLi(
     #[props(extends=li)] rest_attributes: Vec<Attribute>,
     children: Element,
 ) -> Element {
-    let tw_cl = classes!("block py-2 pe-4 ps-3 md:p-0 rounded md:border-0");
+    let tw_cl = "block py-2 pe-4 ps-3 md:p-0 rounded md:border-0";
 
     rsx!(
         li {
@@ -113,8 +113,6 @@ pub fn NavLi(
     )
 }
 
-use manganis::classes;
-
 #[component]
 pub fn NavUl(
     div_class: Option<String>,
@@ -122,8 +120,8 @@ pub fn NavUl(
     children: Element,
     #[props(extends=ul)] rest_attributes: Vec<Attribute>,
 ) -> Element {
-    let dtwc = classes!("w-full md:block md:w-auto");
-    let ulc = classes!("flex flex-col p-4 mt-4 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:text-sm md:font-medium");
+    let dtwc = "w-full md:block md:w-auto";
+    let ulc = "flex flex-col p-4 mt-4 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:text-sm md:font-medium";
 
     rsx!(
         div { class: "{dtwc} {div_class.unwrap_or_default()}",
@@ -143,8 +141,8 @@ pub fn NavHamburger(
     onclick: Option<EventHandler<MouseEvent>>,
     children: Element,
 ) -> Element {
-    let dtwc = classes!("ms-3 md:hidden");
-    let ulc = classes!("h-6 w-6 shrink-0");
+    let dtwc = "ms-3 md:hidden";
+    let ulc = "h-6 w-6 shrink-0";
 
     rsx! {
         ToolBarButton {
@@ -164,11 +162,11 @@ pub fn NavContainer(fluid: Option<bool>, class: String, children: Element) -> El
     let fluid = fluid.unwrap_or(false);
 
     let class = merge_classes(&[
-        classes!("mx-auto flex flex-wrap justify-between items-center"),
+        "mx-auto flex flex-wrap justify-between items-center",
         if fluid {
-            classes!("w-full")
+            "w-full"
         } else {
-            classes!("container")
+            "container"
         },
         &class,
     ]);
@@ -187,7 +185,7 @@ pub fn NavBar(
 ) -> Element {
     let fluid = fluid.unwrap_or(false);
     let class = merge_classes(&[
-        classes!("px-2 sm:px-4 py-2.5 w-full"),
+        "px-2 sm:px-4 py-2.5 w-full",
         &class.unwrap_or("".into()),
     ]);
     rsx! {
