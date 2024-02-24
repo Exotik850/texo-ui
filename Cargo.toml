@@ -8,7 +8,6 @@ edition = "2021"
 [dependencies]
 dioxus = { path = "../dioxus/packages/dioxus" }
 tween ={ version = "2.0.2", default-features = false, features = ["libm"], optional = true}
-manganis = { git = "https://github.com/DioxusLabs/collect-assets", rev = "e0093a4" }
 log = "0.4.20"
 thiserror = "1.0.56"
 generational-box = { path = "../dioxus/packages/generational-box", optional = true}
@@ -21,13 +20,14 @@ syntect = { version = "5.2.0", optional = true, default-features = false, featur
 wasm-bindgen-futures = { version = "0.4.40", optional = true }
 web-sys = { version = "0.3.67", optional = true, features = ["Window", "Document", "HtmlElement"]}
 arboard = { version = "3.3.0", optional = true} 
+fastrand = {version = "2.0.1", default-features = false}
 
 # gilrs = { version = "0.10.4", optional = true }
 
 [features]
 tween = ["dep:tween", "dep:async-std"]
-desktop = ["dioxus/desktop", "dep:arboard"]
-web = ["dioxus/web", "dep:web-sys"]
+desktop = ["dioxus/desktop", "dep:arboard", "fastrand/std"]
+web = ["dioxus/web", "dep:web-sys", "fastrand/js"]
 clipboard = ["dep:web-sys", "dep:generational-box", "dep:wasm-bindgen-futures", "dep:async-std", "web-sys?/Clipboard", "web-sys?/Navigator", "web-sys?/Permissions"]
 code-editor = ["dep:syntect"]
 qrcode = ["dep:qrcode", "dep:image", "dep:base64"]

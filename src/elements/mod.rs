@@ -13,7 +13,9 @@ mod toolbar;
 mod tree_view;
 mod pagination;
 mod breadcrumb;
+mod command_palette;
 
+pub use command_palette::*;
 pub use breadcrumb::*;
 pub use pagination::*;
 pub use drawer::*;
