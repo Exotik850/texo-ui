@@ -1,48 +1,48 @@
 use dioxus::prelude::*;
 
-#[cfg(feature="desktop")]
+#[cfg(feature = "desktop")]
 use dioxus::desktop::{use_window, use_wry_event_handler, DesktopContext};
-#[cfg(feature="web")]
+#[cfg(feature = "web")]
 use web_sys::wasm_bindgen::{closure::Closure, JsCast};
 
 #[derive(Clone)]
 pub struct FullScreenManager {
-  fullscreen: Signal<bool>,
-  toggle: Signal<bool>,
-  #[cfg(feature = "desktop")]
-  window: DesktopContext,
-  #[cfg(feature = "web")]
-  document: Signal<(web_sys::Document, web_sys::HtmlElement)>,
+    fullscreen: Signal<bool>,
+    toggle: Signal<bool>,
+    #[cfg(feature = "desktop")]
+    window: DesktopContext,
+    #[cfg(feature = "web")]
+    document: Signal<web_sys::Document>,
+    #[cfg(feature = "web")]
+    body: Signal<web_sys::HtmlElement>,
+    #[cfg(feature = "web")]
+    _closure: Signal<Closure<dyn FnMut()>>,
 }
 
 impl FullScreenManager {
-  #[cfg(feature = "desktop")]
-  pub fn set(&mut self, val: bool) {
-    self.fullscreen.set(val);
-    self.window.set_maximized(val);
-  }
+    #[cfg(feature = "desktop")]
+    pub fn set(&mut self, val: bool) {
+        self.window.set_maximized(val);
+        self.fullscreen.set(val);
+    }
 
-  #[cfg(feature = "web")]
-  pub fn set(&mut self, val: bool) {
-    let doc = self.document.read();
+    #[cfg(feature = "web")]
+    pub fn set(&mut self, val: bool) {
+        self.fullscreen.set(if val {
+            self.body.read().request_fullscreen().is_ok()
+        } else {
+            self.document.read().exit_fullscreen();
+            false
+        });
+    }
 
-    let open = if val {
-      let result = doc.1.request_fullscreen();
-      result.is_ok()
-    } else {
-      doc.0.exit_fullscreen();
-      false
-    };
-    self.fullscreen.set(open);
-  }
+    pub fn toggle(&mut self) {
+        self.toggle.set(true);
+    }
 
-  pub fn toggle(&mut self) {
-    self.toggle.set(true);
-  }
-
-  pub fn is_fullscreen(&self) -> bool {
-    *self.fullscreen.read()
-  }
+    pub fn is_fullscreen(&self) -> bool {
+        *self.fullscreen.read()
+    }
 }
 
 pub fn use_fullscreen() -> FullScreenManager {
@@ -84,44 +84,52 @@ pub fn use_fullscreen() -> FullScreenManager {
         }
     }
 
-    #[cfg(feature="web")]
+    #[cfg(feature = "web")]
     {
-      let document = use_signal(|| {
-        let document = web_sys::window().expect("Need a window to get document from").document().expect("Need a document");
-        let element = document.body().expect("Need a document body to request fullscreen on");
-        (document, element)
-      });
+        let mut document = use_signal(move || {
+            web_sys::window()
+                .expect("Need a window to get document from")
+                .document()
+                .expect("Need a document")
+        });
+        let _closure = use_signal(|| {
+            let closure = Closure::new(move || {
+                log::info!("Fullscreen changed");
+                fullscreen.set(document.read().fullscreen());
+            });
+            document
+                .write()
+                .set_onfullscreenchange(Some(closure.as_ref().unchecked_ref()));
+            closure
+        });
 
-      let closure = Closure::new(move || {
-        fullscreen.set(document.read().0.fullscreen());
-      });
-      document.read().0.set_onfullscreenchange(Some(closure.as_ref().unchecked_ref()));
+        let body = use_signal(move || {
+            document.read().body().expect("Need a body")
+        });
 
-      use_effect(move || {
-        if toggle() {
-          let full = if fullscreen() {
-            document.read().0.exit_fullscreen();
-            false
-          } else {
-            document.read().1.request_fullscreen().is_ok()
-          };
-          fullscreen.set(full);
-          toggle.set(false);
+        use_effect(move || {
+            if toggle() {
+                fullscreen.set(if fullscreen() {
+                    document.read().exit_fullscreen();
+                    false
+                } else {
+                    body.read().request_fullscreen().is_ok()
+                });
+                toggle.set(false);
+            }
+        });
+
+        FullScreenManager {
+            fullscreen,
+            toggle,
+            document,
+            body,
+            _closure,
         }
-      });
-
-      FullScreenManager {
-          fullscreen,
-          toggle,
-          document,
-      }
     }
 
     #[cfg(not(any(feature = "desktop", feature = "web")))]
     {
-      FullScreenManager {
-          fullscreen,
-          toggle,
-      }
+        FullScreenManager { fullscreen, toggle }
     }
 }
