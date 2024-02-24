@@ -3,9 +3,7 @@ mod use_slider;
 mod use_tween;
 #[cfg(feature="clipboard")]
 mod use_clipboard;
-mod use_timeout;
 mod use_fullscreen;
-pub use use_timeout::*;
 pub use use_fullscreen::*;
 // #[cfg(feature="controller")]
 // mod use_controller;
