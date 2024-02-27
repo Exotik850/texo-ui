@@ -1,5 +1,7 @@
 use dioxus::prelude::*;
 
+use super::timeout;
+
 #[derive(Copy, Clone, PartialEq, Default, Debug)]
 pub enum ToastType {
     Action,
@@ -36,7 +38,7 @@ pub struct ToastOptions {
     pub kind: ToastType,
     pub icon: Option<Element>,
     pub invert: bool,
-    pub duration: u32,
+    pub duration: u64,
     pub action: Option<EventHandler<MouseEvent>>,
     pub cancel: Option<EventHandler>,
     pub ondismiss: Option<EventHandler>,
@@ -51,7 +53,7 @@ impl Default for ToastOptions {
     fn default() -> Self {
         Self {
             dismissible: true,
-            duration: 250,
+            duration: 1000,
             kind: ToastType::Default,
             icon: None,
             invert: false,
@@ -85,21 +87,23 @@ pub fn toast(title: impl std::fmt::Display, description: Option<Element>, option
         heights,
     } = use_context();
 
-    
-
+    let id = fastrand::u32(..);
+    let delay = options.duration;
     let new_toast = ToastInfo {
-        id: toast_id(toasts.read().len()),
+        id,
         description,
         title: title.to_string(),
         options,
     };
     toasts.push(new_toast);
-}
-
-#[inline]
-fn toast_id(id: usize) -> u32 {
-    let mut id = id as u32;
-    id = id.wrapping_mul(0x9E3779B1);
-    id = id ^ (id >> 16);
-    id
+    timeout(
+        move || {
+            let Some(index) = toasts.iter().position(|toast| toast.id == id) else {
+                log::warn!("Toast removed before timeout expired : {id}");
+                return;
+            };
+            toasts.remove(index);
+        },
+        delay,
+    )
 }
