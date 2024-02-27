@@ -25,7 +25,9 @@ pub fn Toaster() -> Element {
         .enumerate()
         .filter_map(|(_i, f)| toast_helper(&f));
 
-    rsx!({ toasts })
+    rsx!(
+      div
+    )
 }
 
 fn toast_helper(
@@ -36,11 +38,20 @@ fn toast_helper(
         ..
     }: &ToastInfo,
 ) -> Element {
-    let ToastOptions { .. } = options;
+    let ToastOptions { position, .. } = options;
+
+    let position = match position {
+        crate::hooks::use_toast::ToastPosition::TopLeft => "top-0 left-0",
+        crate::hooks::use_toast::ToastPosition::TopCenter => "top-0 left-0 right-0",
+        crate::hooks::use_toast::ToastPosition::TopRight => "top-0 right-0",
+        crate::hooks::use_toast::ToastPosition::BottomLeft => "bottom-0 left-0",
+        crate::hooks::use_toast::ToastPosition::BottomCenter => "bottom-0 left-0 right-0",
+        crate::hooks::use_toast::ToastPosition::BottomRight => "bottom-0 right-0",
+    };
 
     rsx! {
         div {
-            class: "fixed bottom-0 right-0 m-4",
+            class: "fixed {position} m-4",
             div {
                 class: "bg-white shadow-lg rounded-lg p-4",
                 div {

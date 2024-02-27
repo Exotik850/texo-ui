@@ -1,3 +1,5 @@
+use std::time::Instant;
+
 use dioxus::prelude::*;
 
 use super::timeout;
@@ -30,6 +32,7 @@ pub(crate) struct ToastInfo {
     pub id: u32,
     pub title: String,
     pub description: Option<Element>,
+    pub added: Instant,
     pub options: ToastOptions,
 }
 
@@ -93,6 +96,7 @@ pub fn toast(title: impl std::fmt::Display, description: Option<Element>, option
         id,
         description,
         title: title.to_string(),
+        added: Instant::now(),
         options,
     };
     toasts.push(new_toast);

@@ -891,7 +891,7 @@ dependencies = [
 
 [[package]]
 name = "dioxus"
-version = "0.5.0-alpha.0"
+version = "0.4.3"
 dependencies = [
  "dioxus-config-macro",
  "dioxus-core",
@@ -908,10 +908,9 @@ dependencies = [
 
 [[package]]
 name = "dioxus-cli-config"
-version = "0.5.0-alpha.0"
+version = "0.4.1"
 dependencies = [
  "once_cell",
- "semver",
  "serde",
  "serde_json",
  "tracing",
@@ -919,7 +918,7 @@ dependencies = [
 
 [[package]]
 name = "dioxus-config-macro"
-version = "0.5.0-alpha.0"
+version = "0.4.3"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -927,7 +926,7 @@ dependencies = [
 
 [[package]]
 name = "dioxus-core"
-version = "0.5.0-alpha.0"
+version = "0.4.3"
 dependencies = [
  "futures-channel",
  "futures-util",
@@ -940,7 +939,7 @@ dependencies = [
 
 [[package]]
 name = "dioxus-core-macro"
-version = "0.5.0-alpha.0"
+version = "0.4.3"
 dependencies = [
  "constcat",
  "convert_case 0.6.0",
@@ -959,7 +958,7 @@ checksum = "2ea539174bb236e0e7dc9c12b19b88eae3cb574dedbd0252a2d43ea7e6de13e2"
 
 [[package]]
 name = "dioxus-desktop"
-version = "0.5.0-alpha.0"
+version = "0.4.3"
 dependencies = [
  "async-trait",
  "core-foundation",
@@ -995,7 +994,7 @@ dependencies = [
 
 [[package]]
 name = "dioxus-fullstack"
-version = "0.5.0-alpha.0"
+version = "0.4.3"
 dependencies = [
  "async-trait",
  "base64",
@@ -1017,7 +1016,7 @@ dependencies = [
 
 [[package]]
 name = "dioxus-hooks"
-version = "0.5.0-alpha.0"
+version = "0.4.3"
 dependencies = [
  "dioxus-core",
  "dioxus-debug-cell",
@@ -1031,7 +1030,7 @@ dependencies = [
 
 [[package]]
 name = "dioxus-hot-reload"
-version = "0.5.0-alpha.0"
+version = "0.4.3"
 dependencies = [
  "dioxus-core",
  "dioxus-html",
@@ -1043,7 +1042,7 @@ dependencies = [
 
 [[package]]
 name = "dioxus-html"
-version = "0.5.0-alpha.0"
+version = "0.4.3"
 dependencies = [
  "async-trait",
  "dioxus-core",
@@ -1064,7 +1063,7 @@ dependencies = [
 
 [[package]]
 name = "dioxus-html-internal-macro"
-version = "0.5.0-alpha.0"
+version = "0.4.3"
 dependencies = [
  "convert_case 0.6.0",
  "proc-macro2",
@@ -1074,7 +1073,7 @@ dependencies = [
 
 [[package]]
 name = "dioxus-interpreter-js"
-version = "0.5.0-alpha.0"
+version = "0.4.3"
 dependencies = [
  "dioxus-core",
  "dioxus-html",
@@ -1087,7 +1086,7 @@ dependencies = [
 
 [[package]]
 name = "dioxus-lib"
-version = "0.5.0-alpha.0"
+version = "0.4.3"
 dependencies = [
  "dioxus-core",
  "dioxus-core-macro",
@@ -1109,7 +1108,7 @@ dependencies = [
 
 [[package]]
 name = "dioxus-router"
-version = "0.5.0-alpha.0"
+version = "0.4.3"
 dependencies = [
  "dioxus-cli-config",
  "dioxus-lib",
@@ -1126,7 +1125,7 @@ dependencies = [
 
 [[package]]
 name = "dioxus-router-macro"
-version = "0.5.0-alpha.0"
+version = "0.4.3"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -1136,7 +1135,7 @@ dependencies = [
 
 [[package]]
 name = "dioxus-rsx"
-version = "0.5.0-alpha.0"
+version = "0.4.3"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -1146,7 +1145,7 @@ dependencies = [
 
 [[package]]
 name = "dioxus-signals"
-version = "0.5.0-alpha.0"
+version = "0.4.3"
 dependencies = [
  "dioxus-core",
  "flume",
@@ -1161,7 +1160,7 @@ dependencies = [
 
 [[package]]
 name = "dioxus-web"
-version = "0.5.0-alpha.0"
+version = "0.4.3"
 dependencies = [
  "async-trait",
  "console_error_panic_hook",
@@ -1184,7 +1183,7 @@ dependencies = [
 
 [[package]]
 name = "dioxus_server_macro"
-version = "0.5.0-alpha.0"
+version = "0.4.3"
 dependencies = [
  "convert_case 0.6.0",
  "proc-macro2",
@@ -1722,7 +1721,7 @@ dependencies = [
 
 [[package]]
 name = "generational-box"
-version = "0.5.0-alpha.0"
+version = "0.4.3"
 dependencies = [
  "parking_lot",
 ]
@@ -3462,9 +3461,6 @@ name = "semver"
 version = "1.0.22"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "92d43fe69e652f3df9bdc2b85b2854a0825b86e4fb76bc44d945137d053639ca"
-dependencies = [
- "serde",
-]
 
 [[package]]
 name = "send_wrapper"
