@@ -190,7 +190,7 @@ pub fn NavBar(
     ]);
     rsx! {
         Frame { class: "{class}",
-            NavContainer { fluid: fluid, class: "{class}", {children} }
+            NavContainer { fluid, class, {children} }
         }
     }
 }

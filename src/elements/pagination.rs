@@ -137,22 +137,22 @@ pub fn PaginationItem(
         &class,
     ]);
 
+    let onclick  = move |evt| if let Some(oc) = &onclick {
+      oc.call(evt)
+    };
+
     rsx!(
       if let Some(href) = href {
         a {
           href,
           class,
-          onclick: move |evt| if let Some(oc) = &onclick {
-            oc.call(evt)
-          },
+          onclick,
           {children}
         }
       } else {
         button {
           class,
-          onclick: move |evt| if let Some(oc) = &onclick {
-            oc.call(evt)
-          },
+          onclick,
           {children}
         }
       }

@@ -112,7 +112,9 @@ pub fn CommandPalette(
     };
     use_root_context(|| manager);
 
-    visible().then(|| ())?;
+    if !visible() {
+      return None;
+    }
 
     let handle_keys = move |ev: KeyboardEvent| match ev.key() {
         Key::Escape => visible.set(false),
@@ -173,10 +175,10 @@ pub fn CommandPalette(
           div {
             class: "p-2",
             onkeydown: handle_keys,
-            // {actions.iter().map(|action| command(action.clone(), manager))}
             for action in actions.iter().filter(|f| f.title.contains(input.read().as_str()) || f.description.contains(input.read().as_str())) {
               Command {
                 action: action.clone(),
+                key: "{action.id}",
               }
             }
           }
