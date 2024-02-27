@@ -23,6 +23,9 @@ pub use use_fullscreen::*;
 /// The `toast` function is used to display a toast notification with the specified title, description, and options.
 pub mod use_toast;
 
+mod use_timeout;
+pub use use_timeout::*;
+
 
 #[cfg(feature="desktop")] 
 pub use use_fullscreen::*;

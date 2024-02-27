@@ -11,7 +11,7 @@ tween ={ version = "2.0.2", default-features = false, features = ["libm"], optio
 log = "0.4.20"
 thiserror = "1.0.56"
 generational-box = { path = "../dioxus/packages/generational-box", optional = true}
-async-std = {version="1.12.0", features = ["unstable"], optional = true}
+async-std = {version="1.12.0", features = ["unstable"]}
 qrcode = { version = "0.13.0", optional = true, default-features = false, features = ["image"]}
 image = { version = "0.24.8", optional = true }
 base64 = { version = "0.21.7", optional = true }
@@ -25,10 +25,10 @@ fastrand = {version = "2.0.1", default-features = false}
 # gilrs = { version = "0.10.4", optional = true }
 
 [features]
-tween = ["dep:tween", "dep:async-std"]
+tween = ["dep:tween"]
 desktop = ["dioxus/desktop", "dep:arboard", "fastrand/std"]
 web = ["dioxus/web", "dep:web-sys", "fastrand/js"]
-clipboard = ["dep:web-sys", "dep:generational-box", "dep:wasm-bindgen-futures", "dep:async-std", "web-sys?/Clipboard", "web-sys?/Navigator", "web-sys?/Permissions"]
+clipboard = ["dep:web-sys", "dep:generational-box", "dep:wasm-bindgen-futures",  "web-sys?/Clipboard", "web-sys?/Navigator", "web-sys?/Permissions"]
 code-editor = ["dep:syntect"]
 qrcode = ["dep:qrcode", "dep:image", "dep:base64"]
 # controller = ["dep:gilrs", "dep:async-std"]

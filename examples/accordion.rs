@@ -14,8 +14,9 @@ fn App() -> Element {
     let mut fullscreen = use_fullscreen();
     let is_fullscreen = fullscreen.is_fullscreen();
     let mut open = use_signal(|| false);
+    let tm = use_timeout(|_| log::info!("RAH"), || ());
 
-    let actions = Signal::new(vec![
+    let actions = use_signal(|| vec![
       CommandAction::new(|_| toast("HELP", None, Default::default()), "Hello".to_string(), "Say hello".to_string(), None, None),
       CommandAction::new(|_| println!("World"), "World".to_string(), "Say world".to_string(), None, None),
     ]);
@@ -29,7 +30,7 @@ fn App() -> Element {
         Toaster {}
 
         Button {
-          onclick: move |_| fullscreen.toggle(),
+          onclick: move |_| tm.start(1000),
           "Click me!"
         }
 
