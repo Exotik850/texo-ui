@@ -14,7 +14,9 @@ mod tree_view;
 mod pagination;
 mod breadcrumb;
 mod command_palette;
+mod popover;
 
+pub use popover::*;
 pub use command_palette::*;
 pub use breadcrumb::*;
 pub use pagination::*;

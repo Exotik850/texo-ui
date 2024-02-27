@@ -6,13 +6,14 @@ use texo_ui::elements::*;
 
 pub fn main() {
     dioxus_logger::init(log::LevelFilter::Info).unwrap();
+    // wasm_logger::init(wasm_logger::Config::default());
     launch(App)
 }
 
 #[component]
 fn App() -> Element {
-    let mut fullscreen = use_fullscreen();
-    let is_fullscreen = fullscreen.is_fullscreen();
+    // let mut fullscreen = use_fullscreen();
+    // let is_fullscreen = fullscreen.is_fullscreen();
     let mut open = use_signal(|| false);
     let tm = use_timeout(|_| log::info!("RAH"), || ());
 
@@ -28,7 +29,7 @@ fn App() -> Element {
         }
 
         Toaster {}
-
+ 
         Button {
           onclick: move |_| tm.start(1000),
           "Click me!"
@@ -39,18 +40,25 @@ fn App() -> Element {
           "Open Command Palette!"
         }
 
-        span {
-          if is_fullscreen {
-            "I'm fullscreen!"
-          } else {
-            "I'm not fullscreen!"
+        Popover {
+          open, 
+          content: rsx!(
+            "Hello, World!"
+          ),
+
+          button {
+            onclick: move |_| {
+              open.toggle();
+              log::info!("Open Command Palette!");
+            },
+            "Open Command Palette!"
           }
         }
 
-        CommandPalette {
-          actions,
-          placeholder: "Type a command...",
-          visible: open
-        }
+        // CommandPalette {
+        //   actions,
+        //   placeholder: "Type a command...",
+        //   visible: open
+        // }
     )
 }
