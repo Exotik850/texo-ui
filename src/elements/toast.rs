@@ -26,7 +26,7 @@ pub fn Toaster() -> Element {
         .filter_map(|(_i, f)| toast_helper(&f));
 
     rsx!(
-      div
+      {toasts}
     )
 }
 

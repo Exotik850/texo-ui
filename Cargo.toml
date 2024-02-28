@@ -15,7 +15,6 @@ async-std = {version="1.12.0", features = ["unstable"]}
 qrcode = { version = "0.13.0", optional = true, default-features = false, features = ["image"]}
 image = { version = "0.24.8", optional = true }
 base64 = { version = "0.21.7", optional = true }
-syntect = { version = "5.2.0", optional = true, default-features = false, features = ["html", "parsing", "regex-fancy", "plist-load"]}
 
 wasm-bindgen-futures = { version = "0.4.40", optional = true }
 web-sys = { version = "0.3.67", optional = true, features = ["Window", "Document", "HtmlElement"]}
@@ -29,7 +28,6 @@ tween = ["dep:tween"]
 desktop = ["dioxus/desktop", "dep:arboard", "fastrand/std"]
 web = ["dioxus/web", "dep:web-sys", "fastrand/js"]
 clipboard = ["dep:web-sys", "dep:generational-box", "dep:wasm-bindgen-futures",  "web-sys?/Clipboard", "web-sys?/Navigator", "web-sys?/Permissions"]
-code-editor = ["dep:syntect"]
 qrcode = ["dep:qrcode", "dep:image", "dep:base64"]
 # controller = ["dep:gilrs", "dep:async-std"]
 

@@ -1,6 +1,6 @@
 use dioxus::prelude::*;
 
-#[derive(Clone, PartialEq, Debug)]
+#[derive(Clone, PartialEq)]
 pub struct CommandAction {
     id: u16,
     active: bool,

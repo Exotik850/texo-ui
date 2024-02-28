@@ -5,8 +5,8 @@ use crate::{TexoColor, TexoSize};
 #[component]
 pub fn Spinner(
     #[props(default = TexoColor::Red)] color: TexoColor,
-    #[props(default = "test-gray-300".into())] bg: String,
-    #[props(default = "".into())] class: String,
+    #[props(default = "text-gray-300".into())] bg: String,
+    #[props(default)] class: String,
     #[props(default = TexoSize::Medium)] size: TexoSize,
     #[props(extends=svg)] rest_attributes: Vec<Attribute>,
 ) -> Element {

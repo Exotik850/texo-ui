@@ -15,6 +15,7 @@ mod pagination;
 mod breadcrumb;
 mod command_palette;
 mod popover;
+mod code_editor;
 
 pub use popover::*;
 pub use command_palette::*;
@@ -33,11 +34,8 @@ pub use table::*;
 pub use toast::*;
 pub use toolbar::*;
 pub use tree_view::*;
-
-#[cfg(feature="code-editor")]
-mod code_editor;
-#[cfg(feature="code-editor")]
 pub use code_editor::*;
+
 #[cfg(feature="qrcode")]
 mod qrcode;
 #[cfg(feature="qrcode")]

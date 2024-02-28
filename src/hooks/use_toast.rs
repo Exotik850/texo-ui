@@ -27,7 +27,7 @@ pub enum ToastPosition {
     BottomRight,
 }
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Clone, PartialEq)]
 pub(crate) struct ToastInfo {
     pub id: u32,
     pub title: String,
@@ -36,7 +36,7 @@ pub(crate) struct ToastInfo {
     pub options: ToastOptions,
 }
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Clone, PartialEq)]
 pub struct ToastOptions {
     pub kind: ToastType,
     pub icon: Option<Element>,

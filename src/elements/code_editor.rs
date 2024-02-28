@@ -1,18 +1,4 @@
 use dioxus::prelude::*;
-use syntect::{highlighting::{Theme, ThemeSet}, parsing::SyntaxSet};
-
-#[derive(Clone)]
-struct SyntaxHighlightContext {
-  ps: Signal<SyntaxSet>,
-  ts: Signal<ThemeSet>,
-}
-
-fn use_syntax_highlighting() {
-  let ps = use_signal(SyntaxSet::new);
-  let ts = use_signal(|| ThemeSet::load_from_folder("/src/syntax_themes").expect("Should have folder of themes available"));
-  
-  use_root_context(|| SyntaxHighlightContext {ps, ts});
-}
 
 #[component]
 pub fn CodeEditor(
@@ -24,23 +10,18 @@ pub fn CodeEditor(
     class: Option<String>,
     text_area_class: Option<String>,
     pre_class: Option<String>,
+    both_class: Option<String>,
     placeholder: Option<String>,
     #[props(default)] read_only: bool,
     #[props(default)] required: bool,
+    #[props(default = true)] default_class: bool,
+    #[props(default = true)] default_pre_class: bool,
     onclick: Option<EventHandler<MouseEvent>>,
     onfocus: Option<EventHandler<FocusEvent>>,
     onkeyup: Option<EventHandler<KeyboardEvent>>,
+    onkeypress: Option<EventHandler<KeyboardEvent>>,
     onkeydown: Option<EventHandler<KeyboardEvent>>,
 ) -> Element {
-
-  use_syntax_highlighting();
-  let SyntaxHighlightContext { ps, ts } = use_context();
-
-    let re = ps.read();
-    let syntax = re.find_syntax_by_extension("html")?;
-
-    let inner_html = syntect::html::highlighted_html_for_string(&value.read(), &ps.read(), syntax, &ts.read().themes["base16-ocean.dark"]).expect("NOOOOOOOOOO");
-
     let oninput = move |evt: FormEvent| value.set(evt.value());
 
     let onclick = move |evt: MouseEvent| {
@@ -63,34 +44,50 @@ pub fn CodeEditor(
             onkeydown.call(evt)
         }
     };
+    let onkeypress = move |evt: KeyboardEvent| {
+        if let Some(onkeypress) = &onkeypress {
+            onkeypress.call(evt)
+        }
+    };
 
     let pre_val = value.read();
-    let addon = if pre_val.ends_with("\n") {" "} else {""};
+    let addon = if pre_val.ends_with("\n") { " " } else { "" };
+
+    let default_pre_class = if default_pre_class {
+        "bg-transparent z-1 leading-relaxed 
+        text-sm font-mono border-0 h-full w-full resize-none font-semibold cursor-none 
+        absolute top-0 left-0 overflow-auto whitespace-pre-wrap"
+    } else {
+        ""
+    };
+
+    let default_class = if default_class {
+        "bg-transparent z-0 leading-relaxed text-sm 
+      font-mono border-0 h-full w-full resize-none overflow-auto truncate antialiased 
+      absolute top-0 left-0 whitespace-pre-wrap"
+    } else {
+        ""
+    };
 
     rsx! {
-        pre {
-          class: "{pre_class.unwrap_or_default()} bg-transparent z-1 leading-relaxed 
-          text-sm font-mono border-0 h-full w-full resize-none font-semibold cursor-none 
-          fixed top-0 left-0 overflow-auto whitespace-nowrap",
-          // aria_hidden: true,
-          // children: highlighted
-          dangerous_inner_html: inner_html
-          // "{pre_val}{addon}"
+       div {
+        class: "relative w-full h-full",
+          pre {
+          class: "{pre_class.unwrap_or_default()} {both_class.as_deref().unwrap_or_default()} {default_pre_class}",
+          "{pre_val}{addon}"
         }
 
         textarea {
-          class: "{class.unwrap_or_default()} bg-transparent z-0 leading-relaxed text-sm 
-          font-mono border-0 h-full w-full resize-none overflow-auto truncate antialiased 
-          fixed top-0 left-0 whitespace-nowrap",
+          class: "{class.unwrap_or_default()} {both_class.unwrap_or_default()} {default_class}",
+          value: value,
           spellcheck: false,
           oninput,
           onclick,
           onfocus,
           onkeyup,
           onkeydown,
-          onselect: move |evt| {
-            log::info!("{evt:?}");
-          },
+          onkeypress
         }
+      }
     }
 }
