@@ -22,43 +22,21 @@ fn App() -> Element {
       CommandAction::new(|_| println!("World"), "World".to_string(), "Say world".to_string(), None, None),
     ]);
 
+    let mut value = use_signal(|| "# Hello, world!".to_string());
+
     rsx!(
-        link {
-            href: "https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css",
-            rel: "stylesheet"
-        }
-
-        Toaster {}
- 
-        Button {
-          onclick: move |_| tm.start(1000),
-          "Click me!"
-        }
-
-        Button {
-          onclick: move |_| open.toggle(),
-          "Open Command Palette!"
-        }
-
-        Popover {
-          open, 
-          content: rsx!(
-            "Hello, World!"
-          ),
-
-          button {
-            onclick: move |_| {
-              open.toggle();
-              log::info!("Open Command Palette!");
-            },
-            "Open Command Palette!"
-          }
-        }
-
-        // CommandPalette {
-        //   actions,
-        //   placeholder: "Type a command...",
-        //   visible: open
+        // link {
+        //     href: "https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css",
+        //     rel: "stylesheet"
         // }
+
+        textarea {
+          oninput: move |e| value.set(e.value()),
+          value,
+        }
+
+        GFMarkdown {
+          value
+        }
     )
 }
