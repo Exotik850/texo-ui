@@ -16,7 +16,9 @@ mod breadcrumb;
 mod command_palette;
 mod popover;
 mod code_editor;
+mod stacker;
 
+pub use stacker::*;
 pub use popover::*;
 pub use command_palette::*;
 pub use breadcrumb::*;
