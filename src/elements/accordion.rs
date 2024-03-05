@@ -1,5 +1,5 @@
-use dioxus::prelude::*;
 use crate::{merge_classes, util::Frame};
+use dioxus::prelude::*;
 
 #[component]
 pub fn AccordionItem(

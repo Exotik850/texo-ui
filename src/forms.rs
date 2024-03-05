@@ -13,12 +13,7 @@ pub fn Checkbox(
     children: Element,
 ) -> Element {
     let class = merge_classes(&[
-        if inline {
-            "inline-flex"
-        } else {
-            "flex"
-        }
-        .to_string(),
+        if inline { "inline-flex" } else { "flex" }.to_string(),
         class,
     ]);
 

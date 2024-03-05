@@ -41,26 +41,18 @@ pub fn border_color(color: TexoColor) -> &'static str {
         TexoColor::Gray => "border-gray-500 divide-gray-500",
         TexoColor::Dark => "border-gray-500 divide-gray-500",
         TexoColor::Green => {
-            
-                "border-green-300 dark:border-green-800 divide-green-300 dark:divide-green-800"
-            
+            "border-green-300 dark:border-green-800 divide-green-300 dark:divide-green-800"
         }
         TexoColor::Light => "border-gray-500 divide-gray-500",
         TexoColor::Primary => {
             "border-primary-500 dark:border-primary-200  divide-primary-500 dark:divide-primary-20"
         }
         TexoColor::Purple => {
-            
-                "border-purple-300 dark:border-purple-800 divide-purple-300 dark:divide-purple-800"
-            
+            "border-purple-300 dark:border-purple-800 divide-purple-300 dark:divide-purple-800"
         }
-        TexoColor::Red => {
-            "border-red-300 dark:border-red-800 divide-red-300 dark:divide-red-800"
-        }
+        TexoColor::Red => "border-red-300 dark:border-red-800 divide-red-300 dark:divide-red-800",
         TexoColor::Yellow => {
-            
-                "border-yellow-300 dark:border-yellow-800 divide-yellow-300 dark:divide-yellow-800"
-            
+            "border-yellow-300 dark:border-yellow-800 divide-yellow-300 dark:divide-yellow-800"
         }
         TexoColor::None => "",
     }

@@ -5,7 +5,6 @@ use dioxus::{
 
 use crate::TexoTrigger;
 
-
 #[derive(Clone, Copy, PartialEq)]
 pub enum PopoverPosition {
     TopStart,
@@ -182,27 +181,35 @@ pub fn Popover(
     let mut body_el_rect = use_signal(|| None);
 
     use_future(move || async move {
-            let t = target_el.read();
-            if let Some(t) = t.as_ref() {
-                let rect = t.get_client_rect().await.unwrap();
-                target_el_rect.set(Some(rect));
-            }
-            let t = content_el.read();
-            if let Some(t) = t.as_ref() {
-                let rect = t.get_client_rect().await.unwrap();
-                content_el_rect.set(Some(rect));
-            }
-            let t = body_el.read();
-            if let Some(t) = t.as_ref() {
-                let rect = t.get_client_rect().await.unwrap();
-                body_el_rect.set(Some(rect));
-            }
-        });
+        let t = target_el.read();
+        if let Some(t) = t.as_ref() {
+            let rect = t.get_client_rect().await.unwrap();
+            target_el_rect.set(Some(rect));
+        }
+        let t = content_el.read();
+        if let Some(t) = t.as_ref() {
+            let rect = t.get_client_rect().await.unwrap();
+            content_el_rect.set(Some(rect));
+        }
+        let t = body_el.read();
+        if let Some(t) = t.as_ref() {
+            let rect = t.get_client_rect().await.unwrap();
+            body_el_rect.set(Some(rect));
+        }
+    });
 
-    let style = if target_el_rect.read().is_none() || content_el_rect.read().is_none() || body_el_rect.read().is_none() {
+    let style = if target_el_rect.read().is_none()
+        || content_el_rect.read().is_none()
+        || body_el_rect.read().is_none()
+    {
         String::new()
     } else {
-      calculate_style(target_el_rect.read().unwrap(), content_el_rect.read().unwrap(), body_el_rect.read().unwrap().size, position)
+        calculate_style(
+            target_el_rect.read().unwrap(),
+            content_el_rect.read().unwrap(),
+            body_el_rect.read().unwrap().size,
+            position,
+        )
     };
     // let style = "";
 
@@ -250,4 +257,3 @@ pub fn Popover(
         }
     )
 }
-

@@ -133,8 +133,10 @@ pub fn PaginationItem(
         &class,
     ]);
 
-    let onclick  = move |evt| if let Some(oc) = &onclick {
-      oc.call(evt)
+    let onclick = move |evt| {
+        if let Some(oc) = &onclick {
+            oc.call(evt)
+        }
     };
 
     rsx!(

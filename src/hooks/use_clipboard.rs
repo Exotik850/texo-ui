@@ -43,9 +43,9 @@ impl ClipboardManager {
             let clip = match result {
                 Ok(value) => value.as_string().expect("Should only return string"),
                 Err(err) => {
-                  log::error!("Could not read from clipboard: {:?}", err.as_string());
-                  return;
-                },
+                    log::error!("Could not read from clipboard: {:?}", err.as_string());
+                    return;
+                }
             };
             self.value.set(clip);
         });
@@ -80,7 +80,7 @@ impl ClipboardManager {
         Ok(())
     }
 
-    /// Returns a reference to the current value of the internal signal 
+    /// Returns a reference to the current value of the internal signal
     /// and subscribes it to the current scope
     pub fn value(&self) -> GenerationalRef<Ref<String>> {
         self.value.read()
@@ -89,8 +89,8 @@ impl ClipboardManager {
 
 /// Returns a struct that allows for the retrieval and setting of the clipboard
 /// value. This detects what platform you are using (WASM32 / Windows / Mac / Linux)
-/// and uses the correct implementation accordingly. 
-/// 
+/// and uses the correct implementation accordingly.
+///
 /// Note: due to security restrictions there is no way to automatically update the value with the user's clipboard,
 /// the `get` function must be manually called to check the value of the clipboard
 #[cfg(feature = "desktop")]
@@ -103,10 +103,10 @@ pub fn use_clipboard() -> Result<ClipboardManager, ClipboardError> {
 /// Returns a struct that allows for the retrieval and setting of the clipboard
 /// value. This detects what platform you are using (WASM32 / Windows / Mac / Linux)
 /// and uses the correct implementation accordingly.
-/// 
+///
 /// Note: due to security restrictions there is no way to automatically update the value with the user's clipboard,
 /// the `get` function must be manually called to check the value of the clipboard
-/// 
+///
 /// This uses the `web_sys` clipboard implementation, and requires the `web_sys_unstable_apis` enabled via the `RUSTFLAGS` environment variable
 /// e.g: `RUSTFLAGS="--cfg=web_sys_unstable_apis" cargo run`
 #[cfg(feature = "web")]

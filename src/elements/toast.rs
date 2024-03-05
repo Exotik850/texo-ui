@@ -25,7 +25,7 @@ pub fn Toaster() -> Element {
         .enumerate()
         .filter_map(|(_i, f)| toast_helper(&f));
 
-    rsx!({toasts})
+    rsx!({ toasts })
 }
 
 fn toast_helper(

@@ -163,11 +163,7 @@ pub fn NavContainer(fluid: Option<bool>, class: String, children: Element) -> El
 
     let class = merge_classes(&[
         "mx-auto flex flex-wrap justify-between items-center",
-        if fluid {
-            "w-full"
-        } else {
-            "container"
-        },
+        if fluid { "w-full" } else { "container" },
         &class,
     ]);
 
@@ -184,10 +180,7 @@ pub fn NavBar(
     children: Element,
 ) -> Element {
     let fluid = fluid.unwrap_or(false);
-    let class = merge_classes(&[
-        "px-2 sm:px-4 py-2.5 w-full",
-        &class,
-    ]);
+    let class = merge_classes(&["px-2 sm:px-4 py-2.5 w-full", &class]);
     rsx! {
         Frame { class: frame_class,
             NavContainer { fluid, class, {children} }

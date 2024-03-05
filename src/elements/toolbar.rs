@@ -1,5 +1,5 @@
-use dioxus::prelude::*;
 use crate::{merge_classes, util::Frame, TexoColor, TexoSize};
+use dioxus::prelude::*;
 
 #[derive(Clone)]
 struct ToolbarSeperation(bool);

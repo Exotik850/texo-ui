@@ -4,13 +4,13 @@ use crate::util::{CloseButton, Frame};
 use crate::{merge_classes, TexoColor, TexoSize};
 
 fn modal_size(size: TexoSize) -> &'static str {
-  match size {
-    TexoSize::ExtraSmall => "max-w-md",
-    TexoSize::Small => "max-w-lg",
-    TexoSize::Medium => "max-w-2xl",
-    TexoSize::Large => "max-w-4xl",
-    TexoSize::ExtraLarge => "max-w-7xl",
-  }
+    match size {
+        TexoSize::ExtraSmall => "max-w-md",
+        TexoSize::Small => "max-w-lg",
+        TexoSize::Medium => "max-w-2xl",
+        TexoSize::Large => "max-w-4xl",
+        TexoSize::ExtraLarge => "max-w-7xl",
+    }
 }
 
 #[derive(PartialEq, Copy, Clone, Default)]
@@ -28,20 +28,19 @@ pub enum ModalPlacementType {
     None,
 }
 
-
 fn placement_class(placement: ModalPlacementType) -> &'static str {
-  match placement {
-    ModalPlacementType::TopLeft => "justify-start items-start",
-    ModalPlacementType::TopCenter => "justify-center items-start",
-    ModalPlacementType::TopRight => "justify-end items-start",
-    ModalPlacementType::CenterLeft => "justify-start items-center",
-    ModalPlacementType::Center => "justify-center items-center",
-    ModalPlacementType::CenterRight => "justify-end items-center",
-    ModalPlacementType::BottomLeft => "justify-start items-end",
-    ModalPlacementType::BottomCenter => "justify-center items-end",
-    ModalPlacementType::BottomRight => "justify-end items-end",
-    ModalPlacementType::None => "justify-center items-center",
-  }
+    match placement {
+        ModalPlacementType::TopLeft => "justify-start items-start",
+        ModalPlacementType::TopCenter => "justify-center items-start",
+        ModalPlacementType::TopRight => "justify-end items-start",
+        ModalPlacementType::CenterLeft => "justify-start items-center",
+        ModalPlacementType::Center => "justify-center items-center",
+        ModalPlacementType::CenterRight => "justify-end items-center",
+        ModalPlacementType::BottomLeft => "justify-start items-end",
+        ModalPlacementType::BottomCenter => "justify-center items-end",
+        ModalPlacementType::BottomRight => "justify-end items-end",
+        ModalPlacementType::None => "justify-center items-center",
+    }
 }
 
 #[component]
@@ -51,7 +50,7 @@ pub fn Modal(
     #[props(default=TexoSize::Medium)] size: TexoSize,
     #[props(default=TexoColor::Gray)] color: TexoColor,
     #[props(default)] placement: ModalPlacementType,
-    #[props(default=true)] dismissable: bool,
+    #[props(default = true)] dismissable: bool,
     #[props(default)] autoclose: bool,
     #[props(default)] outside_close: bool,
     #[props(default)] rounded: bool,
@@ -67,22 +66,22 @@ pub fn Modal(
     onkeydown: Option<EventHandler<KeyboardEvent>>,
     children: Element,
 ) -> Element {
-  if !open() {
-    return None;
-  }
+    if !open() {
+        return None;
+    }
 
-  let handle_key = move |evt: Event<KeyboardData>| {
-      if !dismissable {
-        return;
-      }
+    let handle_key = move |evt: Event<KeyboardData>| {
+        if !dismissable {
+            return;
+        }
 
-      if let Key::Escape = evt.data.key() {
-          evt.stop_propagation();
-          open.set(false)
-      }
-  };
+        if let Key::Escape = evt.data.key() {
+            evt.stop_propagation();
+            open.set(false)
+        }
+    };
 
-  let dialog_class = merge_classes(&[placement_class(placement), &dialog_class]);
+    let dialog_class = merge_classes(&[placement_class(placement), &dialog_class]);
 
     rsx!(
         div { class: backdrop_class }

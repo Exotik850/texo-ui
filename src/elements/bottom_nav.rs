@@ -1,6 +1,6 @@
-use std::fmt::Display;
-use dioxus::prelude::*;
 use crate::TexoPosition;
+use dioxus::prelude::*;
+use std::fmt::Display;
 
 #[derive(PartialEq, Clone, Copy, Default)]
 pub enum BottomNavType {

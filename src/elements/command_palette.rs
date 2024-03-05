@@ -107,7 +107,7 @@ pub fn CommandPalette(
     use_root_context(|| manager);
 
     if !visible() {
-      return None;
+        return None;
     }
 
     let handle_keys = move |ev: KeyboardEvent| match ev.key() {

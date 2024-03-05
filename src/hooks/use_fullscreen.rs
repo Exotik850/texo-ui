@@ -103,9 +103,7 @@ pub fn use_fullscreen() -> FullScreenManager {
             closure
         });
 
-        let body = use_signal(move || {
-            document.read().body().expect("Need a body")
-        });
+        let body = use_signal(move || document.read().body().expect("Need a body"));
 
         use_effect(move || {
             if toggle() {

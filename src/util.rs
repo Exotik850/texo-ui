@@ -1,8 +1,7 @@
-use dioxus::prelude::*;
 use crate::{
-    bg_color, border_color, elements::ToolBarButton, merge_classes, text_color, TexoColor,
-    TexoSize,
+    bg_color, border_color, elements::ToolBarButton, merge_classes, text_color, TexoColor, TexoSize,
 };
+use dioxus::prelude::*;
 
 #[component]
 pub fn Frame(
