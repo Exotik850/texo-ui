@@ -17,8 +17,11 @@ mod command_palette;
 mod popover;
 mod code_editor;
 mod stacker;
+mod markdown;
+
 
 pub use stacker::*;
+pub use markdown::*;
 pub use popover::*;
 pub use command_palette::*;
 pub use breadcrumb::*;
