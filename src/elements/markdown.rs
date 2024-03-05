@@ -2,20 +2,21 @@ use dioxus::prelude::*;
 use markdown::{mdast::Node, to_mdast, ParseOptions};
 
 #[component(no_case_check)]
-pub fn GFMarkdown(value: String) -> Element {
+pub fn GFMarkdown(value: String, #[props(default)] class: String, #[props(extends=div)] rest_attributes: Vec<Attribute>) -> Element {
     let start = std::time::Instant::now();
     let nodes = to_mdast(&value, &ParseOptions::gfm())
         .expect("Normal Markdown parsing has no syntax errors");
-    let out = rsx!({ expand_node(&nodes) });
+    let out = rsx!(div {..rest_attributes, { expand_node(&nodes) }});
     log::info!("Markdown parsing took {:?}", start.elapsed());
     out
 }
 
 fn expand_node(node: &Node) -> Element {
     match node {
+        // We should only get one root node
         Node::Root(root) => {
             rsx!(
-                div { {root.children.iter().map(expand_node)} }
+                {root.children.iter().map(expand_node)}
             )
         }
         Node::BlockQuote(bq) => {
@@ -81,7 +82,11 @@ fn expand_node(node: &Node) -> Element {
             })
         }
         Node::ImageReference(ir) => rsx!(
-          
+          img {
+            src: "{ir.identifier}",
+            alt: "{ir.alt}" ,
+          }
+          if let Some(label) = &ir.label { "{label}" }
         ),
         Node::MdxJsxTextElement(_) => None,
         Node::Link(link) => rsx!(
