@@ -1,14 +1,33 @@
 use dioxus::prelude::*;
 use markdown::{mdast::Node, to_mdast, ParseOptions};
 
+#[derive(Copy, Clone, Default, PartialEq)]
+pub enum MarkdownType {
+  Github,
+  #[default]
+  Normal,
+  Mdx,
+}
+
+impl MarkdownType {
+  fn to_settings(self) -> ParseOptions {
+    match self {
+        MarkdownType::Github => ParseOptions::gfm(),
+        MarkdownType::Normal => ParseOptions::mdx(),
+        MarkdownType::Mdx => ParseOptions::default(),
+    }
+  }
+}
+
 #[component(no_case_check)]
-pub fn GFMarkdown(
+pub fn Markdown(
     value: String,
     #[props(default)] class: String,
     #[props(extends=div)] rest_attributes: Vec<Attribute>,
+    #[props(default)] md_type: MarkdownType,
 ) -> Element {
     let start = std::time::Instant::now();
-    let nodes = to_mdast(&value, &ParseOptions::gfm())
+    let nodes = to_mdast(&value, &md_type.to_settings())
         .expect("Normal Markdown parsing has no syntax errors");
     let out = rsx!(
         div { ..rest_attributes, { expand_node(&nodes) } }

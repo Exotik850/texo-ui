@@ -1,7 +1,8 @@
 use dioxus::prelude::*;
-use texo_ui::elements::*;
+use texo_ui::data_display::{Markdown, MarkdownType};
 use texo_ui::hooks::use_toast::toast;
 use texo_ui::hooks::*;
+use texo_ui::input::CommandAction;
 
 pub fn main() {
     dioxus_logger::init(log::LevelFilter::Info).unwrap();
@@ -54,6 +55,6 @@ fn App() -> Element {
 
         textarea { oninput: move |e| value.set(e.value()), value: value }
 
-        GFMarkdown { value }
+        Markdown { value, md_type: MarkdownType::Github }
     )
 }

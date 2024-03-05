@@ -7,10 +7,12 @@ compile_error!("Cannot target both web and desktop at the same time!");
 #[cfg(all(target_arch = "wasm32", feature = "desktop"))]
 compile_error!("Cannot target both web and desktop at the same time!");
 
-pub mod elements;
-pub mod forms;
 pub mod hooks;
-pub mod util;
+pub mod utility;
+pub mod input;
+pub mod navigation;
+pub mod layout;
+pub mod data_display;
 
 pub fn merge_classes(input: &[impl AsRef<str>]) -> String {
     let mut class_set = HashSet::new();

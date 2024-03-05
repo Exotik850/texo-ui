@@ -1,6 +1,6 @@
 use dioxus::prelude::*;
 
-use crate::{elements::Button, merge_classes, TexoTrigger};
+use crate::{input::Button, merge_classes, TexoTrigger};
 
 #[component]
 pub fn SpeedDial(

@@ -35,7 +35,7 @@ where
 }
 
 // redacted for now
-async fn timeout_async<F>(mut f: F, delay: u64)
+async fn timeout_async<F>(f: F, delay: u64)
 where
     F: Future<Output = ()> + 'static,
 {

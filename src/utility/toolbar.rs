@@ -1,4 +1,4 @@
-use crate::{merge_classes, util::Frame, TexoColor, TexoSize};
+use crate::{merge_classes, utility::Frame, TexoColor, TexoSize};
 use dioxus::prelude::*;
 
 #[derive(Clone)]

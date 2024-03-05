@@ -1,6 +1,6 @@
 use dioxus::prelude::*;
 
-use crate::util::{CloseButton, Frame};
+use crate::utility::{CloseButton, Frame};
 use crate::{merge_classes, TexoColor, TexoSize};
 
 fn modal_size(size: TexoSize) -> &'static str {

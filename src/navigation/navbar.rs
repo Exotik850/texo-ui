@@ -1,6 +1,6 @@
 use dioxus::prelude::*;
 
-use crate::{elements::ToolBarButton, merge_classes, util::Frame, TexoColor};
+use crate::{merge_classes, utility::{Frame, ToolBarButton}, TexoColor};
 
 #[derive(PartialEq, Clone)]
 pub enum MenuVariation {
