@@ -15,7 +15,7 @@ fn App() -> Element {
     // let mut fullscreen = use_fullscreen();
     // let is_fullscreen = fullscreen.is_fullscreen();
     let mut open = use_signal(|| false);
-    let tm = use_timeout(|_| log::info!("RAH"), || ());
+    let tm = use_timeout(|_| toast("Hello World?", Some(rsx!( div { "Hello." } )), Default::default()), || ());
 
     let actions = use_signal(|| vec![
       CommandAction::new(|_| toast("HELP", None, Default::default()), "Hello".to_string(), "Say hello".to_string(), None, None),
@@ -29,36 +29,18 @@ fn App() -> Element {
         }
 
         Toaster {}
- 
-        Button {
-          onclick: move |_| tm.start(1000),
-          "Click me!"
+        Button { onclick: move |_| tm.start(1000), "Click me!" }
+
+        Button { onclick: move |_| open.toggle(), "Open Command Palette!" }
+
+        Popover { open, content: rsx!("Hello, World!"),
+
+            button { onclick: move |_| {
+                    open.toggle();
+                    log::info!("Open Command Palette!");
+                },
+                "Open Command Palette!"
+            }
         }
-
-        Button {
-          onclick: move |_| open.toggle(),
-          "Open Command Palette!"
-        }
-
-        Popover {
-          open, 
-          content: rsx!(
-            "Hello, World!"
-          ),
-
-          button {
-            onclick: move |_| {
-              open.toggle();
-              log::info!("Open Command Palette!");
-            },
-            "Open Command Palette!"
-          }
-        }
-
-        // CommandPalette {
-        //   actions,
-        //   placeholder: "Type a command...",
-        //   visible: open
-        // }
     )
 }

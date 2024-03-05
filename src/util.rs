@@ -43,7 +43,7 @@ pub fn Frame(
                         onmount.call(evt.clone())
                     }
                 },
-                onclick,
+                onclick: onclick,
                 class: "{class}",
                 {children}
             }
@@ -56,7 +56,7 @@ pub fn Frame(
                         onmount.call(evt.clone())
                     }
                 },
-                onclick,
+                onclick: onclick,
                 class: "{class}",
                 {children}
             }
@@ -150,31 +150,25 @@ pub fn Card(
     ]);
 
     rsx!(
-      Frame {
-        href,
-        color,
-        rounded,
-        shadow,
-        border,
-        class: card_class,
-        onclick: move |evt| if let Some(oc) = &onclick {oc.call(evt)},
-        if let Some(img) = img {
-          img {
-            src: img,
-            alt: "",
-            class: img_class
-          }
-          div {
-            class: "{padding}",
-            {children}
-          }
-        } else {
-          div {
-            class: padding,
-            {children}
-          }
+        Frame {
+            href,
+            color,
+            rounded,
+            shadow,
+            border,
+            class: card_class,
+            onclick: move |evt| {
+                if let Some(oc) = &onclick {
+                    oc.call(evt)
+                }
+            },
+            if let Some(img) = img {
+                img { src: img, alt: "", class: img_class }
+                div { class: "{padding}", {children} }
+            } else {
+                div { class: padding, {children} }
+            }
         }
-      }
     )
 }
 
@@ -187,22 +181,26 @@ pub fn CloseButton(
     let cbtw = "ms-auto";
 
     rsx!(
-      ToolBarButton {
-        onclick: move |evt| if let Some(onclick) = &onclick {onclick.call(evt)},
-        class: "{cbtw} {class}",
-        color,
-        svg {
-          class: "w-5 h-5",
-          fill: "currentColor",
-          view_box: "0 0 20 20",
-          xmlns: "http://www.w3.org/2000/svg",
-          path {
-            fill_rule: "evenodd",
-            clip_rule: "evenodd",
-            d: "M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z",
-          }
+        ToolBarButton {
+            onclick: move |evt| {
+                if let Some(onclick) = &onclick {
+                    onclick.call(evt)
+                }
+            },
+            class: "{cbtw} {class}",
+            color,
+            svg {
+                class: "w-5 h-5",
+                fill: "currentColor",
+                view_box: "0 0 20 20",
+                xmlns: "http://www.w3.org/2000/svg",
+                path {
+                    fill_rule: "evenodd",
+                    clip_rule: "evenodd",
+                    d: "M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                }
+            }
         }
-      }
     )
 }
 

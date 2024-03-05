@@ -25,9 +25,7 @@ pub fn Toaster() -> Element {
         .enumerate()
         .filter_map(|(_i, f)| toast_helper(&f));
 
-    rsx!(
-      {toasts}
-    )
+    rsx!({toasts})
 }
 
 fn toast_helper(
@@ -50,22 +48,11 @@ fn toast_helper(
     };
 
     rsx! {
-        div {
-            class: "fixed {position} m-4",
-            div {
-                class: "bg-white shadow-lg rounded-lg p-4",
-                div {
-                    class: "flex items-center justify-between",
-                    span {
-                        class: "font-bold",
-                        "{title}"
-                    },
-                }
+        div { class: "fixed {position} m-4",
+            div { class: "bg-white shadow-lg rounded-lg p-4",
+                div { class: "flex items-center justify-between", span { class: "font-bold", "{title}" } }
                 if let Some(desc) = &description {
-                  span {
-                    class: "text-gray-500",
-                      {desc}
-                  }
+                    span { class: "text-gray-500", {desc} }
                 }
             }
         }

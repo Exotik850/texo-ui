@@ -23,16 +23,7 @@ pub fn Checkbox(
     ]);
 
     rsx!(
-      Label {
-        class: class.clone(),
-        input {
-          ..input_attributes,
-          r#type: "checkbox",
-          class,
-          checked,
-
-        }
-      }
+        Label { class: class.clone(), input { ..input_attributes, r#type: "checkbox", class: class, checked: checked } }
     )
 }
 
@@ -49,7 +40,7 @@ pub fn Label(
 
     rsx! {
         if show {
-            label { ..rest_attributes, class, {children} }
+            label { ..rest_attributes, class: class, {children} }
         } else {
             {children}
         }
@@ -65,12 +56,7 @@ pub fn Helper(
 ) -> Element {
     let class = merge_classes(&[text_color(color), &class]);
 
-    rsx! {
-      p {
-        ..rest_attributes,
-        class,
-      }
-    }
+    rsx! { p { ..rest_attributes, class: class } }
 }
 
 #[component]
@@ -100,31 +86,27 @@ pub fn Input(
     ]);
 
     rsx!(
-      if let Some(left) = left {
-        div {
-          class: float_class.clone(),
-          {left}
+        if let Some(left) = left {
+            div { class: float_class.clone(), {left} }
         }
-      }
 
-      if let Some(children) = children {
-        {children}
-      } else {
-        input {
-          ..rest_attributes,
-          oninput: move |evt| if let Some(value) = value.as_mut() {
-            value.set(evt.data.value())
-          },
-          class,
-          r#type: "{typ}",
+        if let Some(children) = children {
+            {children}
+        } else {
+            input {
+                ..rest_attributes,
+                oninput: move |evt| {
+                    if let Some(value) = value.as_mut() {
+                        value.set(evt.data.value())
+                    }
+                },
+                class: class,
+                r#type: "{typ}"
+            }
         }
-      }
 
-      if let Some(right) = right {
-        div {
-          class: float_class,
-          {right}
+        if let Some(right) = right {
+            div { class: float_class, {right} }
         }
-      }
     )
 }

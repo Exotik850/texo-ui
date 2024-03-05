@@ -14,20 +14,36 @@ pub fn Dropdown(
 ) -> Element {
     let mut open = use_signal(|| open);
     rsx!(
-      button {
-        ..rest_attributes,
-        class: "dropdown {class}",
+        button {
+            ..rest_attributes,
+            class: "dropdown {class}",
 
-        onmouseover: move |_| if TexoTrigger::Hover == trigger {open.set(true)},
-        onmouseleave: move |_| if TexoTrigger::Hover == trigger {open.set(false)},
-        onclick: move |_| if TexoTrigger::Click == trigger {open.toggle()},
+            onmouseover: move |_| {
+                if TexoTrigger::Hover == trigger {
+                    open.set(true)
+                }
+            },
+            onmouseleave: move |_| {
+                if TexoTrigger::Hover == trigger {
+                    open.set(false)
+                }
+            },
+            onclick: move |_| {
+                if TexoTrigger::Click == trigger {
+                    open.toggle()
+                }
+            },
 
-        {lead}
+            {lead},
 
-        if open() {
-          div { class: "{child_class}", style: "position: absolute;
-          z-index: 1;", {children} }
+            if open() {
+                div {
+                    class: "{child_class}",
+                    style: "position: absolute;
+          z-index: 1;",
+                    {children}
+                }
+            }
         }
-      }
     )
 }

@@ -62,25 +62,19 @@ fn Command(action: CommandAction) -> Element {
 
     let id = action.id;
     rsx! (
-      button {
-        class: "flex w-full items-center cursor-pointer p-2 {active} rounded-lg",
-        onclick: move |_| {action.run.call(manager); manager.visible.set(false)},
-        onmouseenter: move |_| manager.active.set(Some(id)),
-        if let Some(icon) = &action.icon {
-          span {
-            class: "mr-2",
-            {icon}
-          }
+        button {
+            class: "flex w-full items-center cursor-pointer p-2 {active} rounded-lg",
+            onclick: move |_| {
+                action.run.call(manager);
+                manager.visible.set(false)
+            },
+            onmouseenter: move |_| manager.active.set(Some(id)),
+            if let Some(icon) = &action.icon {
+                span { class: "mr-2", {icon} }
+            }
+            span { class: "mr-2", "{action.title}" }
+            span { class: "text-gray-500", "{action.description}" }
         }
-        span {
-          class: "mr-2",
-          "{action.title}"
-        },
-        span {
-          class: "text-gray-500",
-          "{action.description}"
-        }
-      }
     )
 }
 
@@ -154,36 +148,35 @@ pub fn CommandPalette(
     };
 
     rsx!(
-      div {
-        class: "fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 z-50",
-        onclick: move |_| visible.set(false),
-        onkeydown: handle_keys,
         div {
-          class: "w-96 m-auto bg-white rounded-lg shadow-lg",
-          onmouseleave: move |_| active.set(None),
-          onkeydown: handle_keys,
-          div {
-            class: "p-2",
-            input {
-              class: "w-full",
-              placeholder,
-              oninput: move |e| input.set(e.value()),
-              onmounted: move |el| input_el.set(Some(el)),
-              onkeydown: handle_keys,
-            },
-          }
-          div {
-            class: "p-2",
+            class: "fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 z-50",
+            onclick: move |_| visible.set(false),
             onkeydown: handle_keys,
-            for action in actions.iter().filter(|f| f.title.contains(input.read().as_str()) || f.description.contains(input.read().as_str())) {
-              Command {
-                action: action.clone(),
-                key: "{action.id}",
-              }
+            div {
+                class: "w-96 m-auto bg-white rounded-lg shadow-lg",
+                onmouseleave: move |_| active.set(None),
+                onkeydown: handle_keys,
+                div { class: "p-2",
+                    input {
+                        class: "w-full",
+                        placeholder: placeholder,
+                        oninput: move |e| input.set(e.value()),
+                        onmounted: move |el| input_el.set(Some(el)),
+                        onkeydown: handle_keys
+                    }
+                }
+                div { class: "p-2", onkeydown: handle_keys,
+                    for action in actions
+    .iter()
+    .filter(|f| {
+        f.title.contains(input.read().as_str())
+            || f.description.contains(input.read().as_str())
+    }) {
+                        Command { action: action.clone(), key: "{action.id}" }
+                    }
+                }
             }
-          }
         }
-      }
     )
 }
 

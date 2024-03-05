@@ -53,28 +53,28 @@ pub fn AccordionItem(
                 class: "{btn_class}",
                 aria_expanded: "{open}",
                 if let Some(header) = header {
-                {header}
+                    {header}
                 }
 
                 if curr_open {
-                  if let Some(arrow_up) = arrow_up {
-                    {arrow_up}
-                  } else {
-                    {&arrow_up_svg}
-                  }
+                    if let Some(arrow_up) = arrow_up {
+                        {arrow_up}
+                    } else {
+                        {&arrow_up_svg}
+                    }
                 } else {
-                  if let Some(arrow_down) = arrow_down {
-                    {arrow_down}
-                  } else {
-                    {&arrow_up_svg}
-                  }
+                    if let Some(arrow_down) = arrow_down {
+                        {arrow_down}
+                    } else {
+                        {&arrow_up_svg}
+                    }
                 }
             }
 
             if curr_open {
-              div { class: "w-full",
-                  div { class: "{content}", {children} }
-              }
+                div { class: "w-full",
+                    div { class: "{content}", {children} }
+                }
             }
         }
     }

@@ -32,16 +32,10 @@ pub fn Toolbar(
     ]);
 
     rsx! (
-      Frame {
-        class: "{final_div_class}",
-        color,
-        rounded: !embedded,
-        Frame {
-          class: "{sep_classes} flex flex-wrap items-center"
-          {children}
+        Frame { class: "{final_div_class}", color, rounded: !embedded,
+            Frame { class: "{sep_classes} flex flex-wrap items-center", {children} }
+            {end}
         }
-        {end}
-      }
     )
 }
 
@@ -88,27 +82,29 @@ pub fn ToolBarButton(
 
     if let Some(href) = href {
         rsx! {
-          a {
-            ..rest_attributes,
-            class: button_class,
-            href,
-            onclick: move |evt| if let Some(onclick) = &onclick {onclick.call(evt)},
-            if let Some(name) = head {
-              "{name}"
+            a {
+                ..rest_attributes,
+                class: button_class,
+                href: href,
+                onclick: move |evt| {
+                    if let Some(onclick) = &onclick {
+                        onclick.call(evt)
+                    }
+                },
+                if let Some(name) = head {
+                    "{name}"
+                }
+                {children}
             }
-            {children}
-          }
         }
     } else {
         rsx! {
-          button {
-            ..rest_attributes,
-            class: button_class,
-            if let Some(name) = head {
-              "{name}"
+            button { ..rest_attributes, class: button_class,
+                if let Some(name) = head {
+                    "{name}"
+                }
+                {children}
             }
-            {children}
-          }
         }
     }
 }

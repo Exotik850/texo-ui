@@ -17,10 +17,5 @@ pub fn QrCode<P: AsRef<[u8]> + Clone + PartialEq + 'static>(
   let mut cursor = std::io::Cursor::new(&mut bytes);
   img.write_to(&mut std::io::BufWriter::new(&mut cursor), image::ImageOutputFormat::Png).ok()?;
   let encoded = base64::engine::general_purpose::STANDARD_NO_PAD.encode(&bytes);
-  rsx!(
-    img {
-      ..rest_attributes,
-      src: "data:image/png;base64,{encoded}"
-    }
-  )
+  rsx!( img { ..rest_attributes, src: "data:image/png;base64,{encoded}" } )
 }

@@ -52,14 +52,9 @@ pub fn Table(
     ]);
 
     rsx! {
-      div {
-        class: div_class,
-        table {
-          ..rest_attributes,
-          class,
-          {children}
+        div { class: div_class,
+            table { ..rest_attributes, class: class, {children} }
         }
-      }
     }
 }
 
@@ -118,17 +113,13 @@ pub fn TableHead(
     let final_class = merge_classes(classes);
 
     rsx! {
-      thead {
-        ..rest_attributes,
-        class: "{final_class}",
-        if default_row {
-          tr {
-            {children}
-          }
-        } else {
-          {children}
+        thead { ..rest_attributes, class: "{final_class}",
+            if default_row {
+                tr { {children} }
+            } else {
+                {children}
+            }
         }
-      }
     }
 }
 
@@ -140,21 +131,14 @@ pub fn TableHeadCell(
     children: Element,
 ) -> Element {
     rsx! {
-      th {
-        ..rest_attributes,
-        class: "{class} {padding}",
-        {children}
-      }
+        th { ..rest_attributes, class: "{class} {padding}", {children} }
     }
 }
 
 #[component]
 pub fn TableBody(class: Option<String>, children: Element) -> Element {
     rsx!(
-    tbody {
-      class: "{class.unwrap_or_default()}",
-        {children}
-      }
+        tbody { class: "{class.unwrap_or_default()}", {children} }
     )
 }
 
@@ -247,11 +231,7 @@ pub fn TableBodyRow(
     ]);
 
     rsx! {
-      tr {
-        ..rest_attributes,
-        class: final_class,
-        {children}
-      }
+        tr { ..rest_attributes, class: final_class, {children} }
     }
 }
 
@@ -278,19 +258,15 @@ pub fn TableBodyCell(
     let final_class = merge_classes(classes);
 
     rsx! {
-      if is_button {
-        button {
-          ..rest_attributes,
-          class: "{final_class}",
-          onclick: move |evt| onclick.as_ref().unwrap().call(evt.clone()),
-          {children}
+        if is_button {
+            button {
+                ..rest_attributes,
+                class: "{final_class}",
+                onclick: move |evt| onclick.as_ref().unwrap().call(evt.clone()),
+                {children}
+            }
+        } else {
+            td { ..rest_attributes, class: "{final_class}", {children} }
         }
-      } else {
-        td {
-          ..rest_attributes,
-          class: "{final_class}",
-          {children}
-        }
-      }
     }
 }

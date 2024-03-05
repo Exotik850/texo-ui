@@ -46,59 +46,55 @@ pub fn Pagination(
     ]);
 
     rsx! {
-      nav {
-        aria_label,
-        ul {
-          class: ul_classes,
-          li {
-            PaginationItem {
-              large,
-              class: if table {
-                "rounded-l"
-              } else {
-                "rounded-s-lg"
-              },
-              normal_class: normal_class.clone(),
-              onclick: move |evt| if let Some(prev) = &onprevious {
-                prev.call(evt)
-              }
-              {previous.unwrap_or_else(|| rsx!("Previous"))}
-            }
-          }
+        nav { aria_label: aria_label,
+            ul { class: ul_classes,
+                li {
+                    PaginationItem {
+                        large,
+                        class: if table { "rounded-l" } else { "rounded-s-lg" },
+                        normal_class: normal_class.clone(),
+                        onclick: move |evt| {
+                            if let Some(prev) = &onprevious {
+                                prev.call(evt)
+                            }
+                        },
+                        {previous.unwrap_or_else(|| rsx!("Previous"))}
+                    }
+                }
 
-          for PaginationInfo { active, name, href, onclick } in pages.into_iter() {
-            li {
-              PaginationItem {
-                large, 
-                active,
-                active_class: active_class.clone(),
-                normal_class: normal_class.clone(),
-                href,
-                onclick: move |evt| if let Some(oc) = &onclick {
-                  oc.call(evt);
-                },
-                "{name}"
-              }
-            }
-          }
+                for PaginationInfo { active , name , href , onclick } in pages.into_iter() {
+                    li {
+                        PaginationItem {
+                            large,
+                            active,
+                            active_class: active_class.clone(),
+                            normal_class: normal_class.clone(),
+                            href,
+                            onclick: move |evt| {
+                                if let Some(oc) = &onclick {
+                                    oc.call(evt);
+                                }
+                            },
+                            "{name}"
+                        }
+                    }
+                }
 
-          li {
-            PaginationItem {
-              large,
-              normal_class,
-              class: if table {
-                "rounded-r"
-              } else {
-                "rounded-e-lg"
-              },
-              onclick: move |evt| if let Some(prev) = &onnext {
-                prev.call(evt)
-              }
-              {next.unwrap_or_else(|| rsx!("Next"))}
+                li {
+                    PaginationItem {
+                        large,
+                        normal_class,
+                        class: if table { "rounded-r" } else { "rounded-e-lg" },
+                        onclick: move |evt| {
+                            if let Some(prev) = &onnext {
+                                prev.call(evt)
+                            }
+                        },
+                        {next.unwrap_or_else(|| rsx!("Next"))}
+                    }
+                }
             }
-          }
         }
-      }
     }
 }
 
@@ -142,19 +138,10 @@ pub fn PaginationItem(
     };
 
     rsx!(
-      if let Some(href) = href {
-        a {
-          href,
-          class,
-          onclick,
-          {children}
+        if let Some(href) = href {
+            a { href: href, class: class, onclick: onclick, {children} }
+        } else {
+            button { class: class, onclick: onclick, {children} }
         }
-      } else {
-        button {
-          class,
-          onclick,
-          {children}
-        }
-      }
     )
 }

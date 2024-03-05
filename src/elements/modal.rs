@@ -85,55 +85,55 @@ pub fn Modal(
   let dialog_class = merge_classes(&[placement_class(placement), &dialog_class]);
 
     rsx!(
-          div { class: backdrop_class }
-          div {
-              onkeydown: handle_key,
-              onclick: move |_| open.toggle(),
-              role: "dialog",
-              aria_modal: true,
-              tabindex: -1,
-              class: dialog_class,
+        div { class: backdrop_class }
+        div {
+            onkeydown: handle_key,
+            onclick: move |_| open.toggle(),
+            role: "dialog",
+            aria_modal: true,
+            tabindex: -1,
+            class: dialog_class,
 
-              div { class: "flex relative w-full max-h-full {modal_size(size)}",
+            div { class: "flex relative w-full max-h-full {modal_size(size)}",
                 Frame {
-                  rounded: true,
-                  shadow: true,
-                  class: "w-full divide-y relative flex flex-col mx-auto"
+                    rounded: true,
+                    shadow: true,
+                    class: "w-full divide-y relative flex flex-col mx-auto",
 
-                  if !title.is_empty() || (&header).is_some() {
-                      Frame {
-                        color,
-                        class: "flex justify-between items-center p-4 rounded-t-lg",
-                          if let Some(header) = &header {
-                              {header}
-                          } else {
-                              h3 { class: "text-xl font-semibold text-gray-900 dark:text-white p-0", "{title}" }
-                          }
-                          if dismissable {
-                              CloseButton { onclick: move |_| open.set(false), color }
-                          }
-                      }
-                  }
+                    if !title.is_empty() || (&header).is_some() {
+                        Frame { color, class: "flex justify-between items-center p-4 rounded-t-lg",
+                            if let Some(header) = &header {
+                                {header}
+                            } else {
+                                h3 { class: "text-xl font-semibold text-gray-900 dark:text-white p-0",
+                                    "{title}"
+                                }
+                            }
+                            if dismissable {
+                                CloseButton { onclick: move |_| open.set(false), color }
+                            }
+                        }
+                    }
 
-                  div { onkeydown: handle_key, role: "document", class: body_class,
-                      if dismissable && title.is_empty() && header.is_none() {
-                          CloseButton {
-                              class: "absolute top-3 end-2.5",
-                              onclick: move |_| open.set(false),
-                              color
-                          }
-                      }
-                      {children}
-                  }
-                  if let Some(footer) = footer {
-                      Frame {
-                          color,
-                          class: "flex items-center p-6 space-x-2 rtl:space-x-reverse rounded-b-lg",
-                          {footer}
-                      }
-                  }
+                    div { onkeydown: handle_key, role: "document", class: body_class,
+                        if dismissable && title.is_empty() && header.is_none() {
+                            CloseButton {
+                                class: "absolute top-3 end-2.5",
+                                onclick: move |_| open.set(false),
+                                color
+                            }
+                        }
+                        {children}
+                    }
+                    if let Some(footer) = footer {
+                        Frame {
+                            color,
+                            class: "flex items-center p-6 space-x-2 rtl:space-x-reverse rounded-b-lg",
+                            {footer}
+                        }
+                    }
                 }
-              }
-          }
+            }
+        }
     )
 }

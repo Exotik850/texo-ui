@@ -32,16 +32,10 @@ pub fn Breadcrumb(
   ]);
 
   rsx!(
-    nav {
-      ..rest_attributes,
-      aria_label,
-      class: nav_class,
-      ol {
-        class: ol_class,
-        {children}
-      }
-    } 
-  )
+    nav { ..rest_attributes, aria_label: aria_label, class: nav_class,
+        ol { class: ol_class, {children} }
+    }
+)
 }
 
 #[component]
@@ -69,62 +63,54 @@ pub fn BreadcrumbItem(
   ]);
 
   rsx!(
-    li {
-      ..rest_attributes,
-      class: li_class,
-      if home {
-        a {
-          class: home_class,
-          if let Some(icon) = icon {
-            {icon}
-          } else {
-            svg {
-              class: "w-4 h-4 me-2",
-              fill: "currentColor",
-              view_box: "0 0 20 20",
-              xmlns: "http://www.w3.org/2000/svg",
-              path {
-                d: "M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"
-              }
+    li { ..rest_attributes, class: li_class,
+        if home {
+            a { class: home_class,
+                if let Some(icon) = icon {
+                    {icon}
+                } else {
+                    svg {
+                        class: "w-4 h-4 me-2",
+                        fill: "currentColor",
+                        view_box: "0 0 20 20",
+                        xmlns: "http://www.w3.org/2000/svg",
+                        path { d: "M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" }
+                    }
+                }
+                if let Some(children) = children {
+                    {children}
+                }
             }
-          }
-          if let Some(children) = children {
-            {children}
-          }
-        }
-      } else {
-        if let Some(icon) = icon {
-          {icon}
         } else {
-          svg {
-            class: "w-6 h-6 text-gray-400 rtl:-scale-x-100",
-            fill: "currentColor",
-            view_box: "0 0 20 20",
-            xmlns: "http://www.w3.org/2000/svg",
-            path {
-              fill_rule: "evenodd",
-              d: "M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z",
-              clip_rule: "evenodd"
+            if let Some(icon) = icon {
+                {icon}
+            } else {
+                svg {
+                    class: "w-6 h-6 text-gray-400 rtl:-scale-x-100",
+                    fill: "currentColor",
+                    view_box: "0 0 20 20",
+                    xmlns: "http://www.w3.org/2000/svg",
+                    path {
+                        fill_rule: "evenodd",
+                        d: "M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z",
+                        clip_rule: "evenodd"
+                    }
+                }
             }
-          }
+            if let Some(href) = href {
+                a { class: link_class, href: href,
+                    if let Some(children) = children {
+                        {children}
+                    }
+                }
+            } else {
+                span { class: span_class,
+                    if let Some(children) = children {
+                        {children}
+                    }
+                }
+            }
         }
-        if let Some(href) = href {
-          a {
-            class: link_class,
-            href,
-            if let Some(children) = children {
-              {children}
-            }
-          }
-        } else {
-          span {
-            class: span_class,
-            if let Some(children) = children {
-              {children}
-            }
-          }
-        }
-      }
     }
-  )
+)
 }

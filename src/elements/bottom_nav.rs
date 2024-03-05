@@ -74,13 +74,11 @@ pub fn BottomNav(
     let itw = inner_class.unwrap_or_else(|| "flex h-full max-w-lg mx-auto".to_string());
 
     rsx! {
-        div {
-          ..rest_attributes,
-          class: "{position} {nav_type} {otw}",
-          if let Some(header) = header {
-              {header}
-          }
-          div { class: "{nav_type.inner_class()} {itw}", {children} }
+        div { ..rest_attributes, class: "{position} {nav_type} {otw}",
+            if let Some(header) = header {
+                {header}
+            }
+            div { class: "{nav_type.inner_class()} {itw}", {children} }
         }
     }
 }
@@ -101,36 +99,40 @@ pub fn BottomNavItem(
     let span_class = span_class.unwrap_or_else(|| nav_type.span_class().to_string());
 
     rsx!(
-      if let Some(href) = href {
-        a {
-          href,
-          role: "link",
-          class: "{button_class}",
-          onclick: move |evt| if let Some(oc) = &onclick {
-            oc.call(evt)
-          },
-          {children}
-          span {
-            class: "{span_class}",
-            aria_label: "{button_name.clone().unwrap_or_default()}",
-            "{button_name.clone().unwrap_or_default()}"
-          }
+        if let Some(href) = href {
+            a {
+                href: href,
+                role: "link",
+                class: "{button_class}",
+                onclick: move |evt| {
+                    if let Some(oc) = &onclick {
+                        oc.call(evt)
+                    }
+                },
+                {children},
+                span {
+                    class: "{span_class}",
+                    aria_label: "{button_name.clone().unwrap_or_default()}",
+                    "{button_name.clone().unwrap_or_default()}"
+                }
+            }
+        } else {
+            button {
+                role: "button",
+                class: "{nav_type.button_class()} {button_class} ",
+                onclick: move |evt| {
+                    if let Some(oc) = &onclick {
+                        oc.call(evt)
+                    }
+                },
+                {children},
+                span {
+                    class: "{nav_type.span_class()} {span_class}",
+                    aria_label: "{button_name.clone().unwrap_or_default()}",
+                    "{button_name.clone().unwrap_or_default()}"
+                }
+            }
         }
-      } else {
-        button {
-          role: "button",
-          class: "{nav_type.button_class()} {button_class} ",
-          onclick: move |evt| if let Some(oc) = &onclick {
-            oc.call(evt)
-          },
-          {children}
-          span {
-            class: "{nav_type.span_class()} {span_class}",
-            aria_label: "{button_name.clone().unwrap_or_default()}",
-            "{button_name.clone().unwrap_or_default()}"
-          }
-        }
-      }
     )
 }
 
@@ -143,15 +145,9 @@ pub fn BottomNavHeader(
     #[props(extends=div)] rest_attributes: Vec<Attribute>,
 ) -> Element {
     rsx! {
-      div {
-        ..rest_attributes,
-        class: outer_class,
-        div {
-          class: inner_class,
-          role: "group",
-          {children}
+        div { ..rest_attributes, class: outer_class,
+            div { class: inner_class, role: "group", {children} }
         }
-      }
     }
 }
 
@@ -167,14 +163,16 @@ pub fn BottomNavHeaderItem(
     #[props(extends=button)] rest_attributes: Vec<Attribute>,
 ) -> Element {
     rsx!(
-      button {
-        ..rest_attributes,
-        onclick: move |evt| if let Some(oc) = &onclick {
-          oc.call(evt)
-        },
-        class: if active { "{active_class}" },
-        class: if !active { "{class}" },
-        "{item_name}"
-      }
+        button {
+            ..rest_attributes,
+            onclick: move |evt| {
+                if let Some(oc) = &onclick {
+                    oc.call(evt)
+                }
+            },
+            class: if active { "{active_class}" },
+            class: if !active { "{class}" },
+            "{item_name}"
+        }
     )
 }

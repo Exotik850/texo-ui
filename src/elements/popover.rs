@@ -207,32 +207,47 @@ pub fn Popover(
     // let style = "";
 
     rsx!(
-      div {
-        position: "relative",
-        onmounted: move |el| body_el.set(Some(el.data())),
         div {
-          onmounted: move |el| target_el.set(Some(el.data())),
-          style: if open() { "z-index:{z_index}" },
-          onmouseenter: move |_| if trigger == TexoTrigger::Hover {open.set(true)},
-          onmouseleave: move |_| if trigger == TexoTrigger::Hover {open.set(true)},
-          
-          onclick: move |e| if trigger == TexoTrigger::Click {e.stop_propagation(); open.set(true)},
-          ontouchend: move |e| if trigger == TexoTrigger::Click {e.stop_propagation(); open.set(true)},
+            position: "relative",
+            onmounted: move |el| body_el.set(Some(el.data())),
+            div {
+                onmounted: move |el| target_el.set(Some(el.data())),
+                style: if open() { "z-index:{z_index}" },
+                onmouseenter: move |_| {
+                    if trigger == TexoTrigger::Hover {
+                        open.set(true)
+                    }
+                },
+                onmouseleave: move |_| {
+                    if trigger == TexoTrigger::Hover {
+                        open.set(true)
+                    }
+                },
+                onclick: move |e| {
+                    if trigger == TexoTrigger::Click {
+                        e.stop_propagation();
+                        open.set(true)
+                    }
+                },
+                ontouchend: move |e| {
+                    if trigger == TexoTrigger::Click {
+                        e.stop_propagation();
+                        open.set(true)
+                    }
+                },
 
-          {children}
+                {children}
+            }
+
+            if open() {
+
+                div {
+                    onmounted: move |e| content_el.set(Some(e.data())),
+                    style: "z-index {z_index + 10}; {style}",
+                    {content}
+                }
+            }
         }
-
-        if open() {
-
-          div {
-            onmounted: move |e| content_el.set(Some(e.data())),
-            style: "z-index {z_index + 10}; {style}",
-            {content}
-          }
-
-        }
-
-      }
     )
 }
 

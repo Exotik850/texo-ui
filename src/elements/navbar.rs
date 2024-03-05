@@ -179,17 +179,17 @@ pub fn NavContainer(fluid: Option<bool>, class: String, children: Element) -> El
 #[component]
 pub fn NavBar(
     fluid: Option<bool>,
-    class: Option<String>,
-    frame_class: Option<String>,
+    #[props(default)] class: String,
+    #[props(default)] frame_class: String,
     children: Element,
 ) -> Element {
     let fluid = fluid.unwrap_or(false);
     let class = merge_classes(&[
         "px-2 sm:px-4 py-2.5 w-full",
-        &class.unwrap_or("".into()),
+        &class,
     ]);
     rsx! {
-        Frame { class: "{class}",
+        Frame { class: frame_class,
             NavContainer { fluid, class, {children} }
         }
     }

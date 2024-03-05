@@ -70,24 +70,22 @@ pub fn CodeEditor(
     };
 
     rsx! {
-       div {
-        class: "relative w-full h-full",
-          pre {
-          class: "{pre_class.unwrap_or_default()} {both_class.as_deref().unwrap_or_default()} {default_pre_class}",
-          "{pre_val}{addon}"
-        }
+        div { class: "relative w-full h-full",
+            pre { class: "{pre_class.unwrap_or_default()} {both_class.as_deref().unwrap_or_default()} {default_pre_class}",
+                "{pre_val}{addon}"
+            }
 
-        textarea {
-          class: "{class.unwrap_or_default()} {both_class.unwrap_or_default()} {default_class}",
-          value: value,
-          spellcheck: false,
-          oninput,
-          onclick,
-          onfocus,
-          onkeyup,
-          onkeydown,
-          onkeypress
+            textarea {
+                class: "{class.unwrap_or_default()} {both_class.unwrap_or_default()} {default_class}",
+                value: value,
+                spellcheck: false,
+                oninput: oninput,
+                onclick: onclick,
+                onfocus: onfocus,
+                onkeyup: onkeyup,
+                onkeydown: onkeydown,
+                onkeypress: onkeypress
+            }
         }
-      }
     }
 }
