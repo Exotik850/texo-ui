@@ -2,8 +2,6 @@ use std::time::Instant;
 
 use dioxus::prelude::*;
 
-use super::timeout;
-
 #[derive(Copy, Clone, PartialEq, Default, Debug)]
 pub enum ToastType {
     Action,
@@ -31,7 +29,7 @@ pub enum ToastPosition {
 pub(crate) struct ToastInfo {
     pub id: u32,
     pub title: String,
-    pub description: Option<Element>,
+    pub description: Element,
     pub added: Instant,
     pub options: ToastOptions,
 }
@@ -84,7 +82,10 @@ pub(crate) struct ToastManager {
 /// * `title` - The title of the toast notification.
 /// * `description` - The description of the toast notification.
 /// * `options` - The options for the toast notification.
-pub fn toast(title: impl std::fmt::Display, description: Option<Element>, options: ToastOptions) {
+/// 
+/// # Panics
+/// panics if there is no ToastManager in the context.
+pub fn toast(title: impl std::fmt::Display, description: Element, options: ToastOptions) {
     let ToastManager {
         mut toasts,
         heights,
@@ -100,14 +101,13 @@ pub fn toast(title: impl std::fmt::Display, description: Option<Element>, option
         options,
     };
     toasts.push(new_toast);
-    timeout(
-        move || {
-            let Some(index) = toasts.iter().position(|toast| toast.id == id) else {
-                log::warn!("Toast removed before timeout expired : {id}");
-                return;
-            };
-            toasts.remove(index);
-        },
-        delay,
-    )
+
+    let remove = move || {
+        let Some(index) = toasts.iter().position(|toast| toast.id == id) else {
+            log::warn!("Toast removed before timeout expired : {id}");
+            return;
+        };
+        toasts.remove(index);
+    };
+    super::timeout(remove, delay);
 }

@@ -51,9 +51,7 @@ fn toast_helper(
         div { class: "fixed {position} m-4",
             div { class: "bg-white shadow-lg rounded-lg p-4",
                 div { class: "flex items-center justify-between", span { class: "font-bold", "{title}" } }
-                if let Some(desc) = &description {
-                    span { class: "text-gray-500", {desc} }
-                }
+                span { class: "text-gray-500", {description} }
             }
         }
     }
