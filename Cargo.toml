@@ -30,7 +30,7 @@ typst-pdf = { git = "https://github.com/typst/typst", tag = "v0.10.0", optional 
 
 [features]
 typst = ["dep:typst-pdf", "dep:typst"]
-latex = ["dep:tectonic", "dep:base64"]
+# latex = ["dep:tectonic", "dep:base64"]
 tween = ["dep:tween"]
 desktop = ["dioxus/desktop", "dep:arboard", "fastrand/std"]
 web = ["dioxus/web", "dep:web-sys", "fastrand/js"]
