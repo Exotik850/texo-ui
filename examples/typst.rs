@@ -1,6 +1,9 @@
+use std::borrow::Borrow;
 use std::cell::{RefCell, RefMut};
 use std::collections::HashMap;
 use std::path::PathBuf;
+use std::rc::Rc;
+use base64::Engine;
 use comemo::Prehashed;
 use typst::diag::{eco_format, FileError, FileResult, PackageError, PackageResult};
 use typst::foundations::{Bytes, Datetime};
@@ -8,6 +11,7 @@ use typst::syntax::{FileId, PackageSpec, Source};
 use typst::text::{Font, FontBook};
 use typst::Library;
 use dioxus::prelude::*;
+use texo_ui::data_display::Typst;
 
 
 pub fn main() {
@@ -18,23 +22,32 @@ pub fn main() {
 #[component]
 fn App() -> Element {
 
+  let world = use_signal(|| TypstWrapperWorld::new("./".into(), include_str!("./typst.md").into()));
 
-
-  None
+  rsx!(
+    Typst {
+      world: world,
+    }
+  )
 }
 
 
-
+impl PartialEq for TypstWrapperWorld {
+  fn eq(&self, other: &Self) -> bool {
+    self.root == other.root
+  }
+}
 
 // https://github.com/tfachmann/typst-as-library/blob/main/src/rendering.rs
 
 /// Main interface that determines the environment for Typst.
+#[derive(Clone)]
 pub struct TypstWrapperWorld {
     /// Root path to which files will be resolved.
     root: PathBuf,
 
     /// The content of a source.
-    source: Source,
+    source: Rc<Source>,
 
     /// The standard library.
     library: Prehashed<Library>,
@@ -46,13 +59,13 @@ pub struct TypstWrapperWorld {
     fonts: Vec<Font>,
 
     /// Map of all known files.
-    files: RefCell<HashMap<FileId, FileEntry>>,
+    files: Rc<RefCell<HashMap<FileId, FileEntry>>>,
 
     /// Cache directory (e.g. where packages are downloaded to).
     cache_directory: PathBuf,
 
     /// http agent to download packages.
-    http: ureq::Agent,
+    http: Rc<ureq::Agent>,
 
     /// Datetime.
     time: time::OffsetDateTime,
@@ -67,13 +80,13 @@ impl TypstWrapperWorld {
             book: Prehashed::new(FontBook::from_fonts(&fonts)),
             root: PathBuf::from(root),
             fonts,
-            source: Source::detached(source),
+            source: Rc::new(Source::detached(source)),
             time: time::OffsetDateTime::now_utc(),
             cache_directory: std::env::var_os("CACHE_DIRECTORY")
                 .map(|os_path| os_path.into())
                 .unwrap_or(std::env::temp_dir()),
-            http: ureq::Agent::new(),
-            files: RefCell::new(HashMap::new()),
+            http: Rc::new(ureq::Agent::new()),
+            files: Rc::new(RefCell::new(HashMap::new())),
         }
     }
 }
@@ -197,13 +210,13 @@ impl typst::World for TypstWrapperWorld {
 
     /// Accessing the main source file.
     fn main(&self) -> Source {
-        self.source.clone()
+        (*self.source).clone()
     }
 
     /// Accessing a specified source file (based on `FileId`).
     fn source(&self, id: FileId) -> FileResult<Source> {
         if id == self.source.id() {
-            Ok(self.source.clone())
+            Ok((*self.source).clone())
         } else {
             self.file(id)?.source(id)
         }
@@ -234,7 +247,7 @@ impl typst::World for TypstWrapperWorld {
 fn fonts() -> Vec<Font> {
     std::fs::read_dir("fonts")
         .unwrap()
-        .map(Result::unwrap)
+        .filter_map(Result::ok)
         .flat_map(|entry| {
             let path = entry.path();
             let bytes = std::fs::read(&path).unwrap();
