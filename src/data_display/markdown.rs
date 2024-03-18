@@ -1,22 +1,23 @@
+use super::latex::latex2element;
 use dioxus::prelude::*;
 use markdown::{mdast::Node, to_mdast, ParseOptions};
 
 #[derive(Copy, Clone, Default, PartialEq)]
 pub enum MarkdownType {
-  Github,
-  #[default]
-  Normal,
-  Mdx,
+    Github,
+    #[default]
+    Normal,
+    Mdx,
 }
 
 impl MarkdownType {
-  fn to_settings(self) -> ParseOptions {
-    match self {
-        MarkdownType::Github => ParseOptions::gfm(),
-        MarkdownType::Normal => ParseOptions::mdx(),
-        MarkdownType::Mdx => ParseOptions::default(),
+    fn to_settings(self) -> ParseOptions {
+        match self {
+            MarkdownType::Github => ParseOptions::gfm(),
+            MarkdownType::Normal => ParseOptions::mdx(),
+            MarkdownType::Mdx => ParseOptions::default(),
+        }
     }
-  }
 }
 
 #[component(no_case_check)]
@@ -26,13 +27,16 @@ pub fn Markdown(
     #[props(extends=div)] rest_attributes: Vec<Attribute>,
     #[props(default)] md_type: MarkdownType,
 ) -> Element {
-    let start = std::time::Instant::now();
-    let nodes = to_mdast(&value, &md_type.to_settings())
-        .expect("Normal Markdown parsing has no syntax errors");
+    let nodes = match to_mdast(&value, &md_type.to_settings()) {
+      Ok(nodes) => nodes,
+      Err(e) => {
+        log::error!("Error parsing markdown: {:?}", e);
+        return None;
+      }
+    };
     let out = rsx!(
         div { ..rest_attributes, { expand_node(&nodes) } }
     );
-    log::info!("Markdown parsing took {:?}", start.elapsed());
     out
 }
 
@@ -70,9 +74,9 @@ fn expand_node(node: &Node) -> Element {
         Node::MdxjsEsm(_) => None,
         Node::Toml(toml) => rsx!( pre { "{toml.value}" } ),
         Node::Yaml(yaml) => rsx!( pre { "{yaml.value}" } ),
-        Node::Break(_) => rsx!( br {} ),
+        Node::Break(_) => rsx!(br {}),
         Node::InlineCode(ilc) => rsx!( code { "{ilc.value}" } ),
-        Node::InlineMath(ilm) => rsx!( span { "{ilm.value}" } ),
+        Node::InlineMath(ilm) => latex2element(&ilm.value, latex2mathml::DisplayStyle::Inline),
         Node::Delete(del) => rsx!(
             del { {del.children.iter().map(expand_node)} }
         ),
@@ -83,15 +87,17 @@ fn expand_node(node: &Node) -> Element {
         Node::FootnoteReference(fnref) => {
             rsx!( a { href: if let Some(lab) = &fnref.label { "#{lab}" }, "[{fnref.identifier}]" } )
         }
-        Node::Html(html) => rsx!( div { dangerous_inner_html: "{html.value}" } ),
+        Node::Html(html) => rsx!(div {
+            dangerous_inner_html: "{html.value}"
+        }),
         Node::Image(img) => {
-            rsx!(
-                img {
-                    src: "{img.url}",
-                    alt: "{img.alt}",
-                    title: if let Some(title) = &img.title { "{title}" }
+            rsx!(img {
+                src: "{img.url}",
+                alt: "{img.alt}",
+                title: if let Some(title) = &img.title {
+                    "{title}"
                 }
-            )
+            })
         }
         Node::ImageReference(ir) => rsx!(
             img { src: "{ir.identifier}", alt: "{ir.alt}" }
@@ -122,7 +128,7 @@ fn expand_node(node: &Node) -> Element {
         Node::Code(code) => rsx!(
             pre { code { language: if let Some(lang) = &code.lang { "{lang}" }, "{code.value}" } }
         ),
-        Node::Math(math) => rsx!( span { "{math.value}" } ),
+        Node::Math(math) => latex2element(&math.value, latex2mathml::DisplayStyle::Block),
         Node::MdxFlowExpression(mdxflow) => rsx!( span { "{mdxflow.value}" } ),
         Node::Heading(head) => {
             let children = head.children.iter().map(expand_node);
@@ -155,7 +161,7 @@ fn expand_node(node: &Node) -> Element {
                 table { {table.children.iter().map(expand_node)} }
             )
         }
-        Node::ThematicBreak(_) => rsx!( hr {} ),
+        Node::ThematicBreak(_) => rsx!(hr {}),
         Node::TableRow(tr) => rsx!(
             tr { {tr.children.iter().map(expand_node)} }
         ),
