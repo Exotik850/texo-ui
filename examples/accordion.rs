@@ -19,7 +19,7 @@ fn App() -> Element {
         |_| {
             toast(
                 "Hello World?",
-                Some(rsx!( div { "Hello." } )),
+                rsx!( div { "Hello." } ),
                 Default::default(),
             )
         },
