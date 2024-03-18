@@ -20,14 +20,13 @@ where F: FnOnce() -> W,
 
 #[component]
 pub fn Typst<W: World + Clone + PartialEq + 'static>(
-  world: Signal<W>,
+  world: W,
   #[props(default = Abs::cm(1.0))] padding: Abs,
 ) -> Element {
 
   let document: ReadOnlySignal<SourceResult<String>> = use_memo(move || {
-    world.read();
     let mut tracer = typst::eval::Tracer::new();
-    let document = world.with(|w| typst::compile(w, &mut tracer))?;
+    let document = typst::compile(&world, &mut tracer)?;
     let image = typst_svg::svg_merged(&document.pages, padding);
     // println!("{:?}", image);
     // let bytes = image.encode_png().expect("TO ENCODE OR NOT TO ENCODE");

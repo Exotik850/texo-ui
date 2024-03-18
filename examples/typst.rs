@@ -22,11 +22,20 @@ pub fn main() {
 #[component]
 fn App() -> Element {
 
-  let world = use_signal(|| TypstWrapperWorld::new("./".into(), include_str!("./typst.md").into()));
+  // let value = use_signal(String::new);
+  let world = TypstWrapperWorld::new("./".into(), include_str!("./typst.md").into());
+  let mut wc = world.clone();
+
 
   rsx!(
+
+    textarea {
+      // value,
+      oninput: move |e| wc.set(&e.value()),
+    }
+
     Typst {
-      world: world,
+      world,
     }
   )
 }
@@ -47,7 +56,7 @@ pub struct TypstWrapperWorld {
     root: PathBuf,
 
     /// The content of a source.
-    source: Rc<Source>,
+    source: Signal<Source>,
 
     /// The standard library.
     library: Prehashed<Library>,
@@ -56,7 +65,7 @@ pub struct TypstWrapperWorld {
     book: Prehashed<FontBook>,
 
     /// Metadata about all known fonts.
-    fonts: Vec<Font>,
+    fonts: Signal<Vec<Font>>,
 
     /// Map of all known files.
     files: Rc<RefCell<HashMap<FileId, FileEntry>>>,
@@ -65,7 +74,7 @@ pub struct TypstWrapperWorld {
     cache_directory: PathBuf,
 
     /// http agent to download packages.
-    http: Rc<ureq::Agent>,
+    http: ureq::Agent,
 
     /// Datetime.
     time: time::OffsetDateTime,
@@ -73,21 +82,29 @@ pub struct TypstWrapperWorld {
 
 impl TypstWrapperWorld {
     pub fn new(root: String, source: String) -> Self {
-        let fonts = fonts();
+        let fonts = use_signal(fonts);
         
         Self {
             library: Prehashed::new(Library::build()),
-            book: Prehashed::new(FontBook::from_fonts(&fonts)),
+            book: Prehashed::new(FontBook::from_fonts(fonts.read().iter())),
             root: PathBuf::from(root),
             fonts,
-            source: Rc::new(Source::detached(source)),
+            source: use_signal(|| Source::detached(source)),
             time: time::OffsetDateTime::now_utc(),
             cache_directory: std::env::var_os("CACHE_DIRECTORY")
                 .map(|os_path| os_path.into())
                 .unwrap_or(std::env::temp_dir()),
-            http: Rc::new(ureq::Agent::new()),
+            http: ureq::Agent::new(),
             files: Rc::new(RefCell::new(HashMap::new())),
         }
+    }
+
+    pub fn set(&mut self, value: &str) {
+      self.source.write().replace(value);
+    }
+
+    pub fn edit(&mut self, range: std::ops::Range<usize>, value: &str) {
+      self.source.write().edit(range, value);
     }
 }
 
@@ -210,13 +227,13 @@ impl typst::World for TypstWrapperWorld {
 
     /// Accessing the main source file.
     fn main(&self) -> Source {
-        (*self.source).clone()
+        (self.source)()
     }
 
     /// Accessing a specified source file (based on `FileId`).
     fn source(&self, id: FileId) -> FileResult<Source> {
-        if id == self.source.id() {
-            Ok((*self.source).clone())
+        if id == self.source.read().id() {
+            Ok((self.source)())
         } else {
             self.file(id)?.source(id)
         }
@@ -229,7 +246,7 @@ impl typst::World for TypstWrapperWorld {
 
     /// Accessing a specified font per index of font book.
     fn font(&self, id: usize) -> Option<Font> {
-        self.fonts.get(id).cloned()
+        self.fonts.get(id).map(|f| f.clone())
     }
 
     /// Get the current date.
