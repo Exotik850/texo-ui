@@ -28,6 +28,7 @@ fn App() -> Element {
     }
     Latex {
       value,
+      display: la_texer::DisplayStyle::Block,
     }
   )
 }

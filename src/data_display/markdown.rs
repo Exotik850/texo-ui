@@ -24,8 +24,9 @@ impl MarkdownType {
 pub fn Markdown(
     value: String,
     #[props(default)] class: String,
-    #[props(extends=div)] rest_attributes: Vec<Attribute>,
+    #[props(default)] style: String,
     #[props(default)] md_type: MarkdownType,
+    #[props(extends=div)] rest_attributes: Vec<Attribute>,
 ) -> Element {
     let nodes = match to_mdast(&value, &md_type.to_settings()) {
       Ok(nodes) => nodes,
@@ -35,7 +36,7 @@ pub fn Markdown(
       }
     };
     let out = rsx!(
-        div { ..rest_attributes, { expand_node(&nodes) } }
+        div { ..rest_attributes, style, { expand_node(&nodes) } }
     );
     out
 }
@@ -76,7 +77,7 @@ fn expand_node(node: &Node) -> Element {
         Node::Yaml(yaml) => rsx!( pre { "{yaml.value}" } ),
         Node::Break(_) => rsx!(br {}),
         Node::InlineCode(ilc) => rsx!( code { "{ilc.value}" } ),
-        Node::InlineMath(ilm) => latex2element(&ilm.value, latex2mathml::DisplayStyle::Inline),
+        Node::InlineMath(ilm) => latex2element(&ilm.value, la_texer::DisplayStyle::Inline),
         Node::Delete(del) => rsx!(
             del { {del.children.iter().map(expand_node)} }
         ),
@@ -128,7 +129,7 @@ fn expand_node(node: &Node) -> Element {
         Node::Code(code) => rsx!(
             pre { code { language: if let Some(lang) = &code.lang { "{lang}" }, "{code.value}" } }
         ),
-        Node::Math(math) => latex2element(&math.value, latex2mathml::DisplayStyle::Block),
+        Node::Math(math) => latex2element(&math.value, la_texer::DisplayStyle::Block),
         Node::MdxFlowExpression(mdxflow) => rsx!( span { "{mdxflow.value}" } ),
         Node::Heading(head) => {
             let children = head.children.iter().map(expand_node);
